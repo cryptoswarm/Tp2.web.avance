@@ -1,1 +1,1 @@
-web: gunicorn data-swarm:app
+web: gunicorn data-swarm:inf5190_projet_src
