@@ -9,7 +9,11 @@ DEBUG = True
 
 # Define the db
 # SQLite for the current app
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+#SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
+        'postgres://', 'postgresql://') or \
+        'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+
 DATABASE_CONNECT_OPTIONS = {}
 
 
@@ -46,3 +50,6 @@ OAUTH_CREDENTIALS = {
 #   ?client_id={your-app-id}
 #   &client_secret={your-app-secret}
 #   &grant_type=client_credentials"
+
+# Logging to stdout, useful when running heroku logs
+LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
