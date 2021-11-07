@@ -1,1 +1,1 @@
-web: gunicorn data-swarm
+web: gunicorn data-swarm:appplication
