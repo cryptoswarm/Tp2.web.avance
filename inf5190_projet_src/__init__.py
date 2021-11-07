@@ -50,7 +50,7 @@ def create_app(test_config=None):
 
         # Import the only module in the app which is article, 
         # using its blueprint handler var (mod_article)
-        from app.mod_app.controllers import mod_home as home_module
+        from inf5190_projet_src.mod_app.controllers import mod_home as home_module
 
         # Register blueprints
         app.register_blueprint(home_module)

@@ -1,4 +1,4 @@
-from app import create_app
+from inf5190_projet_src import create_app
 
 
 
