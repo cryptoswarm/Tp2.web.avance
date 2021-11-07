@@ -16,10 +16,10 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y python3.9-venv
 
     ## Création de l'environnement pour le TP2
-    python3.9 -m venv /home/vagrant/inf5190_tp2_venv
+    python3.9 -m venv /home/vagrant/inf5190_projet_venv
 
     ## Création du répertoire où mettre les sources
-    mkdir /vagrant/inf5190_tp2_src
+    mkdir /vagrant/inf5190_projet_src
 
     ## Installation de SQLite
     sudo apt-get install -y sqlite3
