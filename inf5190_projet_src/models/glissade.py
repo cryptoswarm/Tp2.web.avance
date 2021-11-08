@@ -5,17 +5,6 @@ from sqlalchemy import ForeignKey
 
 class Glissade(Base):
 
-    # <glissade>
-    #     <nom>Aire de glissade ,Don-Bosco</nom>
-    #     <arrondissement>
-    #         <nom_arr>RiviÃ¨re-des-Prairies - Pointe-aux-Trembles</nom_arr>
-    #         <cle>rdp</cle>
-    #         <date_maj>2021-10-18 13:45:13</date_maj>
-    #     </arrondissement>
-    #     <ouvert>0</ouvert>
-    #     <deblaye>0</deblaye>
-    #     <condition>N/A</condition>
-    # </glissade>
     __tablename__ = 'glissade'
     
     name = db.Column(db.String(255), unique=True,  nullable=False)
