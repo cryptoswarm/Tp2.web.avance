@@ -17,11 +17,13 @@ def get_xml_data(url):
     }
     response = requests.request("GET", url, headers=headers, data=payload)
     if response.status_code == 200:
+        response.encoding = response.apparent_encoding
         return response
     return {}
 
-# @mod_scheduler.route('/scheduler')
+@mod_scheduler.route('/scheduler', methods=['GET'])
+def start_scheduler():
+    glissade_as_xml = get_xml_data(url_glissade)
+    result = save_items(glissade_as_xml, 'glissades', 'glissade', ['nom', 'arrondissement', 'ouvert', 'deblaye', 'condition'])
+    return json.jsonify(result), 200
 
-
-
-print(save_items('glissades', 'glissade', ['nom', 'arrondissement', 'ouvert', 'deblaye', 'condition']))

@@ -1,5 +1,5 @@
 from inf5190_projet_src import db
-from base import Base
+from inf5190_projet_src.models.base import Base
 from sqlalchemy.orm import relationship
 
 
@@ -10,8 +10,9 @@ class Arrondissement(Base):
     cle = db.Column(db.String(50), unique=True,  nullable=False)
     children = relationship("Glissade")
 
-    def __init__(self, name):
+    def __init__(self, name, cle):
         self.name= name
+        self.cle = cle
         
     def __repr__(self):
         return "<Arrondissement(arrondissement_id='%d', name='%s', cle='%s')>" % (

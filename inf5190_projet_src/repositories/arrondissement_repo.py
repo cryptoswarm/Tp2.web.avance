@@ -6,7 +6,7 @@ from sqlalchemy import or_, and_, func, desc
 
 
 def save_arrondissement(content):
-    arrondissement = Arrondissement(content['name'], content['cle'])
+    arrondissement = Arrondissement(content['nom_arr'], content['cle'])
     db.session.add(arrondissement)
     db.session.commit()
     return arrondissement

@@ -1,5 +1,5 @@
 from inf5190_projet_src import db
-from base import Base
+from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 
 

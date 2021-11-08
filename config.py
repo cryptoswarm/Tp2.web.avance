@@ -13,9 +13,10 @@ DEBUG = True
 
 # Define the db
 # SQLite for the current app or postgresql
-SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
-        'postgres://', 'postgresql://') or \
-        'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+# SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
+#         'postgres://', 'postgresql://') or \
+#         'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 
 DATABASE_CONNECT_OPTIONS = {}
 

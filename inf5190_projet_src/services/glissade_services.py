@@ -1,6 +1,6 @@
 import xmltodict
 from datetime import datetime
-from inf5190_projet_src.repositories.arrondissement_repo import save_arrondissement
+from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.repositories.glissade_repo import *
 
 
@@ -18,15 +18,16 @@ def get_arrondissement_detail(arr_details):
 #     save_arrondissement(content)
 
 
-def save_items(glissade_as_xm, key_root, key_element, *kwargs):
+def save_items(glissade_as_xml, key_root, key_element, *kwargs):
     content = []
-    root = xmltodict.parse(glissade_as_xm.text)
+    root = xmltodict.parse(glissade_as_xml.text)
     for element in root[key_root][key_element]:
         print(kwargs[0][0])
         #content.append(])
         arrondissement = element[kwargs[0][1]]
         details = get_arrondissement_detail(arrondissement)
-        save_arrondissement(details)
+        if find_by_arr_name(details['nom_arr']) is None:
+            save_arrondissement(details)
         #content.append(arrondissement)
         content.append(details)
         #save_arrondissement()

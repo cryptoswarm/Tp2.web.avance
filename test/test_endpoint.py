@@ -35,7 +35,9 @@ def get_xml_data(url):
     }
     response = requests.request("GET", url, headers=headers, data=payload)
     if response.status_code == 200:
+        response.encoding = response.apparent_encoding
         return response
+        #print(response)
     return {}
 
 def get_xml_data_to_json(url):
@@ -71,8 +73,8 @@ def get_arrondissement_detail(arr_details):
 
 def get_items(key_root, key_element, *kwargs):
     content = []
-    glissade_as_xm = get_xml_data(url_glissade)
-    root = xmltodict.parse(glissade_as_xm.text)
+    glissade_as_xml = get_xml_data(url_glissade)
+    root = xmltodict.parse(glissade_as_xml.text)
     for element in root[key_root][key_element]:
         print(kwargs[0][0])
         #content.append(])

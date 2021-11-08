@@ -1,5 +1,5 @@
 from inf5190_projet_src import db
-from models.glissade import Glissade
+from inf5190_projet_src.models.glissade import Glissade
 from sqlalchemy import or_, and_, func, desc
 
 
