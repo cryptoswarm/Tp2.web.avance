@@ -1,9 +1,10 @@
 
-
+import os
+from posixpath import basename
 
 from flask import request
 
-
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 import requests
 import json
@@ -35,5 +36,7 @@ def get_xml_data(url):
     return {}
 
 #response = get_xml_data(url_glissade)
-response = get_xml_data(url_patinoire)
-print(response.text)
+#response = get_xml_data(url_patinoire)
+#print(response.text)
+
+print('BASEDIR: ',BASE_DIR)
