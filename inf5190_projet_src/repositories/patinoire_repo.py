@@ -4,11 +4,12 @@ from inf5190_projet_src.models.patinoire import Patinoire
 from sqlalchemy import or_, and_, func, desc
 
 
-def save_patinoire(content):
-    patinoire = Patinoire(content['nom_pat'], content['arron_id'])
-    print('patinoire :',patinoire.asDictionary())
+def save_patinoire(patinoire):
+    #patinoire = Patinoire(content['nom_pat'], content['arron_id'])
+    print('patinoire received :',patinoire.asDictionary())
     db.session.add(patinoire)
     db.session.commit()
+    print('patinoire created :',patinoire.asDictionary())
     return patinoire
 
 def find_patinoire_by_name(nom_pat):

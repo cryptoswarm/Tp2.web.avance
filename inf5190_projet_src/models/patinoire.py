@@ -14,7 +14,7 @@ class Patinoire(Base):
     children = relationship("PatinoirCondition")
 
     def __init__(self, nom_pat, arron_id):
-        self.name= nom_pat
+        self.nom_pat= nom_pat
         self.arron_id = arron_id
 
         

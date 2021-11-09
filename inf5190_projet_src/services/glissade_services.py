@@ -6,13 +6,15 @@ from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.repositories.glissade_repo import *
 from inf5190_projet_src.repositories.patinoire_repo import find_patinoire_by_name, save_patinoire
 from inf5190_projet_src.repositories.pat_condition_repo import *
+from inf5190_projet_src.models.patinoir_condition import PatinoirCondition
+from inf5190_projet_src.models.patinoire import Patinoire
 
 
-def read_with_tree(patinoire_as_xml):
-    #root_node = ET.parse(patinoire_as_xml).getroot()
-    root_node = ET.fromstring(patinoire_as_xml)
-    arrondissement = root_node.findall('arrondissement')
-    return arrondissement
+# def read_with_tree(patinoire_as_xml):
+#     #root_node = ET.parse(patinoire_as_xml).getroot()
+#     root_node = ET.fromstring(patinoire_as_xml)
+#     arrondissement = root_node.findall('arrondissement')
+#     return arrondissement
 
 def write_response_to_file(response, file_name):
     with open(file_name, 'w') as file:
@@ -121,15 +123,149 @@ def save_items(glissade_as_xml, key_root, key_element, *kwargs):
 
 def save_pat_and_conditions(patinoire_as_xml, key_root, key_element, *kwargs):
     #write_response_to_file(patinoire_as_xml.text, 'patinoire.xml')
-    
-    arr = read_with_tree(patinoire_as_xml.text)
-    #print('arr: ',arr)
-    for element in arr:
-        nom_pat_list = element.findall('patinoire/nom_pat')
-        for nom_pat in nom_pat_list:
-            print(nom_pat.text)
-        #print(nom_arr_list)
+    content = []
+    count = 0
+    arr_id = None
+    pat_id = None
+    pat_cond = PatinoirCondition(None, None, None, None, None, None)
+    pat_obj = Patinoire(None, None)
+    #pat_cond = {}
+    #arrondissements = read_with_tree(patinoire_as_xml.text)
+    root_node = ET.fromstring(patinoire_as_xml.text)
+    #content.append(root_node.tag)  # ---> will print [MAIN]
+    for child in root_node:
+        #content.append(child.tag) #<---- list of all arrondissements
+        #for arr_details in child: #<---- list of all arrondissement details
+            #content.append(arr_details.tag)
+            #for nom_arr_and_pat in arr_details:
+        nom_arr = child.find('nom_arr').text.strip()
+        content.append(nom_arr)
+        if find_by_arr_name(nom_arr) is None:
+            new_arr = save_arrondissement({'nom_arr': nom_arr, 'cle': None})
+            arr_id = new_arr.id
+            content.append(new_arr.asDictionary())
+        patinoire = child.find('patinoire')
+        # nom_pat = patinoire.findall('nom_pat').text
+        # content.append(nom_pat)
+        for children in patinoire:
+            if children.tag == 'nom_pat':
+                nom_pat = children.text.strip()
+                content.append('children.tag {} and text is {}'.format(children.tag, nom_pat))
+                if find_patinoire_by_name(nom_pat) is None:
+                    arr_id = find_by_arr_name(nom_arr).id
+                    pat_obj.arron_id = arr_id
+                    pat_obj.nom_pat = nom_pat
+                    print({'nom_pat': nom_pat, 'arron_id': arr_id})
+                    new_pat = save_patinoire(pat_obj)
+                    pat_id = new_pat.id
+                    pat_cond.patinoire_id = pat_id
+                    content.append(new_pat.asDictionary())
+            if children.tag == 'condition':
+                date = children.find('date_heure')
+                ouvert = children.find('ouvert')
+                deblaye = children.find('deblaye')
+                arrose = children.find('arrose')
+                resurface = children.find('resurface')
+                print('date found and its value is :',date.text.strip())
+                print('ouvert found and its value is :',ouvert.text.strip())
+                print('deblaye found and its value is :',deblaye.text.strip())
+                print('arrose found and its value is :',arrose.text.strip())
+                print('resurface found and its value is :',resurface.text.strip())
+
+                for condition_details in children:
+                    if condition_details.tag == 'date_heure':
+                        content.append(condition_details.tag)
+                        date_heure = datetime.strptime(condition_details.text.strip(), "%Y-%m-%d %H:%M:%S")
+                        content.append(date_heure)
+                        pat_cond.date_heure = date_heure
+                        #pat_cond['date_heure'] = date_heure
+                    elif condition_details.tag == 'ouvert':
+                        content.append(condition_details.tag)
+                        ouvert = True if condition_details.text.strip() == '1' else False
+                        content.append(ouvert)
+                        pat_cond.ouvert = ouvert
+                        #pat_cond['ouvert'] = ouvert
+                    elif condition_details.tag == 'deblaye':
+                        content.append(condition_details.tag)
+                        deblaye = True if condition_details.text.strip() == '1' else False
+                        content.append(deblaye)
+                        pat_cond.deblaye = deblaye
+                        #pat_cond['deblaye'] = deblaye
+                    elif condition_details.tag == 'arrose':
+                        content.append(condition_details.tag)
+                        arrose = True if condition_details.text.strip() == '1' else False
+                        content.append(arrose)
+                        pat_cond.arrose = arrose
+                        #pat_cond['arrose'] = arrose
+                    elif condition_details.tag == 'resurface':
+                        content.append(condition_details.tag)
+                        resurface = True if condition_details.text.strip() == '1' else False
+                        content.append(resurface)
+                        pat_cond.resurface = resurface
+                        #pat_cond['resurface'] = resurface
+                # pat_cond['patinoire_id'] = pat_id
+                # content.append(pat_cond)
+                #pat_cond = PatinoirCondition(date_heure, ouvert, deblaye, arrose, resurface, pat_id)
+                pat_id =  find_patinoire_by_name(nom_pat).id
+                pat_cond.patinoire_id = pat_id
+                saved_condition = save_pat_condition(pat_cond)
+                content.append(saved_condition.asDictionary())
+                count += 1
+                if count == 17:
+                    break
+                    
         break
+
+                    
+                    # date_heure = condition_details.find('date_heure').tag
+                    # content.append(date_heure)
+                    #content.append(condition_details.tag)
+                    # date_heure = datetime.strptime(condition_details.find('date_heure').text, "%Y-%m-%d %H:%M:%S")
+                    # content.append('condition_details heure tag {} and value {}'.format(condition_details.find('date_heure').tag, date_heure))
+                #     date_heure = datetime.strptime(condition_details.find('condition_details').text, "%Y-%m-%d %H:%M:%S")
+                #     ouvert = True if condition_details.find('ouvert').text == '1' else False
+                #     deblaye = True if condition_details.find('deblaye').text == '1' else False
+                #     arrose = True if condition_details.find('arrose').text == '1' else False
+                #     resurface = True if condition_details.find('resurface').text == '1' else False
+                #     pat_cond = save_pat_condition({'date_heure': date_heure, 'ouvert': ouvert,
+                #                         'deblaye': deblaye, 'arrose': arrose,
+                #                         'resurface': resurface, 'patinoire_id': pat_id})
+                #     content.append(pat_cond.asDictionary())
+
+        #arrondissement = arrondissements.findall('arrondissement')
+        #content.append(arrondissements.tag)  # ---> list of arrondissement
+        #for arrondissement in arrondissements:
+            #content.append('Nom arrondissement: {}'.format(arrondissements) )
+            #content.append(arrondissement.tag) #---> list of arr_name and patinoir list
+            #for nom_arr in arrondissement.iter('nom_arr'):
+            #for arr_and_pat in arrondissement:
+            #    content.append(arr_and_pat.tag)
+            #     content.append(nom_arr.text)
+            # for pat_details in arrondissement.iter('patinoire'):
+            #     # for nom_pat in pat_details.iter('nom_pat'):
+            #     #     content.append(nom_pat.text)
+            #     # if pat_details.tag == 'nom_pat':
+            #     #     content.append(pat_details.text)
+            #     content.append(pat_details.tag)
+            # for nom_and_patinoir in arrondissement:
+            #     # content.append(nom_and_patinoir.tag) #--> list patinoire_name followed by list of conditions
+            #     if nom_and_patinoir.tag == 'nom_pat':
+            #         content.append(nom_and_patinoir.text)
+    #break
+
+
+    #print('arr: ',arr)
+    # for arrondissement in arrondissements:
+    #     # # list of patinoire inside one arrondissement
+    #     # nom_pat_list = arrondissement.findall('patinoire/nom_pat')
+    #     # for nom_pat in nom_pat_list:
+    #     #     print(nom_pat.text)
+    #     #print(nom_arr_list)
+    #     patinoire_elements = arrondissement.findall('patinoire')
+    #     for nom_pat_and_conditions in patinoire_elements:
+    #         if nom_pat_and_conditions.tag == 'nom_pat':
+    #             content.append(nom_pat_and_conditions.text)
+    #     break
 
     # content = []
     # arr_id = None
@@ -162,6 +298,6 @@ def save_pat_and_conditions(patinoire_as_xml, key_root, key_element, *kwargs):
     #         save_pat_condition(condition)
             
     #     content.append(element)
-    return []
+    return content
 
 
