@@ -7,7 +7,7 @@ class Arrondissement(Base):
     __tablename__ = 'arrondissement'
     
     name = db.Column(db.String(255), unique=True,  nullable=False)
-    cle = db.Column(db.String(50), unique=True,  nullable=False)
+    cle = db.Column(db.String(50), unique=True,  nullable=True)
     children = relationship("Glissade")
 
     def __init__(self, name, cle):
