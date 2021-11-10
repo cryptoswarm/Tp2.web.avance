@@ -31,6 +31,6 @@ def start_glissade_scheduler():
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
 def start_pat_scheduler():
     patinoire_as_xml =  get_xml_data(url_patinoire)
-    result = save_pat_and_conditions(patinoire_as_xml, 'MAIN', 'arrondissement', ['nom_arr', 'patinoire'])
+    result = save_pat_and_conditions(patinoire_as_xml)
     return json.jsonify(result), 200
 

@@ -21,3 +21,6 @@ def save_pat_condition(pat_condition):
 # def find_patinoire_by_name(nom_pat):
 #     return Patinoire.query.filter_by(nom_pat=nom_pat) \
 #                         .first()
+
+    # db.session.add(patinoire)
+    # db.session.commit()

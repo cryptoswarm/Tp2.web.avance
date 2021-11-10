@@ -26,7 +26,7 @@ class PatinoirCondition(Base):
 
         
     def __repr__(self):
-        return "<Ptinoire(pat_condition_id='%d', date_heure='%s', ouvert='%s', deblaye='%s', arrose='%s', resurface='%s', patinoire_id='%d')>" % (
+        return "<PatinoirCondition(pat_condition_id='%d', date_heure='%s', ouvert='%s', deblaye='%s', arrose='%s', resurface='%s', patinoire_id='%d')>" % (
             self.id, self.date_heure, self.ouvert, self.deblaye, self.arrose, self.resurface, self.patinoire_id)
 
     def asDictionary(self):

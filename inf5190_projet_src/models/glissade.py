@@ -23,7 +23,7 @@ class Glissade(Base):
         self.arrondissement_id = arrondissement_id
         
     def __repr__(self):
-        return "<Arrondissement(glissade_id='%d', name='%s', date_maj='%s', ouvert='%s', deblaye='%s', condition='%s', arrondissement_id='%d' )>" % (
+        return "<Glissade(glissade_id='%d', name='%s', date_maj='%s', ouvert='%s', deblaye='%s', condition='%s', arrondissement_id='%d' )>" % (
             self.id, self.name, self.date_maj, self.ouvert, self.deblaye, self.condition, self.arrondissement_id)
 
     def asDictionary(self):
