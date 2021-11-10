@@ -59,3 +59,6 @@ OAUTH_CREDENTIALS = {
 
 # Logging to stdout, useful when running heroku logs
 LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+
+# Upload folder
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')

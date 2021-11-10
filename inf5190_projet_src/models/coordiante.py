@@ -9,10 +9,10 @@ class Coordiante(Base):
 
     __tablename__ = 'coordiantes'
     
-    point_x = db.Column(db.String(255), unique=True,  nullable=False)
-    point_y = db.Column(db.String(255), unique=True,  nullable=False)
-    longitude = db.Column(db.String(255), unique=True,  nullable=False)
-    latitude = db.Column(db.String(255), unique=True,  nullable=False)
+    point_x = db.Column(db.String(255),  nullable=False)
+    point_y = db.Column(db.String(255),  nullable=False)
+    longitude = db.Column(db.String(255),  nullable=False)
+    latitude = db.Column(db.String(255), nullable=False)
     insta_aquatique = relationship("InstallationAquatique")
 
     def __init__(self, point_x, point_y, longitude, latitude):

@@ -10,13 +10,13 @@ class InstallationAquatique(Base):
     __tablename__ = 'installation_aquatique'
     
     nom_installation = db.Column(db.String(255), unique=True,  nullable=False)
-    type_installation = db.Column(db.String(255), unique=True,  nullable=False)
-    adress = db.Column(db.String(255), unique=True,  nullable=False)
-    propriete_installation = db.Column(db.String(255), unique=True,  nullable=False)
-    gestion_inst = db.Column(db.String(255), unique=True,  nullable=False)
-    equipement_inst = db.Column(db.String(255), unique=True,  nullable=False)
+    type_installation = db.Column(db.String(255), nullable=False)
+    adress = db.Column(db.String(255), unique=True,  nullable=False, default='UNKNOWN')
+    propriete_installation = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+    gestion_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+    equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
-    position_id = db.Column(db.Integer, ForeignKey('coordiante.id'))
+    position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
     # children = relationship("Coordiante")
 
     def __init__(self, nom_installation, type_installation, adress,
