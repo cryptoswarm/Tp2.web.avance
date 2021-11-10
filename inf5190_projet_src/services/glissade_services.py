@@ -10,12 +10,6 @@ from inf5190_projet_src.models.patinoir_condition import PatinoirCondition
 from inf5190_projet_src.models.patinoire import Patinoire
 
 
-# def read_with_tree(patinoire_as_xml):
-#     #root_node = ET.parse(patinoire_as_xml).getroot()
-#     root_node = ET.fromstring(patinoire_as_xml)
-#     arrondissement = root_node.findall('arrondissement')
-#     return arrondissement
-
 def write_response_to_file(response, file_name):
     with open(file_name, 'w') as file:
         for line in response:
@@ -59,14 +53,11 @@ def get_patinoire_details(details):
     return pat_conditions
 
  
-def save_items(glissade_as_xml, key_root, key_element, *kwargs):
+def save_all_glissade(glissade_as_xml, key_root, key_element, *kwargs):
     content = []
     arr_id = None
     root = xmltodict.parse(glissade_as_xml.text)
     for element in root[key_root][key_element]:
-        # print(kwargs[0][0]) # nom
-        # print(kwargs[0][1]) # arrondissement
-        # #content.append(])
         arr_details = element[kwargs[0][1]]
         details = get_arrondissement_detail(arr_details)
         if find_by_arr_name(details['nom_arr']) is None:
@@ -79,46 +70,6 @@ def save_items(glissade_as_xml, key_root, key_element, *kwargs):
             save_glissade(glissade_details)
         content.append(details)
     return content
-
-#'MAIN', 'arrondissement', ['nom_arr', 'patinoire']
-# def save_pat_and_conditions(patinoire_as_xml, key_root, key_element, *kwargs):
-#     #write_response_to_file(patinoire_as_xml.text, 'patinoire.xml')
-    
-#     root = read_with_tree(patinoire_as_xml.text)
-#     print('root: ',root)
-    # content = []
-    # arr_id = None
-    # pat_id = None
-    # root = xmltodict.parse(patinoire_as_xml.text)
-    # for element in root[key_root][key_element]:
-    #     print('kwargs[0][0] :',kwargs[0][0]) #nom_arr
-    #     print('kwargs[0][1]] :',kwargs[0][1]) #patinoire
-    #     nom_arr = element[kwargs[0][0]] # nom_arr
-    #     print('nom_arr :',nom_arr)
-    #     patinoire_details = element[kwargs[0][1]] # patinoire -> name and list of condition
-    #     # with open('patinoire.text', 'w') as f:
-    #     #     f.write(str(patinoire_details))
-    #     # print('pat_details :', pat_details)
-    #     pat_conditions = get_patinoire_details(element)
-    #     if find_by_arr_name(nom_arr) is None:
-    #         arr_details = {'nom_arr':nom_arr, 'cle':None}
-    #         arrondissement = save_arrondissement(arr_details)
-    #         arr_id = arrondissement.id
-
-    #     nom_pat = pat_conditions['nom_pat']
-    #     #print('nom_pat = pat_conditions[nom_pat] :',nom_pat)
-    #     if find_patinoire_by_name(nom_pat) is None:
-    #         pat_details = {'nom_pat':nom_pat, 'arron_id':arr_id}
-    #         patinoire = save_patinoire(pat_details)
-    #         pat_id = patinoire.id
-
-    #     for condition in pat_conditions['conditions']:
-    #         condition['patinoire_id'] = pat_id
-    #         save_pat_condition(condition)
-            
-    #     content.append(element)
-    #     break
-    # return []
 
 
 def save_pat_and_conditions(patinoire_as_xml):
@@ -145,7 +96,6 @@ def save_pat_and_conditions(patinoire_as_xml):
                     arr_id = find_by_arr_name(nom_arr).id
                     pat_obj.arron_id = arr_id
                     pat_obj.nom_pat = nom_pat
-                    #print({'nom_pat': nom_pat, 'arron_id': arr_id})
                     new_pat = save_patinoire(pat_obj)
                     pat_id = new_pat.id
                     content.append(new_pat.asDictionary())
@@ -162,7 +112,6 @@ def save_pat_and_conditions(patinoire_as_xml):
                 pat_cond.arrose = arrose
                 pat_cond.resurface = resurface
                 pat_id =  find_patinoire_by_name(nom_pat).id
-                #print('Patnoire id as a foreing key in pat condition :', pat_id)
                 pat_cond.patinoire_id = pat_id
                 saved_condition = save_pat_condition(pat_cond)
                 content.append(saved_condition.asDictionary())

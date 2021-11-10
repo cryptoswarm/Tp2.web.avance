@@ -25,7 +25,7 @@ def get_xml_data(url):
 @mod_scheduler.route('/scheduler-glissade', methods=['GET'])
 def start_glissade_scheduler():
     glissade_as_xml = get_xml_data(url_glissade)
-    result = save_items(glissade_as_xml, 'glissades', 'glissade', ['nom', 'arrondissement', 'ouvert', 'deblaye', 'condition'])
+    result = save_all_glissade(glissade_as_xml, 'glissades', 'glissade', ['nom', 'arrondissement', 'ouvert', 'deblaye', 'condition'])
     return json.jsonify(result), 200
 
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
