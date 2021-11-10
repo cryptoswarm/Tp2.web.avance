@@ -12,10 +12,12 @@ def read_and_save_data_from_csv_file(file_name):
     holder = []
     path_to_file = UPLOAD_FOLDER+'/{}'.format(file_name)
     with open(path_to_file, 'r') as file:
-        reader = csv.reader(file, delimiter=',', escapechar='"""') #encoding='utf-8'
+        #reader = csv.reader(file, delimiter=',', doublequote=False) #encoding='utf-8' escapechar='"'
+        reader = csv.reader(file, quotechar='"')
         headers = next(reader, None) # skip the headers
         try:
             for row in reader:
+                print('row: ',row)
                 arr_id = None
                 position_id = None
                 arron_name = row[3]
@@ -38,6 +40,7 @@ def read_and_save_data_from_csv_file(file_name):
             #sys.exit()
 
 def construct_new_inst_aquatique(data):
+    print('length of row should be 11 :', len(data))
     inst_aqua = InstallationAquatique(None, None, None, None, None, None, None, None)
     inst_aqua.type_installation = data[1]
     inst_aqua.nom_installation = data[2]
@@ -61,3 +64,10 @@ def display_created_aqua_inst(holder, arron, created_pos, created_aqua_int):
     holder.append(created_aqua_int.asDictionary())
 
 
+
+
+# ['3114253',
+# 'Piscine intérieure', 
+# 'Complexe sportif Claude-Robillard',
+#  'Ahuntsic-Cartierville',
+#   '"1 000', ' Avenue Émile-Journeault Est"', 'Municipale', 'Municipale', '"294151', '2717"', '5045855457', 'Complexe aquatique', '-73.63639', '45.552526']

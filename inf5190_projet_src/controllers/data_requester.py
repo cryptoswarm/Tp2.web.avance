@@ -59,10 +59,12 @@ def uploadFiles():
     response = get_csv_file(url_aquatique)
     if response:
         # save the uploaded file
-        with open(UPLOAD_FOLDER+'/piscines.csv', 'w') as file:
-            writer = csv.writer(file)
+        with open(UPLOAD_FOLDER+'/piscines.csv', 'wt') as file:
+            writer = csv.writer(file, quotechar="'") #quoting=csv.QUOTE_NONNUMERIC
             for line in response.iter_lines():
                 writer.writerow(line.decode('utf-8').split(','))
+                #writer.writerow(line)
+                #writer.writerow(line.decode('utf-8'))
         return {}, 200
     return {}, 400
 

@@ -9,9 +9,9 @@ class InstallationAquatique(Base):
 
     __tablename__ = 'installation_aquatique'
     
-    nom_installation = db.Column(db.String(255), unique=True,  nullable=False)
+    nom_installation = db.Column(db.String(255),  nullable=False)
     type_installation = db.Column(db.String(255), nullable=False)
-    adress = db.Column(db.String(255), unique=True,  nullable=False, default='UNKNOWN')
+    adress = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     propriete_installation = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     gestion_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
@@ -52,6 +52,7 @@ class InstallationAquatique(Base):
         return {"installation_id": self.id,
                 "nom_installation":self.nom_installation,
                 "type_installation": self.type_installation,
+                "adress": self.adress,
                 "propriete_installation": self.propriete_installation,
                 "gestion_inst": self.gestion_inst,
                 "equipement_inst": self.equipement_inst,
