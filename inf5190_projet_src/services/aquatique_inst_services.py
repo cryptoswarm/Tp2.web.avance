@@ -40,7 +40,6 @@ def read_and_save_data_from_csv_file(file_name):
             #sys.exit()
 
 def construct_new_inst_aquatique(data):
-    print('length of row should be 11 :', len(data))
     inst_aqua = InstallationAquatique(None, None, None, None, None, None, None, None)
     inst_aqua.type_installation = data[1]
     inst_aqua.nom_installation = data[2]
@@ -62,12 +61,3 @@ def display_created_aqua_inst(holder, arron, created_pos, created_aqua_int):
     holder.append(arron.asDictionary())
     holder.append(created_pos.asDictionary())
     holder.append(created_aqua_int.asDictionary())
-
-
-
-
-# ['3114253',
-# 'Piscine intérieure', 
-# 'Complexe sportif Claude-Robillard',
-#  'Ahuntsic-Cartierville',
-#   '"1 000', ' Avenue Émile-Journeault Est"', 'Municipale', 'Municipale', '"294151', '2717"', '5045855457', 'Complexe aquatique', '-73.63639', '45.552526']

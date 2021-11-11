@@ -1,7 +1,11 @@
 # Define the app dir
 import os
 from dotenv import load_dotenv
-
+from apscheduler.schedulers.background import BackgroundScheduler
+from pytz import utc
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+import pytz
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASE_DIR, '.env'))
@@ -9,14 +13,13 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Enable the dev env
 DEBUG = True
 
-
-
 # Define the db
 # SQLite for the current app or postgresql
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
 #         'postgres://', 'postgresql://') or \
 #         'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
 
 DATABASE_CONNECT_OPTIONS = {}
 
@@ -62,3 +65,18 @@ LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
 
 # Upload folder
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
+
+
+
+
+JOB_STORES = {
+    'default': SQLAlchemyJobStore(JOB_STORE_URL)
+}
+EXECUTORS= {
+    'default': ThreadPoolExecutor(20),
+    'processpool': ProcessPoolExecutor(5)
+}
+JOB_DEFAULTS= {
+    'coalesce': False,
+    'max_instances': 3
+}
