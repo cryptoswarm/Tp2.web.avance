@@ -13,8 +13,14 @@ def save_arrondissement(content):
     return arrondissement
 
 def find_by_arr_name(arr_name):
-    return Arrondissement.query.filter_by(name=arr_name) \
+    print('cheking existence of arrondissement: {}'.format(arr_name))
+    response =  Arrondissement.query.filter_by(name=arr_name) \
                         .first()
+    if response is None:
+        print('Arrondissement {} does not exist'.format(arr_name))
+    else:
+        print('Arrondissement {} exist!'.format(arr_name))
+    return response
 
 # def get_id(nom_arr):
 #     find_by_arr_name(nom_arr).id

@@ -25,7 +25,7 @@ def setting_job():
 def run_job():
     with appplication.app_context():
         scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-        scheduler.add_job(func=setting_job, trigger='interval', minutes=15, timezone=pytz.utc)  #timezone=pytz.utc.dst
+        scheduler.add_job(func=setting_job, trigger='interval', minutes=5, timezone=pytz.utc)  #timezone=pytz.utc.dst
         scheduler.start()
     #return scheduler
 

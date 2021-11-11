@@ -47,8 +47,8 @@ def create_app(test_config=None):
     # app.config['CORS_HEADERS'] = "Content-Type"
     # app.config['CORS_RESOURCES'] = {r'/*': {"origins":"*"}}
     # CORS(app)
-    logging.basicConfig()
-    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+    #logging.basicConfig()
+    #logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
     with app.app_context():
     # Configurations
