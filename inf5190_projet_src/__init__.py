@@ -82,10 +82,12 @@ def create_app(test_config=None):
         # using its blueprint handler var (mod_article)
         from inf5190_projet_src.mod_app.controllers import mod_home as home_module
         from inf5190_projet_src.controllers.data_requester import mod_scheduler as scheduler_mod
+        from inf5190_projet_src.controllers.arr_controllers import mod_arron as arrondissement_mod
 
         # Register blueprints
         app.register_blueprint(home_module)
         app.register_blueprint(scheduler_mod)
+        app.register_blueprint(arrondissement_mod)
 
 
         # Build the database: will create the db file using SQLAlchemy
