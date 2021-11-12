@@ -16,3 +16,6 @@ def save_glissade(glissade):
 def find_glissade_by_name(glissade_name):
     return Glissade.query.filter_by(name=glissade_name) \
                         .first()
+
+def find_all_glissades_by_arr_id(arr_id):
+    return Glissade.query.filter_by(arrondissement_id=arr_id).all()

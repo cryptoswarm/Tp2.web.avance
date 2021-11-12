@@ -7,6 +7,7 @@ from inf5190_projet_src.models.piscines_aquatique import InstallationAquatique
 from inf5190_projet_src.models.coordiante import Coordiante
 from inf5190_projet_src.repositories.coordiantes_repo import *
 from inf5190_projet_src.repositories.aquatique_repo import *
+from inf5190_projet_src.services.arron_service import *
 
 def create_aqua_installations(file_name):
     holder = []
@@ -60,3 +61,16 @@ def display_created_aqua_inst(holder, arron, created_pos, created_aqua_int):
     holder.append(arron.asDictionary())
     holder.append(created_pos.asDictionary())
     holder.append(created_aqua_int.asDictionary())
+
+
+def get_all_aqua_installation(arr_name):
+    arrondissement, status = get_arr_by_name(arr_name)
+    if status == 404:
+        return {}, 404
+    elif status == 200:
+        arr_id =  arrondissement.id
+        installations = find_all_aqua_installation_by_arr_id(arr_id)
+        if installations is None:
+            return {}, 404
+        return installations, 200
+    

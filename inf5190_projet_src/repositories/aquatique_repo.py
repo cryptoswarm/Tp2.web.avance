@@ -12,3 +12,7 @@ def save_installation_aquatique(aquatique_insta):
     print(print('Insta aquatique created :',aquatique_insta.asDictionary()))
     return aquatique_insta
 
+def find_all_aqua_installation_by_arr_id(arr_id):
+    return InstallationAquatique.query.filter_by(arron_id=arr_id).all()
+
+
