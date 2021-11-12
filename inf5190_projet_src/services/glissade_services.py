@@ -53,72 +53,96 @@ def get_patinoire_details(details):
     return pat_conditions
 
  
-def save_all_glissade(glissade_as_xml, key_root, key_element, *kwargs):
-    content = []
-    arr_id = None
-    root = xmltodict.parse(glissade_as_xml.text)
-    for element in root[key_root][key_element]:
-        arr_details = element[kwargs[0][1]]
-        details = get_arrondissement_detail(arr_details)
-        if find_by_arr_name(details['nom_arr']) is None:
-            arrondissement = save_arrondissement(details)
-            arr_id = arrondissement.id
-        glissade_details = get_glissade_details(element, kwargs)
-        glissade_details['date_maj'] = details['date_maj']
-        glissade_details['arrondissement_id'] = arr_id
-        if find_glissade_by_name(glissade_details['name']) is None:
-            save_glissade(glissade_details)
-        content.append(details)
-    return content
+# def save_all_glissade(glissade_as_xml, key_root, key_element, *kwargs):
+#     content = []
+#     arr_id = None
+#     root = xmltodict.parse(glissade_as_xml.text)
+#     for element in root[key_root][key_element]:
+#         arr_details = element[kwargs[0][1]]
+#         details = get_arrondissement_detail(arr_details)
+#         if find_by_arr_name(details['nom_arr']) is None:
+#             arrondissement = save_arrondissement(details)
+#             arr_id = arrondissement.id
+#         glissade_details = get_glissade_details(element, kwargs)
+#         glissade_details['date_maj'] = details['date_maj']
+#         glissade_details['arrondissement_id'] = arr_id
+#         if find_glissade_by_name(glissade_details['name']) is None:
+#             save_glissade(glissade_details)
+#         content.append(details)
+#     return content
 
 
-def save_pat_and_conditions(patinoire_as_xml):
+def save_pat_and_conditions(patinoire_xml):
     content = []
-    count = 0
-    arr_id = None
-    pat_id = None
-    
-    root_node = ET.fromstring(patinoire_as_xml.text) # root_node.tag ---> will print [MAIN]
-    for child in root_node: #child.tag #<---- list of all arrondissements
-        nom_arr = child.find('nom_arr').text.strip()
-        content.append(nom_arr)
-        if find_by_arr_name(nom_arr) is None:
-            new_arr = save_arrondissement({'nom_arr': nom_arr, 'cle': None})
-            arr_id = new_arr.id
-            content.append(new_arr.asDictionary())
-        patinoire = child.find('patinoire')
-        for children in patinoire:
-            if children.tag == 'nom_pat':
-                pat_obj = Patinoire(None, None)
-                nom_pat = children.text.strip()
-                content.append('children.tag {} and text is {}'.format(children.tag, nom_pat))
-                if find_patinoire_by_name(nom_pat) is None:
-                    arr_id = find_by_arr_name(nom_arr).id
-                    pat_obj.arron_id = arr_id
-                    pat_obj.nom_pat = nom_pat
-                    new_pat = save_patinoire(pat_obj)
-                    pat_id = new_pat.id
-                    content.append(new_pat.asDictionary())
-            if children.tag == 'condition':
-                pat_cond = PatinoirCondition(None, None, None, None, None, None)
-                date_heure = datetime.strptime(children.find('date_heure').text.strip(), "%Y-%m-%d %H:%M:%S")
-                ouvert = True if children.find('ouvert').text.strip() == '1' else False 
-                deblaye = True if children.find('deblaye').text.strip() == '1' else False #children.find('deblaye')
-                arrose = True if children.find('arrose').text.strip() == '1' else False #children.find('arrose')
-                resurface = True if children.find('resurface').text.strip() == '1' else False #children.find('resurface')
-                pat_cond.date_heure = date_heure
-                pat_cond.ouvert = ouvert
-                pat_cond.deblaye = deblaye
-                pat_cond.arrose = arrose
-                pat_cond.resurface = resurface
-                pat_id =  find_patinoire_by_name(nom_pat).id
-                pat_cond.patinoire_id = pat_id
-                saved_condition = save_pat_condition(pat_cond)
-                content.append(saved_condition.asDictionary())
-        #     count += 1
-        #     if count == 25:
-        #         break
-        # break
+    with open(patinoire_xml, 'r') as file:
+        tree = ET.parse(file)
+        root = tree.getroot()
+        for child in root: #child.tag #<---- list of all arrondissements
+            nom_arr = child.find('nom_arr').text.strip()
+            arrondissement= find_by_arr_name(nom_arr)
+            if arrondissement is None:
+                to_be_created = Arrondissement(nom_arr, None)
+                arrondissement = save_arrondissement(to_be_created)
+                content.append(arrondissement.asDictionary())
+            patinoire_elem = child.find('patinoire')
+            for children in patinoire_elem:
+                if children.tag == 'nom_pat':
+                    nom_pat = children.text.strip()
+                    patinoire = find_patinoire_by_name(nom_pat)
+                    if patinoire is None:
+                        patinoire = Patinoire(nom_pat, arrondissement.id)
+                        new_pat = save_patinoire(patinoire)
+                        content.append(new_pat.asDictionary())
+                if children.tag == 'condition':
+                    pat_cond = get_patinoire_condition(children)
+                    pat_id =  find_patinoire_by_name(nom_pat).id
+                    pat_cond.patinoire_id = pat_id
+                    saved_condition = save_pat_condition(pat_cond)
+                    content.append(saved_condition.asDictionary())
+        return content
+
+
+def save_all_glissade(glissade_xml):
+    content = []
+    with open(glissade_xml, 'r') as file:
+        tree = ET.parse(file)
+        root = tree.getroot()
+        for glissade_elm in root:
+            arrondissement = get_arrondissement(glissade_elm)
+            checked_arr = find_by_arr_name(arrondissement.name)
+            if checked_arr is None:
+                checked_arr = save_arrondissement(arrondissement)
+            content.append(checked_arr.asDictionary())
+            glissade = get_glissade(glissade_elm)
+            glissade.arrondissement_id = checked_arr.id
+            checked_glissade = find_glissade_by_name(glissade.name)
+            if checked_glissade is None:
+                glissade = save_glissade(glissade)
+            content.append(glissade.asDictionary())
     return content
+
+def get_arrondissement(glissade_elem):
+    arr_elem = glissade_elem.find('arrondissement')
+    name = arr_elem.find('nom_arr').text
+    cle = arr_elem.find('cle').text
+    return Arrondissement(name, cle)
+
+def get_glissade(glissade_elem):
+    date_text = glissade_elem.find('arrondissement').find('date_maj').text
+    date_maj = datetime.strptime(date_text, "%Y-%m-%d %H:%M:%S")
+    name = glissade_elem.find('nom').text
+    ouvert = False if glissade_elem.find('ouvert').text == '0' else True 
+    deblaye = False if glissade_elem.find('deblaye').text == '0' else True 
+    condition = glissade_elem.find('condition').text
+    return Glissade(name, date_maj, ouvert, deblaye, condition, None)
+
+def get_patinoire_condition(pat_content):
+    date_heure = datetime.strptime(pat_content.find('date_heure').text.strip(), "%Y-%m-%d %H:%M:%S")
+    ouvert = True if pat_content.find('ouvert').text.strip() == '1' else False 
+    deblaye = True if pat_content.find('deblaye').text.strip() == '1' else False #children.find('deblaye')
+    arrose = True if pat_content.find('arrose').text.strip() == '1' else False #children.find('arrose')
+    resurface = True if pat_content.find('resurface').text.strip() == '1' else False #children.find('resurface')
+    return PatinoirCondition(date_heure, ouvert, deblaye, arrose, resurface, None)
+
 
 

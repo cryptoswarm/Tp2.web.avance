@@ -6,12 +6,6 @@ from sqlalchemy import or_, and_, func, desc
 
 
 def save_pat_condition(pat_condition):
-    # pat_condition = PatinoirCondition(content['date_heure'],
-    #                                   content['ouvert'],
-    #                                   content['deblaye'],
-    #                                   content['arrose'],
-    #                                   content['resurface'],
-    #                                   content['patinoire_id'])
     print('pat_condition received :',pat_condition.asDictionary())
     db.session.add(pat_condition)
     db.session.commit()

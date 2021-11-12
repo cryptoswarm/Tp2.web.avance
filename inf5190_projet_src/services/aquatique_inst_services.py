@@ -8,11 +8,10 @@ from inf5190_projet_src.models.coordiante import Coordiante
 from inf5190_projet_src.repositories.coordiantes_repo import *
 from inf5190_projet_src.repositories.aquatique_repo import *
 
-def read_and_save_data_from_csv_file(file_name):
+def create_aqua_installations(file_name):
     holder = []
     path_to_file = UPLOAD_FOLDER+'/{}'.format(file_name)
     with open(path_to_file, 'r') as file:
-        #reader = csv.reader(file, delimiter=',', doublequote=False) #encoding='utf-8' escapechar='"'
         reader = csv.reader(file, quotechar='"')
         headers = next(reader, None) # skip the headers
         try:

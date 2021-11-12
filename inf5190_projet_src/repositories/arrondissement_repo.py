@@ -5,8 +5,8 @@ from config import ARTICLES_PER_PAGE
 from sqlalchemy import or_, and_, func, desc
 
 
-def save_arrondissement(content):
-    arrondissement = Arrondissement(content['nom_arr'], content['cle'])
+def save_arrondissement(arrondissement):
+    #arrondissement = Arrondissement(content['nom_arr'], content['cle'])
     db.session.add(arrondissement)
     db.session.commit()
     print('arrondissement saved : ',arrondissement.asDictionary())

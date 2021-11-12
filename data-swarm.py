@@ -1,6 +1,6 @@
 import pytz
 from inf5190_projet_src import create_app
-from inf5190_projet_src.controllers.data_requester import save_uploaded_data
+from inf5190_projet_src.controllers.data_requester import start_glissade_scheduler
 from config import JOB_STORES
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
@@ -20,7 +20,7 @@ appplication = create_app()
 
 def setting_job():
     with appplication.app_context():
-        save_uploaded_data()
+        start_glissade_scheduler()
 
 def run_job():
     with appplication.app_context():

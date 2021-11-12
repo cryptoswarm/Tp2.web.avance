@@ -1,4 +1,5 @@
 import csv
+import logging
 import requests
 import xml.etree.ElementTree as ET
 import pytz
@@ -13,6 +14,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+from inf5190_projet_src.writer.write_file import *
 
 
 
@@ -35,43 +37,41 @@ def get_from_external_api(url, mime_type):
     if response.status_code == 200:
         response.encoding = response.apparent_encoding
         return response
-    return {}
+    return response
 
 
 @mod_scheduler.route('/scheduler-glissade', methods=['GET'])
 def start_glissade_scheduler():
-    glissade_as_xml = get_from_external_api(url_glissade, 'application/xml')
-    result = save_all_glissade(glissade_as_xml, 'glissades', 'glissade', ['nom', 'arrondissement', 'ouvert', 'deblaye', 'condition'])
-    return json.jsonify(result), 200
+    response = get_from_external_api(url_glissade, 'application/xml')
+    if response.status_code == 200:
+        create_xml_file(response, 'glissade.xml')
+        root = save_all_glissade(UPLOAD_FOLDER+'/glissade.xml')
+        return json.jsonify(root), 200
+    return {}, 400
 
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
 def start_pat_scheduler():
-    patinoire_as_xml =  get_from_external_api(url_patinoire, 'application/xml')
-    result = save_pat_and_conditions(patinoire_as_xml)
-    return json.jsonify(result), 200
-
-
-@mod_scheduler.route("/upload-files", methods=['GET'])
-def uploadFiles():
-    # get the uploaded file
-    response = get_from_external_api(url_aquatique, 'text/csv')
-    if response:
-        # save the uploaded file
-        with open(UPLOAD_FOLDER+'/piscines.csv', 'wt') as file:
-            writer = csv.writer(file, quotechar="'") #quoting=csv.QUOTE_NONNUMERIC
-            for line in response.iter_lines():
-                writer.writerow(line.decode('utf-8').split(','))
-        return {}, 200
+    response =  get_from_external_api(url_patinoire, 'application/xml')
+    if response.status_code == 200:
+        create_xml_file(response, 'patinoire.xml')
+        result = save_pat_and_conditions(UPLOAD_FOLDER+'/patinoire.xml')
+        return jsonify(result), 201
     return {}, 400
 
 
-@mod_scheduler.route("/save-uploaded-data", methods=['GET'])
-def save_uploaded_data():
-    try:
-        response = read_and_save_data_from_csv_file('piscines.csv')
-        return jsonify(response), 200
-    except Exception as e:
-        return jsonify(e.args), 400
+@mod_scheduler.route("/scheduler-aqua", methods=['GET'])
+def start_aqua_scheduler():
+    response = get_from_external_api(url_aquatique, 'text/csv')
+    if response.status_code == 200:
+        create_csv_file(response, 'piscines.csv')
+        try:
+            create_aqua_installations('piscines.csv')
+            return {}, 200
+        except Exception as e:
+            return jsonify(e.args), 500
+    return {}, 400
+
+        
 
 # scheduler = BackgroundScheduler()
 
@@ -86,18 +86,6 @@ def save_uploaded_data():
 #         scheduler.start()
 
 
-def write_xml_data(data, file_name):
-    with open(UPLOAD_FOLDER+'/'+file_name, 'w') as file:
-        # writer = xml.
-        tree = ET.parse(data.text)
-        tree.write(file, encoding='utf-8')
-
-    
-@mod_scheduler.route('upload-xml')
-def upload_xml():
-    response = get_from_external_api(url_patinoire, 'application/xml')
-    if response.status_code == 200:
-        write_xml_data(response, 'patinoire.xml')
 
 
 
