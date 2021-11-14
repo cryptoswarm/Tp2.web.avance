@@ -44,13 +44,11 @@ class InstallationAquatique(Base):
                                        adress='%s', \
                                        propriete_installation='%s', \
                                        gestion_inst='%s', \
-                                       equipement_inst='%s', \
-                                       arron_id='%d', \
-                                       position_id='%d',)>" % (
+                                       equipement_inst='%s')>" % (
             self.id, self.nom_installation, self.type_installation,
             self.adress, self.propriete_installation,
             self.propriete_installation, self.gestion_inst,
-            self.equipement_inst, self.arron_id, self.position_id )
+            self.equipement_inst)
 
     def asDictionary(self):
         return {"installation_id": self.id,
@@ -59,9 +57,7 @@ class InstallationAquatique(Base):
                 "adress": self.adress,
                 "propriete_installation": self.propriete_installation,
                 "gestion_inst": self.gestion_inst,
-                "equipement_inst": self.equipement_inst,
-                "arron_id": self.arron_id,
-                "position_id": self.position_id
+                "equipement_inst": self.equipement_inst
                 }
     
 

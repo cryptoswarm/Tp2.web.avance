@@ -17,3 +17,8 @@ def construct_aqua_position(data):
 def add_installation_pos(position):
     coordinate = create_inst_aquatique_position(position)
     return coordinate
+
+def get_position_by_id(position_id):
+    position = find_by_id(position_id)
+    return None if position is None else position
+

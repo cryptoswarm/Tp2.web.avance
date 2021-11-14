@@ -17,6 +17,6 @@ def get_installation_arr_name():
         installations, status = get_all_aqua_installation(arr_name)
         if status == 404:
             return {}, 404
-        installations = [installation.asDictionary() for installation in installations]
+        #installations = [installation.asDictionary() for installation in installations]
         return jsonify(installations), 200
     return {}, 400
