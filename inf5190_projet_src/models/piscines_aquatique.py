@@ -1,8 +1,10 @@
+from enum import unique
 from re import A
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
+import hashlib
 
 
 class InstallationAquatique(Base):
@@ -15,6 +17,7 @@ class InstallationAquatique(Base):
     propriete_installation = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     gestion_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+    aqua_hash = db.Column(db.String(255), unique=True, nullable=False)
     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
     position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
     # children = relationship("Coordiante")
@@ -28,6 +31,7 @@ class InstallationAquatique(Base):
         self.propriete_installation = propriete_installation
         self.gestion_inst = gestion_inst
         self.equipement_inst = equipement_inst
+        self.aqua_hash = self.calculate_hash()
         self.arron_id = arron_id
         self.position_id = position_id
 
@@ -59,3 +63,10 @@ class InstallationAquatique(Base):
                 "arron_id": self.arron_id,
                 "position_id": self.position_id
                 }
+    
+
+    def calculate_hash(self):
+        aqua_hash = hashlib.md5(str(self.nom_installation + self.type_installation +
+                            self.adress + self.propriete_installation + 
+                            self.gestion_inst+ self.equipement_inst).encode('utf-8')).hexdigest()
+        return aqua_hash

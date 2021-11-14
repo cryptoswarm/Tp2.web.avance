@@ -1,66 +1,53 @@
 import csv, sys
+import re
 from re import escape
 from operator import pos
 from config import UPLOAD_FOLDER
 from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.models.piscines_aquatique import InstallationAquatique
-from inf5190_projet_src.models.coordiante import Coordiante
-from inf5190_projet_src.repositories.coordiantes_repo import *
 from inf5190_projet_src.repositories.aquatique_repo import *
 from inf5190_projet_src.services.arron_service import *
+from inf5190_projet_src.services.coordinate_service import *
 
 def create_aqua_installations(file_name):
-    holder = []
     path_to_file = UPLOAD_FOLDER+'/{}'.format(file_name)
     with open(path_to_file, 'r') as file:
         reader = csv.reader(file, quotechar='"')
         headers = next(reader, None) # skip the headers
         try:
             for row in reader:
-                print('row: ',row)
-                arr_id = None
-                position_id = None
                 arron_name = row[3]
                 arrondissement = find_by_arr_name(arron_name)
                 if  arrondissement is None:
-                    arrondissement = save_arrondissement({'nom_arr': arron_name, 'cle': None})
-                    arr_id = arrondissement.id
-                arr_id = arrondissement.id
+                    arrondissement = Arrondissement(arron_name, None)
+                    arrondissement = save_arrondissement(arrondissement)
                 position = construct_aqua_position(row)
-                created_pos = save_inst_aquatique_position(position)
-                position_id = created_pos.id
-                aqua_inst = construct_new_inst_aquatique(row)
-                aqua_inst.arron_id = arr_id
-                aqua_inst.position_id = position_id
-                created_aqua_int = save_installation_aquatique(aqua_inst)
-                display_created_aqua_inst(holder, arrondissement, created_pos, created_aqua_int)
-            return holder
+                existed_pos =  get_position_by_hash(position.position_hash)
+                if existed_pos is None:
+                    created_pos = add_installation_pos(position)
+                    existed_pos = created_pos
+                new_aqua = construct_new_inst_aquatique(row)
+                existed_aqua = get_aqua_inst_by_hash(new_aqua.aqua_hash)
+                if existed_aqua is None:
+                    new_aqua.arron_id = arrondissement.id
+                    new_aqua.position_id = existed_pos.id
+                    created_aqua_int = save_installation_aquatique(new_aqua)
         except csv.Error as e:
             return('file {}, line {}: {}'.format(file_name, reader.line_num, e))
-            #sys.exit()
 
 def construct_new_inst_aquatique(data):
-    inst_aqua = InstallationAquatique(None, None, None, None, None, None, None, None)
-    inst_aqua.type_installation = data[1]
-    inst_aqua.nom_installation = data[2]
-    inst_aqua.adress = data[4]
-    inst_aqua.propriete_installation =  data[5]
-    inst_aqua.gestion_inst = data[6]
-    inst_aqua.equipement_inst = data[9]
+    nom_inst = data[2]
+    type_inst = data[1]
+    adress = data[4]
+    propriete_inst =  data[5]
+    gestion_inst = data[6]
+    equipement_inst = data[9]
+    inst_aqua = InstallationAquatique(nom_inst, type_inst, 
+                                      adress, propriete_inst, gestion_inst,
+                                      equipement_inst, None, None)
     return inst_aqua
 
-def construct_aqua_position(data):
-    position = Coordiante(None, None, None, None)
-    position.point_x = data[7]
-    position.point_y = data[8]
-    position.longitude = data[10]
-    position.latitude = data[11]
-    return position
 
-def display_created_aqua_inst(holder, arron, created_pos, created_aqua_int):
-    holder.append(arron.asDictionary())
-    holder.append(created_pos.asDictionary())
-    holder.append(created_aqua_int.asDictionary())
 
 
 def get_all_aqua_installation(arr_name):
@@ -74,3 +61,8 @@ def get_all_aqua_installation(arr_name):
             return {}, 404
         return installations, 200
     
+def get_aqua_inst_by_hash(hash):
+    installation = find_aqua_insta_by_hash(hash)
+    if installation is None:
+        return None
+    return installation

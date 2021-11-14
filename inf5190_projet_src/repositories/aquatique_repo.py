@@ -16,3 +16,9 @@ def find_all_aqua_installation_by_arr_id(arr_id):
     return InstallationAquatique.query.filter_by(arron_id=arr_id).all()
 
 
+def find_aqua_insta_by_hash(hash):
+    return InstallationAquatique.query.filter_by(aqua_hash=hash).first()
+
+
+
+

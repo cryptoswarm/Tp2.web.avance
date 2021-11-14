@@ -1,8 +1,13 @@
+from enum import unique
+import hashlib
+import uuid
 from re import A
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
+
+
 
 
 class Coordiante(Base):
@@ -13,6 +18,7 @@ class Coordiante(Base):
     point_y = db.Column(db.String(255),  nullable=False)
     longitude = db.Column(db.String(255),  nullable=False)
     latitude = db.Column(db.String(255), nullable=False)
+    position_hash = db.Column(db.String(255), unique=True, nullable=False)
     insta_aquatique = relationship("InstallationAquatique")
 
     def __init__(self, point_x, point_y, longitude, latitude):
@@ -20,6 +26,7 @@ class Coordiante(Base):
         self.point_y = point_y
         self.longitude = longitude
         self.latitude = latitude
+        self.position_hash = self.calculate_hash()
                  
     def __repr__(self):
         return "<Coordiante(coordiante_id='%d', point_x='%s', point_y='%s', \
@@ -33,3 +40,6 @@ class Coordiante(Base):
                 "longitude": self.longitude,
                 "latitude": self.latitude
                 } 
+    def calculate_hash(self):
+        hash = hashlib.md5(str(self.point_x + self.point_y + self.longitude + self.latitude).encode('utf-8')).hexdigest()
+        return hash
