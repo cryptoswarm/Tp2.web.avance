@@ -1,8 +1,9 @@
-body{
+html, body{
   background:#f0ecec;
   margin-top:0px;
   padding-top: 0em;
-  padding-bottom: 0em;
+  /* padding-bottom: 0em; */
+  margin-bottom: 60px;
 }
 
 .header__logo {
@@ -424,8 +425,8 @@ height: 150px;
   padding:60px;
 }
 .footer_area .row {
-  margin-left: -25px;
-  margin-right: -25px;
+  margin-left: -75px;
+  margin-right: -75px;
 }
 .footer_area .row .col,
 .footer_area .row .col-1,

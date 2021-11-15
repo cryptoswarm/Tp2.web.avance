@@ -2,8 +2,8 @@
   <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-dark" id="navigation">
     <div class="container">
       <a class="navbar-brand" routerLink="/">
-        <img class="img header__logo" src="/assets/images/logo.svg"
-          alt="data app logo"> <!--src="{{url_for('static', filename='images/logo.svg')}}"-->
+        <img class="img header__logo" src="/assets/images/logo.svg" alt="data app logo">
+        <!--src="{{url_for('static', filename='images/logo.svg')}}"-->
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@
         <ul class="navbar-nav mr-auto dropdown">
           <li class="nav-item">
             <!-- <a class="nav-link" (click)="openAddArticleComp()">Ajouter article</a> -->
-            <a class="nav-link" >Ajouter article</a>
+            <a class="nav-link">Ajouter article</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -22,38 +22,19 @@
               Dropdown
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item"  routerLink="action">Action</a>
-              <a class="dropdown-item"  routerLink="another-action">Another action</a>
+              <a class="dropdown-item" routerLink="action">Action</a>
+              <a class="dropdown-item" routerLink="another-action">Another action</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item"  routerLink="something-else-here">Something else here</a>
+              <a class="dropdown-item" routerLink="something-else-here">Something else here</a>
             </div>
           </li>
         </ul>
         <!-- search special-->
-            <div class="card search-form">
-              <div class="card-body p-0">
-                <!-- <form [formGroup]="searchForm" (ngSubmit)="searchArticles()"> -->
-                <form >
-                  <div class="row">
-                    <div class="col-12 egbaGe">
-                      <div class="row no-gutters">
-                        <div class="col-lg-10 col-md-8 col-sm-12 p-0">
-                          <input type="text" placeholder="Search..." class="form-control" id="search" formControlName="search" required="required">
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-sm-12 p-0"> <button type="submit" class="btn btn-base"> <svg
-                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="feather feather-search">
-                              <circle cx="11" cy="11" r="8"></circle>
-                              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg> </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-             </div>
+        <form [formGroup]="searchForm" (ngSubmit)="getAllInstallations()" class="d-flex">
+          <input class="form-control" type="search" placeholder="Arrondissement name..." aria-label="Search"
+            formControlName="search" required="required">
+          <button class="btn btn-outline-success" type="submit" style="margin-left:5px">Search</button>
+        </form>
         <!-- search ends here -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown user-dropdown align-items-center">
@@ -72,7 +53,7 @@
     </div>
   </nav>
 </header>
-<footer class="footer_area section_padding_130_0">
+<footer class="footer footer_area">
   <div class="container">
     <div class="row">
       <!-- Single Widget-->
@@ -81,7 +62,8 @@
           <!-- Footer Logo-->
           <div class="footer-logo mb-3"></div>
           <div class="copywrite-text mb-5">
-          <p class="mb-0">Fait par <a class="ml-1" href="https://github.com/cryptoswarm/INF5190-Web-Avance-TP1/tree/vagrant-project-v1">CryptoSwarm</a></p>
+            <p class="mb-0">Fait par <a class="ml-1"
+                href="https://github.com/cryptoswarm/INF5190-Web-Avance-TP1/tree/vagrant-project-v1">CryptoSwarm</a></p>
           </div>
           <!-- Copywrite Text-->
           <div class="copywrite-text mb-5">
@@ -142,4 +124,3 @@
     </div>
   </div>
 </footer>
-

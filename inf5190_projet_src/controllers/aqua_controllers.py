@@ -19,5 +19,9 @@ def get_installation_arr_name():
         if installations is None:
             return {}, 404
         #installations = [installation.asDictionary() for installation in installations]
+        # response = make_response(json.dumps(installations, sort_keys=False))
+        # response.mimetype = 'application/json'
+        # response.status_code = 200
+        # return response
         return jsonify(installations), 200
     return {}, 400
