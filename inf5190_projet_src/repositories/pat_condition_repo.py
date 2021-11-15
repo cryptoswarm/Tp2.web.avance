@@ -18,3 +18,6 @@ def save_pat_condition(pat_condition):
 
     # db.session.add(patinoire)
     # db.session.commit()
+
+def find_pat_conditions_by_pat_id(pat_id):
+    return PatinoirCondition.query.filter_by(patinoire_id=pat_id).all()

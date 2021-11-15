@@ -50,24 +50,17 @@ def construct_new_inst_aquatique(data):
 
 
 
-def get_all_aqua_installation(arr_name):
-    all_inst = []
-    arrondissement, status = get_arr_by_name(arr_name)
-    if status == 404:
-        return {}, 404
-    elif status == 200:
-        arr_id =  arrondissement.id
-        installations = find_all_aqua_installation_by_arr_id(arr_id)
-        for installation in installations:
-            position = get_position_by_id(installation.position_id)
-            inst = installation.asDictionary()
-            if position is not None:
-                inst['position'] = position.asDictionary()
-            all_inst.append(inst)
-        if installations is None:
+def get_all_aqua_installation_by_arr_id(arr_id):
+    all_aqua_inst = []
+    installations = find_all_aqua_installation_by_arr_id(arr_id)
+    if installations is None:
             return {}, 404
-        #return installations, 200
-        return all_inst, 200
+    for installation in installations:
+        position = get_position_by_id(installation.position_id)
+        inst = installation.asDictionary()
+        inst['position'] = position.asDictionary()
+        all_aqua_inst.append(inst)
+    return all_aqua_inst, 200
     
 def get_aqua_inst_by_hash(hash):
     installation = find_aqua_insta_by_hash(hash)

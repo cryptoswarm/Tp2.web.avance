@@ -34,8 +34,7 @@ class Coordiante(Base):
             self.id, self.point_x, self.point_y, self.longitude, self.latitude)
 
     def asDictionary(self):
-        return {"coordiante_id": self.id,
-                "point_x":self.point_x,
+        return {"point_x":self.point_x,
                 "point_y": self.point_y,
                 "longitude": self.longitude,
                 "latitude": self.latitude

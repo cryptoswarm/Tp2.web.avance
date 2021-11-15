@@ -18,3 +18,7 @@ def find_patinoire_by_name(nom_pat):
 
 # def get_patinoire_id(nom_pat):
 #     find_patinoire_by_name(nom_pat)
+
+def find_patinoires_by_arr_id(arr_id):
+    return Patinoire.query.filter_by(arron_id=arr_id).all()
+

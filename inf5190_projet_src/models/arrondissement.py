@@ -20,7 +20,6 @@ class Arrondissement(Base):
             self.id, self.name, self.cle)
 
     def asDictionary(self):
-        return {"arrondissement_id": self.id,
-                "name":self.name,
+        return {"name":self.name,
                 "cle": self.cle
                 } 

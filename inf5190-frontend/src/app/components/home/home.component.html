@@ -1,0 +1,145 @@
+<header class="top-bar" id="header" style="margin-bottom: 200px">
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-dark" id="navigation">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/">
+        <img class="img header__logo" src="/assets/images/logo.svg"
+          alt="data app logo"> <!--src="{{url_for('static', filename='images/logo.svg')}}"-->
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto dropdown">
+          <li class="nav-item">
+            <!-- <a class="nav-link" (click)="openAddArticleComp()">Ajouter article</a> -->
+            <a class="nav-link" >Ajouter article</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item"  routerLink="action">Action</a>
+              <a class="dropdown-item"  routerLink="another-action">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item"  routerLink="something-else-here">Something else here</a>
+            </div>
+          </li>
+        </ul>
+        <!-- search special-->
+            <div class="card search-form">
+              <div class="card-body p-0">
+                <!-- <form [formGroup]="searchForm" (ngSubmit)="searchArticles()"> -->
+                <form >
+                  <div class="row">
+                    <div class="col-12 egbaGe">
+                      <div class="row no-gutters">
+                        <div class="col-lg-10 col-md-8 col-sm-12 p-0">
+                          <input type="text" placeholder="Search..." class="form-control" id="search" formControlName="search" required="required">
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-12 p-0"> <button type="submit" class="btn btn-base"> <svg
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="feather feather-search">
+                              <circle cx="11" cy="11" r="8"></circle>
+                              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg> </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+             </div>
+        <!-- search ends here -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown user-dropdown align-items-center">
+            <a class="nav-link text-white" href="#" id="dropdown-user" role="button" data-toggle="dropdown">
+              <span class="ml-2 h-lg-down dropdown-toggle"> <i class="fa fa-user-circle fa-2x"></i> </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+              <!-- <a class="dropdown-item" (click)="logOutUser()" *ngIf="currentUser">Logout</a>
+              <a class="dropdown-item" (click)="logOutUser()" *ngIf="currentUser">Dashboard</a>
+              <a class="dropdown-item" (click)="openLoginComp()" *ngIf="currentUser == null as any"><i class="icon-User"></i>login</a>
+              <a class="dropdown-item" (click)="openRegisterComp()" *ngIf="currentUser == null as any"><i class="icon-Newspaper"></i>Signup</a> -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<footer class="footer_area section_padding_130_0">
+  <div class="container">
+    <div class="row">
+      <!-- Single Widget-->
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="single-footer-widget section_padding_0_130">
+          <!-- Footer Logo-->
+          <div class="footer-logo mb-3"></div>
+          <div class="copywrite-text mb-5">
+          <p class="mb-0">Fait par <a class="ml-1" href="https://github.com/cryptoswarm/INF5190-Web-Avance-TP1/tree/vagrant-project-v1">CryptoSwarm</a></p>
+          </div>
+          <!-- Copywrite Text-->
+          <div class="copywrite-text mb-5">
+            <p class="mb-0">Inspiré <i class="lni-heart mr-1"></i>des<a class="ml-1"
+                href="http://bootdey.com/license">Templates de bootdey.com</a></p>
+          </div>
+          <!-- Footer Social Area-->
+          <div class="footer_social_area"><a href="#" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Facebook"><i class="fa fa-facebook"></i></a><a href="#" data-toggle="tooltip"
+              data-placement="top" title="" data-original-title="Pinterest"><i class="fa fa-pinterest"></i></a><a
+              href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype"><i
+                class="fa fa-skype"></i></a><a href="#" data-toggle="tooltip" data-placement="top" title=""
+              data-original-title="Twitter"><i class="fa fa-twitter"></i></a></div>
+        </div>
+      </div>
+      <!-- Single Widget-->
+      <div class="col-12 col-sm-6 col-lg">
+        <div class="single-footer-widget section_padding_0_130">
+          <!-- Widget Title-->
+          <h5 class="widget-title">About</h5>
+          <!-- Footer Menu-->
+          <div class="footer_menu">
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Community</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Single Widget-->
+      <div class="col-12 col-sm-6 col-lg">
+        <div class="single-footer-widget section_padding_0_130">
+          <!-- Widget Title-->
+          <h5 class="widget-title">Support</h5>
+          <!-- Footer Menu-->
+          <div class="footer_menu">
+            <ul>
+              <li><a href="#">Help</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Single Widget-->
+      <div class="col-12 col-sm-6 col-lg">
+        <div class="single-footer-widget section_padding_0_130">
+          <!-- Widget Title-->
+          <h5 class="widget-title">Contact</h5>
+          <!-- Footer Menu-->
+          <div class="footer_menu">
+            <ul>
+              <li><a href="">Email Us</a></li>
+              <li><a href="">Term &amp; Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+

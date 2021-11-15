@@ -27,11 +27,9 @@ class Glissade(Base):
             self.id, self.name, self.date_maj, self.ouvert, self.deblaye, self.condition, self.arrondissement_id)
 
     def asDictionary(self):
-        return {"arrondissement_id": self.id,
-                "name":self.name,
+        return {"name":self.name,
                 "date_maj": self.date_maj,
                 "ouvert": self.ouvert,
                 "deblaye": self.deblaye,
                 "condition": self.condition,
-                "arrondissement_id": self.arrondissement_id
                 } 

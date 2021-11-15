@@ -52,25 +52,6 @@ def get_patinoire_details(details):
     pat_conditions['conditions'] = cond_list
     return pat_conditions
 
- 
-# def save_all_glissade(glissade_as_xml, key_root, key_element, *kwargs):
-#     content = []
-#     arr_id = None
-#     root = xmltodict.parse(glissade_as_xml.text)
-#     for element in root[key_root][key_element]:
-#         arr_details = element[kwargs[0][1]]
-#         details = get_arrondissement_detail(arr_details)
-#         if find_by_arr_name(details['nom_arr']) is None:
-#             arrondissement = save_arrondissement(details)
-#             arr_id = arrondissement.id
-#         glissade_details = get_glissade_details(element, kwargs)
-#         glissade_details['date_maj'] = details['date_maj']
-#         glissade_details['arrondissement_id'] = arr_id
-#         if find_glissade_by_name(glissade_details['name']) is None:
-#             save_glissade(glissade_details)
-#         content.append(details)
-#     return content
-
 
 def save_pat_and_conditions(patinoire_xml):
     content = []
@@ -145,4 +126,12 @@ def get_patinoire_condition(pat_content):
     return PatinoirCondition(date_heure, ouvert, deblaye, arrose, resurface, None)
 
 
+def get_glissades_per_arr_id(arr_id):
+    all_glissades = []
+    glissades = find_all_glissades_by_arr_id(arr_id)
+    if glissades is None:
+        return None
+    for glissade in glissades:
+        all_glissades.append(glissade.asDictionary())
+    return all_glissades
 

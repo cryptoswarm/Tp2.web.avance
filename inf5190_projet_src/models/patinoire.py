@@ -23,7 +23,5 @@ class Patinoire(Base):
             self.id, self.nom_pat, self.arron_id)
 
     def asDictionary(self):
-        return {"patinoire_id": self.id,
-                "nom_pat":self.nom_pat,
-                "arron_id": self.arron_id
+        return {"nom_pat":self.nom_pat
                 }
