@@ -105,8 +105,15 @@ def save_all_glissade(glissade_xml):
 def get_arrondissement(glissade_elem):
     arr_elem = glissade_elem.find('arrondissement')
     name = arr_elem.find('nom_arr').text
+    print('arrondissement name :',name)
     cle = arr_elem.find('cle').text
     return Arrondissement(name, cle)
+
+    # <arrondissement>
+    #         <nom_arr>Rivière-des-Prairies - Pointe-aux-Trembles</nom_arr>
+    #         <cle>rdp</cle>
+    #         <date_maj>2021-10-18 13:45:13</date_maj>
+    #     </arrondissement>
 
 def get_glissade(glissade_elem):
     date_text = glissade_elem.find('arrondissement').find('date_maj').text

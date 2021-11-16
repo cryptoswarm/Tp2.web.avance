@@ -3,9 +3,9 @@ import { Patinoire } from './patinoire';
 import { Glissade } from './glissade';
 import { InstallationAquatique } from "./installation-aquatique";
 export interface Installation {
-
-  arrondissement?: Arrondissement
-  installations_aqua?: [InstallationAquatique],
-  glissades?: [Glissade],
-  patinoires?: [Patinoire]
+  arr_name: string
+  arr_cle: string
+  aqua_inst: InstallationAquatique[],
+  glissades: Glissade[],
+  patinoires: Patinoire[]
 }

@@ -18,7 +18,8 @@ export class ApiClientService {
   private apiServerUrl = environment.apiBaseUrl;
   constructor(private httpClient: HttpClient) { }
 
-  public getInstallationsPerArrondissement(arron_name: string): Observable<Installation[]>{
-    return this.httpClient.get<Installation[]>(`${this.apiServerUrl}/api/installations?arrondissement=${arron_name['search']}`, httpOptions)
+  public getInstallationsPerArrondissement(arron_name: string): Observable<Installation>{
+    const url = `${this.apiServerUrl}/api/installations?arrondissement=${arron_name['search']}`
+    return this.httpClient.get<Installation>(url, httpOptions)
   }
 }

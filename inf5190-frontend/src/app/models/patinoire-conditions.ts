@@ -1,7 +1,7 @@
 export interface PatinoirCondition {
   date_heure: Date,
   ouvert: boolean,
-  deblaye: boolean,
   arrose : boolean,
+  deblaye: boolean,
   resurface : boolean
 }

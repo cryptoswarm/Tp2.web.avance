@@ -32,6 +32,7 @@ class PatinoirCondition(Base):
     def asDictionary(self):
         return {"date_heure": self.date_heure,
                 "ouvert": self.ouvert,
+                "deblaye": self.deblaye,
                 "arrose": self.arrose,
                 "resurface": self.resurface,
                 }
