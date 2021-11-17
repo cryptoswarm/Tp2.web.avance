@@ -23,7 +23,9 @@ export class HomeComponent implements OnInit {
   aqua_inst: InstallationAquatique[] = [];
   aqua_inst_perm: InstallationAquatique[] = [];
   glissades: Glissade[] = [];
+  glissades_perm: Glissade[] = [];
   patinoires: Patinoire[] = [];
+  patinoires_perm: Patinoire[] = [];
   inst_names: string[] = []
   results: number = 0;
   searchResult: boolean = false;
@@ -58,6 +60,12 @@ export class HomeComponent implements OnInit {
       console.log('this.aqua_inst :',this.aqua_inst)
       this.inst_names = this.getInstallationName(installations.aqua_inst);
       this.results = installations.aqua_inst.length;
+      this.glissades = installations.glissades
+      this.glissades_perm = installations.glissades
+      console.log('this.glissades :',this.glissades)
+      this.patinoires = installations.patinoires
+      this.patinoires_perm = installations.patinoires
+      console.log('this.patinoires :',this.patinoires)
       this.searchForm.reset()
     },
     (error: HttpErrorResponse)=>{

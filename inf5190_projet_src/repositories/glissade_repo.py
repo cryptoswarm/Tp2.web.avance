@@ -22,3 +22,11 @@ def find_all_glissades_by_arr_id(arr_id):
 
 def find_glissade_by_id(glissade_id):
     return Glissade.query.filter_by(id=glissade_id).first()
+
+def update(glissade, posted_glissade):
+    glissade.date_maj = posted_glissade['date_maj']
+    glissade.ouvert = posted_glissade['ouvert']
+    glissade.deblaye =  posted_glissade['deblaye']
+    glissade.condition = posted_glissade['condition']
+    db.session.commit()
+    return glissade

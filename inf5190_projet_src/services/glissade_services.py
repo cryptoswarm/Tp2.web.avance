@@ -148,3 +148,8 @@ def get_glissade_by_id(glissade_id):
         return None, 404
     return response, 200
 
+def update_glissade(glissade, posted_glissade):
+    updated_glissade = update(glissade, posted_glissade)
+    return updated_glissade, 200
+
+

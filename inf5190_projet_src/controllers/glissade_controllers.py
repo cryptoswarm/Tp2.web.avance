@@ -1,5 +1,6 @@
 
 from copy import error
+from os import stat
 from flask import Blueprint, json, Request
 from flask import render_template, flash, request
 from flask import redirect, url_for, jsonify
@@ -27,20 +28,21 @@ def edit_glissade():
     glissade_data = request.get_json()
     try:
         posted_glissade = GlissadeSchema().load(glissade_data) 
-        #glissade_id = posted_glissade['glissade_id']
-        arrondissement, status = get_arr_by_id(posted_glissade['arrondissement_id'])
-        if arrondissement is None:
-            return jsonify({"message":"arrondissement does not exist!"}), status
-        glissade, status = get_glissade_by_id(posted_glissade['glissade_id'])
-        if glissade is None:
-            return jsonify({"message":"Glissade does not exist!"}), status
-        if arrondissement.id != glissade.id:
-            return jsonify({"message":"Given glissade does not belong to given arrondissement"}), 400
-        
     except ValidationError as err:
         return jsonify(err.messages), 400
+    arrondissement, status = get_arr_by_id(posted_glissade['arrondissement_id'])
+    if arrondissement is None:
+        return jsonify({"message":"arrondissement does not exist!"}), status
+    glissade, status = get_glissade_by_id(posted_glissade['glissade_id'])
+    if glissade is None:
+        return jsonify({"message":"Glissade does not exist!"}), status
+    if arrondissement.id != glissade.arrondissement_id:
+        return jsonify({"message":"Given glissade does not belong to given arrondissement"}), 400
+    updated, status = update_glissade(glissade, posted_glissade)
+    result = GlissadeSchema.dump(updated)
     
-    return jsonify(glissade_id), 200
+    # return jsonify(glissade_id), 200
+    return {"status": "success", "data": result}, status
 
 
 #     D1 15xp
