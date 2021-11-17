@@ -30,19 +30,22 @@ class Glissade(Base):
             self.id, self.name, self.date_maj, self.ouvert, self.deblaye, self.condition, self.arrondissement_id)
 
     def asDictionary(self):
-        return {"name":self.name,
+        return {"glissade_id": self.id,
+                "name":self.name,
                 "date_maj": self.date_maj,
                 "ouvert": self.ouvert,
                 "deblaye": self.deblaye,
                 "condition": self.condition,
+                "arrondissement_id": self.arrondissement_id
                 } 
 
 class GlissadeSchema(ma.Schema):
+    glissade_id = fields.Number(required=True)
     name = fields.String(required=True, validate=validate.Length(1))
     date_maj = fields.DateTime(required=True)
     ouvert = fields.Boolean(required=True)
     deblaye = fields.Boolean(required=True)
     condition = fields.String(required=True, validate=validate.Length(1))
-    arrondissement_id = fields.Integer(required=True)
+    arrondissement_id = fields.Number(required=True)
 
 

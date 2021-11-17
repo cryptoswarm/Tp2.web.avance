@@ -142,3 +142,9 @@ def get_glissades_per_arr_id(arr_id):
         all_glissades.append(glissade.asDictionary())
     return all_glissades
 
+def get_glissade_by_id(glissade_id):
+    response = find_glissade_by_id(glissade_id)
+    if response is None:
+        return None, 404
+    return response, 200
+

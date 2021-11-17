@@ -22,5 +22,7 @@ def find_by_arr_name(arr_name):
         print('Arrondissement {} exist!'.format(arr_name))
     return response
 
-# def get_id(nom_arr):
-#     find_by_arr_name(nom_arr).id
+def find_arr_by_id(arr_id):
+    response =  Arrondissement.query.filter_by(id=arr_id) \
+                        .first()
+    return response

@@ -5,6 +5,7 @@ from flask import render_template, flash, request
 from flask import redirect, url_for, jsonify
 from flask.helpers import make_response
 from inf5190_projet_src.services.aquatique_inst_services import *
+from inf5190_projet_src.services.glissade_services import *
 
 from inf5190_projet_src.services.arron_service import *
 from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
@@ -13,6 +14,7 @@ from inf5190_projet_src.schemas.schema import *
 from inf5190_projet_src import schema
 from inf5190_projet_src.models.glissade import GlissadeSchema
 from marshmallow import ValidationError
+
 
 glissade_schema = GlissadeSchema()
 
@@ -24,11 +26,21 @@ mod_glissade = Blueprint('glissade', __name__, url_prefix='')
 def edit_glissade():
     glissade_data = request.get_json()
     try:
-        data = GlissadeSchema().load(glissade_data) 
+        posted_glissade = GlissadeSchema().load(glissade_data) 
+        #glissade_id = posted_glissade['glissade_id']
+        arrondissement, status = get_arr_by_id(posted_glissade['arrondissement_id'])
+        if arrondissement is None:
+            return jsonify({"message":"arrondissement does not exist!"}), status
+        glissade, status = get_glissade_by_id(posted_glissade['glissade_id'])
+        if glissade is None:
+            return jsonify({"message":"Glissade does not exist!"}), status
+        if arrondissement.id != glissade.id:
+            return jsonify({"message":"Given glissade does not belong to given arrondissement"}), 400
+        
     except ValidationError as err:
         return jsonify(err.messages), 400
     
-    return jsonify(data), 200
+    return jsonify(glissade_id), 200
 
 
 #     D1 15xp

@@ -12,4 +12,9 @@ def get_arr_by_name(arr_name):
     if arrondissement is None:
         return None
     return arrondissement
-    
+
+def get_arr_by_id(arr_id):
+    arrondissement = find_arr_by_id(arr_id)
+    if arrondissement is None:
+        return None, 404
+    return arrondissement, 200

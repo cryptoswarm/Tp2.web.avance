@@ -5,6 +5,7 @@ from functools import wraps
 edit_glissade = {
   "type": "object",
   "properties": {
+    "glissade_id": {"type": "integer"},
     "name": {"type": "string", "minLength": 1},
     "date_maj": {
         "type": "string", 
@@ -34,7 +35,7 @@ edit_glissade = {
     },
     "arrondissement_id": {"type": "integer"},
   },
-  "required": ["name", "date_maj", "ouvert", "deblaye", "condition", "arrondissement_id"]
+  "required": ["glissade_id", "name", "date_maj", "ouvert", "deblaye", "condition", "arrondissement_id"]
 }
 
 
