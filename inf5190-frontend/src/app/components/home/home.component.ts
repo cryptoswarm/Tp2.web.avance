@@ -1,3 +1,4 @@
+import { PatinoirCondition } from './../../models/patinoire-conditions';
 import { Installation } from './../../models/installation';
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from 'src/app/services/api-client.service';
@@ -33,11 +34,13 @@ export class HomeComponent implements OnInit {
   condition_years:  Set<number> = new Set<number>();
   results: number = 0;
   searchResult: boolean = false;
+  selectedPatinoir: Patinoire = null as any;
 
   searchForm: FormGroup;
   instNamesForm: FormGroup;
   glissadeNamesForm: FormGroup;
   patinoireNamesForm: FormGroup;
+  yearsForm: FormGroup
 
 
   constructor(private apiClient: ApiClientService, private formBuilder: FormBuilder) {
@@ -51,7 +54,9 @@ export class HomeComponent implements OnInit {
       glissadeName: ['', Validators.required]
     })
     this.patinoireNamesForm = this.formBuilder.group({
-      patinoireName: ['', Validators.required],
+      patinoireName: ['', Validators.required]
+    })
+    this.yearsForm = this.formBuilder.group({
       conditionyear: ['', Validators.required]
     })
   }
@@ -117,9 +122,8 @@ export class HomeComponent implements OnInit {
     installations.forEach(element => {
       patinoires_names.push(element.nom_pat)
       element.conditions.forEach(condition => {
-        // let year = Date.parse(condition.date_heure) ;
-        // console.log('year :',year)
-        this.condition_years.add(2021);
+        let year:number  = new Date(condition.date_heure).getFullYear();
+        this.condition_years.add(year);
       });
     });
     return patinoires_names;
@@ -177,16 +181,37 @@ export class HomeComponent implements OnInit {
     // alert(JSON.stringify(this.instNamesForm.value))
     const name = this.patinoireNamesForm.value['patinoireName']
     console.log('Choosen patinoire name :',name)
-    const result :Patinoire[] = [];
+    // const result :Patinoire[] = [];
+    let result :Patinoire = null as any;
     this.patinoires_perm.forEach(element => {
       console.log('element.name patinoire: ',element.nom_pat);
       console.log(element.nom_pat.indexOf(name) !== -1)
       if(element.nom_pat.indexOf(name) !== -1){
-        result.push(element)
+        // result.push(element)
+        result = element;
         console.log('filtering by :'+name+' gives :', result)
       }
     });
-    this.patinoires = result;
+    // this.patinoires = result;
+    this.selectedPatinoir = result;
+  }
+
+  public filterByYear(): void {
+    const selectedYear = this.yearsForm.value['conditionyear']
+    console.log('selected year : ',selectedYear)
+    let tempPatinoire: Patinoire = null as any;
+    let tempConditions: PatinoirCondition[] = [];
+    this.selectedPatinoir.conditions.forEach(element => {
+      let tempYear = new Date(element.date_heure).getFullYear();
+      if(tempYear == selectedYear){
+        // console.log('element will be removed')
+        // this.selectedPatinoir.conditions.pop()
+        // tempPatinoire.conditions.push(element)
+        tempConditions.push(element);
+      }
+    });
+    // this.selectedPatinoir = tempPatinoire;
+    this.selectedPatinoir.conditions = tempConditions;
   }
 
 

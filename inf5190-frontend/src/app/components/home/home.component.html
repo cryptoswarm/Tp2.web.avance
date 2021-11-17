@@ -346,15 +346,16 @@
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-
+                                <span>Chercher par nom de patinoire:</span>
                                 <form [formGroup]="patinoireNamesForm" (change)="filterByPatinoireName()">
-                                  <span>Chercher par nom de patinoire:</span>
                                   <select class="form-control border-0" id="patinoiresOption" formControlName="patinoireName">
                                     <option [ngValue]="null" disabled>-Choisir un nom-</option>
                                     <option *ngFor="let patinoire of patinoires_perm" [ngValue]="patinoire?.nom_pat">
                                       {{patinoire?.nom_pat}}</option>
                                   </select>
-                                  <span>Filtrer par année:</span>
+                                </form>
+                                <span>Filtrer par année:</span>
+                                <form [formGroup]="yearsForm" (change)="filterByYear()">
                                   <select class="form-control border-0" id="yearOption" formControlName="conditionyear">
                                     <option [ngValue]="null" disabled>-Choisir une année-</option>
                                     <option *ngFor="let year of condition_years" [ngValue]="year">
@@ -369,7 +370,7 @@
                       <div class="result-body">
                         <div class="table-responsive">
                           <table class="table widget-26">
-                            <div *ngFor="let patinoire of patinoires">
+                            <!-- <div *ngFor="let patinoire of patinoires"> -->
                             <thead>
                               <tr>
                                 <th>
@@ -399,7 +400,8 @@
                                 </th>
                               </tr>
                             </thead>
-                            <tbody *ngFor="let condition of patinoire?.conditions">
+                            <!-- <tbody *ngFor="let condition of patinoires?.conditions"> -->
+                            <tbody *ngFor="let condition of selectedPatinoir?.conditions">
                               <tr>
                                 <td>
                                   <div class="widget-26-job-info">
@@ -428,7 +430,7 @@
                                 </td>
                               </tr>
                             </tbody>
-                            </div>
+                            <!-- </div> -->
                           </table>
                           <div *ngIf="searchResult == true" class="result-body d-flex justify-content-center">
                             <h3>Aucun resultat pour cette recherche</h3>
