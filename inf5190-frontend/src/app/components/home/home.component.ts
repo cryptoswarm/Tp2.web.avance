@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   patinoires: Patinoire[] = [];
   inst_names: string[] = []
   results: number = 0;
+  searchResult: boolean = false;
 
   searchForm: FormGroup;
   instNamesForm: FormGroup;
@@ -41,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllInstallations()
+    // this.getAllInstallations()
   }
 
   public getAllInstallations(){
@@ -49,7 +50,7 @@ export class HomeComponent implements OnInit {
     this.apiClient.getInstallationsPerArrondissement(this.searchForm.value).subscribe((installations: Installation)=>{
       // this.installations = installations
 
-
+      this.searchResult = false;
       this.arr_name = installations.arr_name;
       this.arr_cle = installations.arr_cle;
       this.aqua_inst = installations.aqua_inst;
@@ -60,6 +61,11 @@ export class HomeComponent implements OnInit {
       this.searchForm.reset()
     },
     (error: HttpErrorResponse)=>{
+      this.searchResult = true;
+      this.aqua_inst = [];
+      this.aqua_inst_perm = [];
+      this.inst_names = [];
+      this.results = 0;
       this.errorMessage = error.error.message;
       console.log('error status:', error.status);
       console.log('error message :', error.message);

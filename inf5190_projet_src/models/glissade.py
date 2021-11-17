@@ -1,8 +1,11 @@
 from inf5190_projet_src import db
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
+from marshmallow import schema, fields, pre_load, validate
+from flask_marshmallow import Marshmallow
 
 
+ma = Marshmallow()
 class Glissade(Base):
 
     __tablename__ = 'glissade'
@@ -33,3 +36,13 @@ class Glissade(Base):
                 "deblaye": self.deblaye,
                 "condition": self.condition,
                 } 
+
+class GlissadeSchema(ma.Schema):
+    name = fields.String(required=True, validate=validate.Length(1))
+    date_maj = fields.DateTime(required=True)
+    ouvert = fields.Boolean(required=True)
+    deblaye = fields.Boolean(required=True)
+    condition = fields.String(required=True, validate=validate.Length(1))
+    arrondissement_id = fields.Integer(required=True)
+
+

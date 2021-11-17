@@ -1,6 +1,6 @@
 import logging
 import pytz
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -8,20 +8,10 @@ from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from config import JOB_STORE_URL
+from flask_json_schema import JsonSchema, JsonValidationError
 
 db = SQLAlchemy()
-
-# jobstores = {
-#     'default': SQLAlchemyJobStore(JOB_STORE_URL)
-# }
-# executors = {
-#     'default': ThreadPoolExecutor(20),
-#     'processpool': ProcessPoolExecutor(5)
-# }
-# job_defaults = {
-#     'coalesce': False,
-#     'max_instances': 3
-# }
+schema = JsonSchema()
 
 # from inf5190_projet_src.controllers.data_requester import save_uploaded_data
 # scheduler = BackgroundScheduler(jobstores=jobstores)
@@ -49,6 +39,7 @@ def create_app(test_config=None):
     # CORS(app)
     #logging.basicConfig()
     #logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
 
     with app.app_context():
     # Configurations
@@ -71,11 +62,16 @@ def create_app(test_config=None):
         #db = SQLAlchemy(app)
         db.init_app(app)
 
+        schema.init_app(app)
+
         # HTTP error handling
         @app.errorhandler(404)
         def not_found(error):
             return render_template('404.html'), 404
 
+        @app.errorhandler(JsonValidationError)
+        def validation_error(e):
+            return jsonify({ 'error': e.message, 'errors': [validation_error.message for validation_error  in e.errors]}), 400
         
 
         # Import the only module in the app which is article, 
@@ -83,11 +79,13 @@ def create_app(test_config=None):
         from inf5190_projet_src.mod_app.controllers import mod_home as home_module
         from inf5190_projet_src.controllers.data_requester import mod_scheduler as scheduler_mod
         from inf5190_projet_src.controllers.aqua_controllers import mod_arron as arrondissement_mod
+        from inf5190_projet_src.controllers.glissade_controllers import mod_glissade as glissade_module
 
         # Register blueprints
         app.register_blueprint(home_module)
         app.register_blueprint(scheduler_mod)
         app.register_blueprint(arrondissement_mod)
+        app.register_blueprint(glissade_module)
 
 
         # Build the database: will create the db file using SQLAlchemy

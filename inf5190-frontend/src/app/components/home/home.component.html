@@ -55,236 +55,153 @@
 </header>
 
 
-<!-- <div *ngFor="let aqua of aqua_inst" class="result-body">
-  <div class="col-12">
-    <div class="card card-margin">
-      <div class="card-body">
+<div class="container">
+  <div class="row">
 
-
-        <div class="table-responsive">
-          <table class="table widget-26">
-
-            <tbody>
-              <tr>
-                <td>
-                  <div class="widget-26-job-emp-img">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Company" />
-                  </div>
-                </td>
-                <td>
-                  <div class="widget-26-job-title">
-                    <p class="type m-0">Nom installation</p>
-                    <p class="m-0"><a href="#" class="employer-name">{{aqua?.nom_installation}}</a> <span
-                        class="text-muted time"> </span></p>
-                  </div>
-                </td>
-                <td>
-                  <div class="widget-26-job-info">
-                    <p class="type m-0">Type installation</p>
-                    <p class="text-muted m-0"> <span class="location">{{aqua?.type_installation}}</span></p>
-                  </div>
-                </td>
-                <td>
-                  <div class="widget-26-job-info">
-                    <p class="type m-0">Adress</p>
-                    <p class="text-muted m-0"> <span class="location">{{aqua?.adress}}</span>
-                    </p>
-                  </div>
-                </td>
-                <td>
-                  <div class="widget-26-job-info">
-                    <p class="type m-0">Propriete installation</p>
-                    <p class="text-muted m-0"> <span class="location">{{aqua?.propriete_installation}}</span></p>
-                  </div>
-                </td>
-
-                <td>
-                  <div class="widget-26-job-info">
-                    <p class="type m-0">Gestion installation</p>
-                    <p class="text-muted m-0"> <span class="location">{{aqua?.gestion_inst}}</span></p>
-                  </div>
-                </td>
-                <td>
-                  <div class="widget-26-job-info">
-                    <p class="type m-0">Equipement instinstallation</p>
-                    <p class="text-muted m-0"> <span class="location">{{aqua?.equipement_inst}}</span></p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- <div class="col-xl-5">
+      <div class="card">
+        <div class="card-body text-center">
+            <div class="row">
+                <div class="col-4 border-end border-light">
+                    <h5 class="text-muted mt-1 mb-2 fw-normal">Applied</h5>
+                    <h2 class="mb-0 fw-bold">116</h2>
+                </div>
+                <div class="col-4 border-end border-light">
+                    <h5 class="text-muted mt-1 mb-2 fw-normal">Reviewed</h5>
+                    <h2 class="mb-0 fw-bold">87</h2>
+                </div>
+                <div class="col-4">
+                    <h5 class="text-muted mt-1 mb-2 fw-normal">Contacted</h5>
+                    <h2 class="mb-0 fw-bold">98</h2>
+                </div>
+            </div>
         </div>
       </div>
-    </div>
-  </div>
-</div> -->
-
-
-
-<div class="container">
-<div class="row">
-  <div class="col-12">
-    <div class="card card-margin">
-      <div class="card-body">
-        <div class="row search-body">
-          <div class="col-lg-12">
-            <div class="search-result">
-              <div class="result-header">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="records">Affichage: <b>{{results}}</b> resultats</div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="result-actions">
-                      <div class="result-sorting d-flex justify-content-center">
-                        <span>Chercher par nom d'installation:</span>
-                        <form [formGroup]="instNamesForm" (change)="filterByInstallationName()">
-                        <select class="form-control border-0" id="exampleOption" formControlName="instaName">
-                          <option [ngValue]="null" disabled>-Choisir un nom-</option>
-                          <option *ngFor="let aqua of aqua_inst_perm" [ngValue]="aqua?.nom_installation">{{aqua?.nom_installation}}</option>
-                        </select>
-                        <!-- <button type="submit">Submit</button> -->
-                        </form>
+      </div> -->
+    <div class="col-12">
+    <!-- <div class="col-xl-7"> -->
+      <div class="card card-margin">
+        <!-- <div class="card"> -->
+        <div class="card-body">
+          <div class="row search-body">
+            <div class="col-lg-12">
+              <div class="search-result">
+                <div class="result-header">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="records">Affichage: <b>{{results}}</b> resultats</div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="result-actions">
+                        <div class="result-sorting d-flex justify-content-center">
+                          <span>Chercher par nom d'installation:</span>
+                          <form [formGroup]="instNamesForm" (change)="filterByInstallationName()">
+                            <select class="form-control border-0" id="exampleOption" formControlName="instaName">
+                              <option [ngValue]="null" disabled>-Choisir un nom-</option>
+                              <option *ngFor="let aqua of aqua_inst_perm" [ngValue]="aqua?.nom_installation">
+                                {{aqua?.nom_installation}}</option>
+                            </select>
+                          </form>
+                        </div>
                       </div>
-                      <!-- <div class="result-views">
-                        <button type="button" class="btn btn-soft-base btn-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-list">
-                            <line x1="8" y1="6" x2="21" y2="6"></line>
-                            <line x1="8" y1="12" x2="21" y2="12"></line>
-                            <line x1="8" y1="18" x2="21" y2="18"></line>
-                            <line x1="3" y1="6" x2="3" y2="6"></line>
-                            <line x1="3" y1="12" x2="3" y2="12"></line>
-                            <line x1="3" y1="18" x2="3" y2="18"></line>
-                          </svg>
-                        </button>
-                        <button type="button" class="btn btn-soft-base btn-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-grid">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                          </svg>
-                        </button>
-                      </div> -->
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="result-body">
-                <div class="table-responsive">
-                  <table class="table widget-26">
-                    <thead>
-                      <tr>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">Map</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">Nom installation</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">Type installation</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">ADRESSE</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">PROPRIETE</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">Gestion</p>
-                          </div>
-                        </th>
-                        <th>
-                          <div class="widget-26-job-category bg-soft-base">
-                            <p class="type m-0">Equipement</p>
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody *ngFor="let aqua of aqua_inst">
-                      <tr>
-                        <td>
-                          <div class="widget-26-job-emp-img">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Company" />
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.nom_installation}}</p>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.type_installation}}</p>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.adress}}</p>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.propriete_installation}}</p>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.gestion_inst}}</p>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="widget-26-job-info">
-                            <p class="text-muted m-0">{{aqua?.equipement_inst}}</p>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="result-body">
+                  <div class="table-responsive">
+                    <table class="table widget-26">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">Map</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">Nom installation</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">Type installation</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">ADRESSE</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">PROPRIETE</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">Gestion</p>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="widget-26-job-category bg-soft-base">
+                              <p class="type m-0">Equipement</p>
+                            </div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let aqua of aqua_inst">
+                        <tr>
+                          <td>
+                            <div class="widget-26-job-emp-img">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Company" />
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.nom_installation}}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.type_installation}}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.adress}}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.propriete_installation}}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.gestion_inst}}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="widget-26-job-info">
+                              <p class="text-muted m-0">{{aqua?.equipement_inst}}</p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="searchResult == true" class="result-body d-flex justify-content-center">
+                      <h3>Aucun resultat pour cette recherche</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- <nav class="d-flex justify-content-center">
-          <ul class="pagination pagination-base pagination-boxed pagination-square mb-0">
-            <li class="page-item">
-              <a class="page-link no-border" href="#">
-                <span aria-hidden="true">«</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li class="page-item active"><a class="page-link no-border" href="#">1</a></li>
-            <li class="page-item"><a class="page-link no-border" href="#">2</a></li>
-            <li class="page-item"><a class="page-link no-border" href="#">3</a></li>
-            <li class="page-item"><a class="page-link no-border" href="#">4</a></li>
-            <li class="page-item">
-              <a class="page-link no-border" href="#">
-                <span aria-hidden="true">»</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav> -->
       </div>
-    </div>
+    <!-- </div> -->
   </div>
-</div>
+  </div>
 </div>
 
 

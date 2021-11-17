@@ -54,7 +54,9 @@ def get_all_aqua_installation_by_arr_id(arr_id):
     all_aqua_inst = []
     installations = find_all_aqua_installation_by_arr_id(arr_id)
     if installations is None:
-            return {}, 404
+        logging.debug('Search aqua installation by arr id : {} not found'.format(arr_id))
+        return {}, 404
+    logging.debug('Search aqua installation by arr id : {} found'.format(arr_id))
     for installation in installations:
         position = get_position_by_id(installation.position_id)
         inst = installation.asDictionary()
