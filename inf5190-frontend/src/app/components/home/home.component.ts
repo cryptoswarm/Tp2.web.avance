@@ -27,11 +27,17 @@ export class HomeComponent implements OnInit {
   patinoires: Patinoire[] = [];
   patinoires_perm: Patinoire[] = [];
   inst_names: string[] = []
+  glissade_names : string[] = []
+  patinoires_names : string[] = []
+  // condition_years: number[] = []
+  condition_years:  Set<number> = new Set<number>();
   results: number = 0;
   searchResult: boolean = false;
 
   searchForm: FormGroup;
   instNamesForm: FormGroup;
+  glissadeNamesForm: FormGroup;
+  patinoireNamesForm: FormGroup;
 
 
   constructor(private apiClient: ApiClientService, private formBuilder: FormBuilder) {
@@ -40,6 +46,13 @@ export class HomeComponent implements OnInit {
     })
     this.instNamesForm = this.formBuilder.group({
       instaName: ['', Validators.required]
+    })
+    this.glissadeNamesForm = this.formBuilder.group({
+      glissadeName: ['', Validators.required]
+    })
+    this.patinoireNamesForm = this.formBuilder.group({
+      patinoireName: ['', Validators.required],
+      conditionyear: ['', Validators.required]
     })
   }
 
@@ -58,13 +71,15 @@ export class HomeComponent implements OnInit {
       this.aqua_inst = installations.aqua_inst;
       this.aqua_inst_perm = installations.aqua_inst;
       console.log('this.aqua_inst :',this.aqua_inst)
-      this.inst_names = this.getInstallationName(installations.aqua_inst);
+      this.inst_names = this.getAquaInstallationName(installations.aqua_inst);
       this.results = installations.aqua_inst.length;
       this.glissades = installations.glissades
       this.glissades_perm = installations.glissades
+      this.glissade_names = this.getGlissadesNames(this.glissades_perm)
       console.log('this.glissades :',this.glissades)
       this.patinoires = installations.patinoires
       this.patinoires_perm = installations.patinoires
+      this.patinoires_names = this.getPatinoiresNames(this.patinoires_perm)
       console.log('this.patinoires :',this.patinoires)
       this.searchForm.reset()
     },
@@ -81,12 +96,33 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  public getInstallationName(installations: InstallationAquatique[]): string[]{
+  public getAquaInstallationName(installations: InstallationAquatique[]): string[]{
     let inst_names: string[] = []
     installations.forEach(element => {
       inst_names.push(element.nom_installation)
     });
     return inst_names;
+  }
+
+  public getGlissadesNames(installations: Glissade[]): string[]{
+    let glissades_names: string[] = []
+    installations.forEach(element => {
+      glissades_names.push(element.name)
+    });
+    return glissades_names;
+  }
+
+  public getPatinoiresNames(installations: Patinoire[]): string[]{
+    let patinoires_names: string[] = []
+    installations.forEach(element => {
+      patinoires_names.push(element.nom_pat)
+      element.conditions.forEach(condition => {
+        // let year = Date.parse(condition.date_heure) ;
+        // console.log('year :',year)
+        this.condition_years.add(2021);
+      });
+    });
+    return patinoires_names;
   }
 
   // public searchEmployees(key: string):void{
@@ -120,6 +156,39 @@ export class HomeComponent implements OnInit {
     });
     this.aqua_inst = result;
   }
+
+  public filterByGlissadeName(): void{
+    // alert(JSON.stringify(this.instNamesForm.value))
+    const name = this.glissadeNamesForm.value['glissadeName']
+    console.log('Choosen glissade name :',name)
+    const result :Glissade[] = [];
+    this.glissades_perm.forEach(element => {
+      console.log('element.name glissade: ',element.name);
+      console.log(element.name.indexOf(name) !== -1)
+      if(element.name.indexOf(name) !== -1){
+        result.push(element)
+        console.log('filtering by :'+name+' gives :', result)
+      }
+    });
+    this.glissades = result;
+  }
+
+  public filterByPatinoireName(): void{
+    // alert(JSON.stringify(this.instNamesForm.value))
+    const name = this.patinoireNamesForm.value['patinoireName']
+    console.log('Choosen patinoire name :',name)
+    const result :Patinoire[] = [];
+    this.patinoires_perm.forEach(element => {
+      console.log('element.name patinoire: ',element.nom_pat);
+      console.log(element.nom_pat.indexOf(name) !== -1)
+      if(element.nom_pat.indexOf(name) !== -1){
+        result.push(element)
+        console.log('filtering by :'+name+' gives :', result)
+      }
+    });
+    this.patinoires = result;
+  }
+
 
   // public onSubmit(){
   //   //console.log('submitted')
