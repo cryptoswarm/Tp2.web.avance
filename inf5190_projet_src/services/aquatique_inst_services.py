@@ -1,10 +1,6 @@
-import csv, sys
-import re
-from re import escape
-from operator import pos
-
+import csv
+import logging
 from requests.models import Response
-from config import UPLOAD_FOLDER
 from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.models.piscines_aquatique import InstallationAquatique
 from inf5190_projet_src.repositories.aquatique_repo import *
@@ -40,7 +36,8 @@ def create_aqua_installations(request_response:Response):
                 new_aqua.position_id = existed_pos.id
                 created_aqua_int = save_installation_aquatique(new_aqua)
     except csv.Error as e:
-        return('file {}, line {}: {}'.format(reader.line_num, e))
+        logging.ERROR('Parsing inst aqua response : line {} error {}'.format(reader.line_num, e))
+        pass
 
 
 def construct_new_inst_aquatique(data)->InstallationAquatique:
@@ -54,8 +51,6 @@ def construct_new_inst_aquatique(data)->InstallationAquatique:
                                       adress, propriete_inst, gestion_inst,
                                       equipement_inst, None, None)
     return inst_aqua
-
-
 
 
 def get_all_aqua_installation_by_arr_id(arr_id):

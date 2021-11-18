@@ -9,9 +9,7 @@ from logging import error
 from inf5190_projet_src.services.glissade_services import *
 from inf5190_projet_src.services.aquatique_inst_services import *
 from datetime import datetime
-from config import UPLOAD_FOLDER, JOB_STORES
 from apscheduler.schedulers.background import BackgroundScheduler
-from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from inf5190_projet_src.writer.write_file import *
@@ -52,10 +50,8 @@ def start_glissade_scheduler():
 def start_pat_scheduler():
     response =  get_from_external_api(url_patinoire, 'application/xml')
     if response.status_code == 200:
-        # create_xml_file(response, 'patinoire.xml')
-        # result = save_pat_and_conditions(UPLOAD_FOLDER+'/patinoire.xml')
-        result = save_pat_and_conditions(response)
-        return jsonify(result), 201
+        save_pat_and_conditions(response)
+        return jsonify({}), 201
     return {}, 400
 
 
@@ -63,13 +59,8 @@ def start_pat_scheduler():
 def start_aqua_scheduler():
     response = get_from_external_api(url_aquatique, 'text/csv')
     if response.status_code == 200:
-        # create_csv_file(response, 'piscines.csv')
-        # try:
-        # create_aqua_installations('piscines.csv')
         create_aqua_installations(response)
-        return {}, 200
-        # except Exception as e:
-        #     return jsonify(e.args), 500
+        return jsonify({}), 200
     return {}, 400
 
         

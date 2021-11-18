@@ -93,7 +93,7 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{aqua_inst?.length}}</b> resultats</div>
+                            <div class="records"><b>{{aqua_inst?.length}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -217,7 +217,7 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{glissades_perm?.length}}</b> resultats</div>
+                            <div class="records"><b>{{glissades_perm?.length}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -322,7 +322,8 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{conditionsNbrPerPatinoire}}</b> resultats</div>
+                            <!-- selectedPatinoir?.conditions?.length else 0 -->
+                            <div class="records"><b>{{selectedPatinoir?.conditions ? selectedPatinoir?.conditions?.length : 0}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -336,7 +337,7 @@
                                   </select>
                                 </form>
                                 <span>Filtrer par année:</span>
-                                <form [formGroup]="yearsForm" (change)="filterByYear()">
+                                <form *ngIf="selectedPatinoir" [formGroup]="yearsForm" (change)="filterByYear()">
                                   <select class="form-control border-0" id="yearOption" formControlName="conditionyear">
                                     <option [ngValue]="null" disabled>-Choisir une année-</option>
                                     <option *ngFor="let year of condition_years" [ngValue]="year">

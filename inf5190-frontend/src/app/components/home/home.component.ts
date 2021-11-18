@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   searchResult: boolean = false;
   selectedPatinoir: Patinoire = null as any;
   conditionsOfSelectedYear: PatinoirCondition[] = []
-  conditionsNbrPerPatinoire: number = 0;
+  // conditionsNbrPerPatinoire: number = 0;
   instAquaNbr: number = 0;
 
   searchForm: FormGroup;
@@ -100,7 +100,8 @@ export class HomeComponent implements OnInit {
       this.errorMessage = error.error.message;
       this.condition_years.clear();
       this.patinoires_perm = [];
-      this.conditionsNbrPerPatinoire = 0;
+      this.glissades_perm = []
+      // this.conditionsNbrPerPatinoire = 0;
       console.log('error status:', error.status);
       console.log('error message :', error.message);
       console.log('error statusText :',error.statusText)
@@ -185,23 +186,18 @@ export class HomeComponent implements OnInit {
   }
 
   public filterByPatinoireName(): void{
-    // alert(JSON.stringify(this.instNamesForm.value))
     const name = this.patinoireNamesForm.value['patinoireName']
     console.log('Choosen patinoire name :',name)
-    // const result :Patinoire[] = [];
     let result :Patinoire = null as any;
     this.patinoires_perm.forEach(element => {
       console.log('element.name patinoire: ',element.nom_pat);
-      console.log(element.nom_pat.indexOf(name) !== -1)
       if(element.nom_pat.indexOf(name) !== -1){
-        // result.push(element)
         result = element;
         console.log('filtering by :'+name+' gives :', result)
       }
     });
-    // this.patinoires = result;
     this.selectedPatinoir = result;
-    this.conditionsNbrPerPatinoire = this.selectedPatinoir.conditions.length;
+    // this.conditionsNbrPerPatinoire = this.selectedPatinoir.conditions.length;
   }
 
   public filterByYear(): void {
@@ -212,14 +208,8 @@ export class HomeComponent implements OnInit {
                                     .filter(condition =>
                                     new Date(condition.date_heure).getFullYear() == selectedYear);
 
-    this.conditionsNbrPerPatinoire = this.conditionsOfSelectedYear.length;
+    // this.conditionsNbrPerPatinoire = this.conditionsOfSelectedYear.length;
 
   }
-
-
-  // public onSubmit(){
-  //   //console.log('submitted')
-  //   alert(JSON.stringify(this.instNamesForm.value))
-  // }
 
 }
