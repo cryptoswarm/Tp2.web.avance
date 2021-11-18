@@ -1,6 +1,6 @@
 import pytz
 from inf5190_projet_src import create_app
-from inf5190_projet_src.controllers.data_requester import start_glissade_scheduler
+from inf5190_projet_src.controllers.data_requester import start_glissade_scheduler, start_pat_scheduler
 from config import JOB_STORES
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
@@ -18,14 +18,19 @@ appplication = create_app()
 #         #start the scheduler
 #         scheduler.start()
 
-def setting_job():
+def setting_job_1():
+    with appplication.app_context():
+        start_pat_scheduler()
+
+def setting_job_2():
     with appplication.app_context():
         start_glissade_scheduler()
 
 def run_job():
     with appplication.app_context():
         scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-        scheduler.add_job(func=setting_job, trigger='interval', hours=24, timezone=pytz.utc)  #timezone=pytz.utc.dst
+        scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.utc)  #timezone=pytz.utc.dst
+        scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.utc)
         scheduler.start()
     #return scheduler
 
@@ -38,7 +43,7 @@ def run_job():
 
 
 if __name__ == "__main__":
-    run_job()
+    # run_job()
     # scheduler = run_job()
     # scheduler.start()
     appplication.run(debug=True)

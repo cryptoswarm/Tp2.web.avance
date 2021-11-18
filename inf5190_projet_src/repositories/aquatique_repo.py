@@ -22,5 +22,25 @@ def find_aqua_insta_by_hash(hash):
 def find_aqua_by_id(id):
     return InstallationAquatique.query.filter_by(id=id).first()
 
+def update_aqua(installation, data):
+    installation.nom_installation = data['nom_installation']
+    installation.type_installation = data['type_installation']
+    installation.adress = data['adress']
+    installation.propriete_installation = data['propriete_installation']
+    installation.gestion_inst = data['gestion_inst']
+    installation.equipement_inst = data['equipement_inst']
+    
+
+
+
+# nom_installation = db.Column(db.String(255),  nullable=False)
+#     type_installation = db.Column(db.String(255), nullable=False)
+#     adress = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+#     propriete_installation = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+#     gestion_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+#     equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
+#     aqua_hash = db.Column(db.String(255), unique=True, nullable=False)
+#     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
+#     position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
 
 

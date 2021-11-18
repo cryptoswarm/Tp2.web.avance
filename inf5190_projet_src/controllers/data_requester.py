@@ -44,17 +44,17 @@ def get_from_external_api(url, mime_type):
 def start_glissade_scheduler():
     response = get_from_external_api(url_glissade, 'application/xml')
     if response.status_code == 200:
-        create_xml_file(response, 'glissade.xml')
-        root = save_all_glissade(UPLOAD_FOLDER+'/glissade.xml')
-        return json.jsonify(root), 200
+        save_all_glissade(response)
+        return json.jsonify({}), 200
     return {}, 400
 
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
 def start_pat_scheduler():
     response =  get_from_external_api(url_patinoire, 'application/xml')
     if response.status_code == 200:
-        create_xml_file(response, 'patinoire.xml')
-        result = save_pat_and_conditions(UPLOAD_FOLDER+'/patinoire.xml')
+        # create_xml_file(response, 'patinoire.xml')
+        # result = save_pat_and_conditions(UPLOAD_FOLDER+'/patinoire.xml')
+        result = save_pat_and_conditions(response)
         return jsonify(result), 201
     return {}, 400
 
@@ -63,12 +63,13 @@ def start_pat_scheduler():
 def start_aqua_scheduler():
     response = get_from_external_api(url_aquatique, 'text/csv')
     if response.status_code == 200:
-        create_csv_file(response, 'piscines.csv')
-        try:
-            create_aqua_installations('piscines.csv')
-            return {}, 200
-        except Exception as e:
-            return jsonify(e.args), 500
+        # create_csv_file(response, 'piscines.csv')
+        # try:
+        # create_aqua_installations('piscines.csv')
+        create_aqua_installations(response)
+        return {}, 200
+        # except Exception as e:
+        #     return jsonify(e.args), 500
     return {}, 400
 
         

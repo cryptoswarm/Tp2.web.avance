@@ -4,8 +4,8 @@ from inf5190_projet_src.models.patinoire import Patinoire
 from sqlalchemy import or_, and_, func, desc
 
 
-def save_patinoire(patinoire):
-    #patinoire = Patinoire(content['nom_pat'], content['arron_id'])
+def save_patinoire(nom_pat, arrond_id):
+    patinoire = Patinoire(nom_pat, arrond_id)
     print('patinoire received :',patinoire.asDictionary())
     db.session.add(patinoire)
     db.session.commit()
