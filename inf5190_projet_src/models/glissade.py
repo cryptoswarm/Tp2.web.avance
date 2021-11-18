@@ -40,7 +40,7 @@ class Glissade(Base):
                 } 
 
 class GlissadeSchema(ma.Schema):
-    glissade_id = fields.Number(required=True)
+    id = fields.Number()
     name = fields.String(required=True, validate=validate.Length(1))
     date_maj = fields.DateTime(required=True)
     ouvert = fields.Boolean(required=True)

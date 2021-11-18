@@ -30,3 +30,8 @@ def update(glissade, posted_glissade):
     glissade.condition = posted_glissade['condition']
     db.session.commit()
     return glissade
+
+def delete_by_id(id):
+    glissade = find_glissade_by_id(id)
+    db.session.delete(glissade)
+    db.session.commit()

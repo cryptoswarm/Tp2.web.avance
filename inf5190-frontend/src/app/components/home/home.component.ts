@@ -35,6 +35,9 @@ export class HomeComponent implements OnInit {
   results: number = 0;
   searchResult: boolean = false;
   selectedPatinoir: Patinoire = null as any;
+  conditionsOfSelectedYear: PatinoirCondition[] = []
+  conditionsNbrPerPatinoire: number = 0;
+  instAquaNbr: number = 0;
 
   searchForm: FormGroup;
   instNamesForm: FormGroup;
@@ -68,8 +71,6 @@ export class HomeComponent implements OnInit {
   public getAllInstallations(){
     console.log('Search key word : ',this.searchForm.value)
     this.apiClient.getInstallationsPerArrondissement(this.searchForm.value).subscribe((installations: Installation)=>{
-      // this.installations = installations
-
       this.searchResult = false;
       this.arr_name = installations.arr_name;
       this.arr_cle = installations.arr_cle;
@@ -77,7 +78,7 @@ export class HomeComponent implements OnInit {
       this.aqua_inst_perm = installations.aqua_inst;
       console.log('this.aqua_inst :',this.aqua_inst)
       this.inst_names = this.getAquaInstallationName(installations.aqua_inst);
-      this.results = installations.aqua_inst.length;
+      this.instAquaNbr = installations.aqua_inst.length;
       this.glissades = installations.glissades
       this.glissades_perm = installations.glissades
       this.glissade_names = this.getGlissadesNames(this.glissades_perm)
@@ -93,8 +94,13 @@ export class HomeComponent implements OnInit {
       this.aqua_inst = [];
       this.aqua_inst_perm = [];
       this.inst_names = [];
+      this.conditionsOfSelectedYear = [];
       this.results = 0;
+      this.selectedPatinoir = null as any;
       this.errorMessage = error.error.message;
+      this.condition_years.clear();
+      this.patinoires_perm = [];
+      this.conditionsNbrPerPatinoire = 0;
       console.log('error status:', error.status);
       console.log('error message :', error.message);
       console.log('error statusText :',error.statusText)
@@ -159,6 +165,7 @@ export class HomeComponent implements OnInit {
       }
     });
     this.aqua_inst = result;
+    this.instAquaNbr = this.aqua_inst.length;
   }
 
   public filterByGlissadeName(): void{
@@ -194,24 +201,19 @@ export class HomeComponent implements OnInit {
     });
     // this.patinoires = result;
     this.selectedPatinoir = result;
+    this.conditionsNbrPerPatinoire = this.selectedPatinoir.conditions.length;
   }
 
   public filterByYear(): void {
     const selectedYear = this.yearsForm.value['conditionyear']
     console.log('selected year : ',selectedYear)
-    let tempPatinoire: Patinoire = null as any;
-    let tempConditions: PatinoirCondition[] = [];
-    this.selectedPatinoir.conditions.forEach(element => {
-      let tempYear = new Date(element.date_heure).getFullYear();
-      if(tempYear == selectedYear){
-        // console.log('element will be removed')
-        // this.selectedPatinoir.conditions.pop()
-        // tempPatinoire.conditions.push(element)
-        tempConditions.push(element);
-      }
-    });
-    // this.selectedPatinoir = tempPatinoire;
-    this.selectedPatinoir.conditions = tempConditions;
+    this.conditionsOfSelectedYear = this.selectedPatinoir
+                                    .conditions
+                                    .filter(condition =>
+                                    new Date(condition.date_heure).getFullYear() == selectedYear);
+
+    this.conditionsNbrPerPatinoire = this.conditionsOfSelectedYear.length;
+
   }
 
 

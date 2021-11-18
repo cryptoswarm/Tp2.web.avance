@@ -22,9 +22,9 @@ glissade_schema = GlissadeSchema()
 
 mod_glissade = Blueprint('glissade', __name__, url_prefix='')
 
-@mod_glissade.route('/api/glissade', methods=['PUT'])
+@mod_glissade.route('/api/glissade/<id>', methods=['PUT'])
 @schema.validate(edit_glissade)
-def edit_glissade():
+def edit_glissade(id):
     glissade_data = request.get_json()
     try:
         posted_glissade = GlissadeSchema().load(glissade_data) 
@@ -33,17 +33,28 @@ def edit_glissade():
     arrondissement, status = get_arr_by_id(posted_glissade['arrondissement_id'])
     if arrondissement is None:
         return jsonify({"message":"arrondissement does not exist!"}), status
-    glissade, status = get_glissade_by_id(posted_glissade['glissade_id'])
+    glissade, status = get_glissade_by_id(id)
     if glissade is None:
         return jsonify({"message":"Glissade does not exist!"}), status
     if arrondissement.id != glissade.arrondissement_id:
         return jsonify({"message":"Given glissade does not belong to given arrondissement"}), 400
     updated, status = update_glissade(glissade, posted_glissade)
-    result = GlissadeSchema.dump(updated)
-    
-    # return jsonify(glissade_id), 200
+    print('received updated :',updated)
+    result = GlissadeSchema().dump(updated)
+    print('Serialized data :',result)
     return {"status": "success", "data": result}, status
 
+
+@mod_glissade.route('/api/glissade/<id>', methods=['DELETE'])
+# @schema.validate(edit_glissade)
+def delete_glissade(id):
+    print('Rceived id: ',id)
+    glissade, status = get_glissade_by_id(id)
+    print('glissade :', glissade)
+    if glissade is None:
+        return jsonify({"status": "fail", "message":"glissade does not exist"}), 404
+    delete_glissade_by_id(id)
+    return {}, 200
 
 #     D1 15xp
 # Le système offre un service REST permettant de modifier l'état d'une glissade. Le client doit envoyer

@@ -152,4 +152,6 @@ def update_glissade(glissade, posted_glissade):
     updated_glissade = update(glissade, posted_glissade)
     return updated_glissade, 200
 
+def delete_glissade_by_id(id):
+    delete_by_id(id)
 

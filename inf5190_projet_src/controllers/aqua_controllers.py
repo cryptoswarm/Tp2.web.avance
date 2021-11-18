@@ -25,3 +25,5 @@ def get_installation_arr_name():
         # return response
         return jsonify(installations), 200
     return {}, 400
+
+

@@ -93,7 +93,7 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{results}}</b> resultats</div>
+                            <div class="records">Affichage: <b>{{aqua_inst?.length}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -217,7 +217,7 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{results}}</b> resultats</div>
+                            <div class="records">Affichage: <b>{{glissades_perm?.length}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -241,77 +241,58 @@
                             <thead>
                               <tr>
                                 <th>
+                                  <!-- "condition", "date_maj" , "deblaye", "name","ouvert" -->
                                   <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">Map</p>
+                                    <p class="type m-0">Nom glissade</p>
                                   </div>
                                 </th>
                                 <th>
                                   <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">Nom installation</p>
+                                    <p class="type m-0">Date mettre à jour</p>
                                   </div>
                                 </th>
                                 <th>
                                   <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">Type installation</p>
+                                    <p class="type m-0">deblaye</p>
                                   </div>
                                 </th>
                                 <th>
                                   <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">ADRESSE</p>
+                                    <p class="type m-0">Ouvert</p>
                                   </div>
                                 </th>
                                 <th>
                                   <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">PROPRIETE</p>
-                                  </div>
-                                </th>
-                                <th>
-                                  <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">Gestion</p>
-                                  </div>
-                                </th>
-                                <th>
-                                  <div class="widget-26-job-category bg-soft-base">
-                                    <p class="type m-0">Equipement</p>
+                                    <p class="type m-0">Condition</p>
                                   </div>
                                 </th>
                               </tr>
                             </thead>
-                            <tbody *ngFor="let aqua of aqua_inst">
+                            <tbody *ngFor="let glissade of glissades_perm">
                               <tr>
                                 <td>
-                                  <div class="widget-26-job-emp-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Company" />
+                                  <div class="widget-26-job-info">
+                                    <p class="text-muted m-0">{{glissade?.name}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.nom_installation}}</p>
+                                    <p class="text-muted m-0">{{glissade?.date_maj}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.type_installation}}</p>
+                                    <p class="text-muted m-0">{{glissade?.deblaye}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.adress}}</p>
+                                    <p class="text-muted m-0">{{glissade?.ouvert}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.propriete_installation}}</p>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.gestion_inst}}</p>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.equipement_inst}}</p>
+                                    <p class="text-muted m-0">{{glissade?.condition}}</p>
                                   </div>
                                 </td>
                               </tr>
@@ -341,7 +322,7 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records">Affichage: <b>{{results}}</b> resultats</div>
+                            <div class="records">Affichage: <b>{{conditionsNbrPerPatinoire}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
@@ -400,8 +381,7 @@
                                 </th>
                               </tr>
                             </thead>
-                            <!-- <tbody *ngFor="let condition of patinoires?.conditions"> -->
-                            <tbody *ngFor="let condition of selectedPatinoir?.conditions">
+                            <tbody *ngFor="let condition of conditionsOfSelectedYear">
                               <tr>
                                 <td>
                                   <div class="widget-26-job-info">

@@ -69,3 +69,13 @@ def get_aqua_inst_by_hash(hash):
     if installation is None:
         return None
     return installation
+
+def get_aqua_inst_by_id(id):
+    installation = find_aqua_by_id(id)
+    if installation is None:
+        return None, 404
+    return installation, 200
+
+def update_aqua_inst(installation, data):
+    updated_aqua = update(installation, data)
+    return updated_aqua, 200
