@@ -1,4 +1,5 @@
 import logging
+import datetime
 import pytz
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -7,22 +8,14 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-from config import JOB_STORE_URL
 from flask_json_schema import JsonSchema, JsonValidationError
+
+
 
 db = SQLAlchemy()
 schema = JsonSchema()
 
-# from inf5190_projet_src.controllers.data_requester import save_uploaded_data
-# scheduler = BackgroundScheduler(jobstores=jobstores)
-# #scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-# scheduler.add_job(func=save_uploaded_data, trigger='interval', minutes=2, timezone=pytz.utc)  #timezone=pytz.utc.dst
-# #start the scheduler
-# scheduler.start()
-
 def create_app(test_config=None):
-
-    
     # Here the WSGI app object is defined
     app = Flask(__name__)
     # CORS(app) or the way below 
@@ -59,9 +52,7 @@ def create_app(test_config=None):
             return "Hello, World!"
 
         # db object which is imported by modules and controllers
-        #db = SQLAlchemy(app)
         db.init_app(app)
-
         schema.init_app(app)
 
         # HTTP error handling
@@ -96,16 +87,7 @@ def create_app(test_config=None):
         # app.route, while giving the article blueprint a url_prefix, but for
         # the tutorial the article will be the main index
         #app.add_url_rule("/", endpoint="accueil")
-        
-        # #Import function that will be executed by the scheduler
-        # from inf5190_projet_src.controllers.data_requester import save_uploaded_data
-        # scheduler = BackgroundScheduler(jobstores=jobstores)
-        # #scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-        # scheduler.add_job(func=save_uploaded_data, trigger='interval', minutes=2, timezone=pytz.utc)  #timezone=pytz.utc.dst
-        # #start the scheduler
-        # scheduler.start()
-        # from inf5190_projet_src.controllers.data_requester import run_job
-        # run_job(app)
+
     return app
 
 application = create_app()
