@@ -98,13 +98,12 @@
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <span>Chercher par nom d'installation:</span>
                                 <form [formGroup]="instNamesForm" (change)="filterByInstallationName()">
-                                  <select class="form-control border-0" id="exampleOption" formControlName="instaName">
-                                    <option [ngValue]="null" disabled>-Choisir un nom-</option>
+                                  <select class="selectpicker form-control" id="exampleOption_1" formControlName="instaName">
+                                    <option data-hidden="true" value="" disable>Choisir une installation aquatique</option>
                                     <option *ngFor="let aqua of aqua_inst_perm" [ngValue]="aqua?.nom_installation">
                                       {{aqua?.nom_installation}}</option>
-                                  </select>
+                                    </select>
                                 </form>
                               </div>
                             </div>
@@ -222,10 +221,9 @@
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <span>Chercher par nom de glissade:</span>
                                 <form [formGroup]="glissadeNamesForm" (change)="filterByGlissadeName()">
-                                  <select class="form-control border-0" id="exampleOption" formControlName="glissadeName">
-                                    <option [ngValue]="null" disabled>-Choisir un nom de glissade-</option>
+                                  <select class="selectpicker form-control" id="exampleOption_2" formControlName="glissadeName">
+                                    <option data-hidden="true" value="" disable>Choisir une glissade</option>
                                     <option *ngFor="let glissade of glissades_perm" [ngValue]="glissade?.name">
                                       {{glissade?.name}}</option>
                                   </select>
@@ -241,7 +239,6 @@
                             <thead>
                               <tr>
                                 <th>
-                                  <!-- "condition", "date_maj" , "deblaye", "name","ouvert" -->
                                   <div class="widget-26-job-category bg-soft-base">
                                     <p class="type m-0">Nom glissade</p>
                                   </div>
@@ -322,24 +319,21 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <!-- selectedPatinoir?.conditions?.length else 0 -->
-                            <div class="records"><b>{{selectedPatinoir?.conditions ? selectedPatinoir?.conditions?.length : 0}}</b> resultats</div>
+                            <div class="records"><b>{{condsNbrPerPat}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <span>Chercher par nom de patinoire:</span>
-                                <form [formGroup]="patinoireNamesForm" (change)="filterByPatinoireName()">
-                                  <select class="form-control border-0" id="patinoiresOption" formControlName="patinoireName">
-                                    <option [ngValue]="null" disabled>-Choisir un nom-</option>
+                                <form [formGroup]="patinoireNamesForm" (change)="filterByPatinoireName()" style="padding-right:5px ;">
+                                  <select class="selectpicker form-control" id="patinoiresOption" formControlName="patinoireName">
+                                    <option data-hidden="true" value="" disable>Choisir une patinoire</option>
                                     <option *ngFor="let patinoire of patinoires_perm" [ngValue]="patinoire?.nom_pat">
                                       {{patinoire?.nom_pat}}</option>
                                   </select>
                                 </form>
-                                <span>Filtrer par année:</span>
                                 <form *ngIf="selectedPatinoir" [formGroup]="yearsForm" (change)="filterByYear()">
-                                  <select class="form-control border-0" id="yearOption" formControlName="conditionyear">
-                                    <option [ngValue]="null" disabled>-Choisir une année-</option>
+                                  <select class="selectpicker form-control" id="yearOption" formControlName="conditionyear">
+                                    <option data-hidden="true" value="" disable>Année</option>
                                     <option *ngFor="let year of condition_years" [ngValue]="year">
                                       {{year}}</option>
                                   </select>

@@ -39,7 +39,7 @@ def get_from_external_api(url, mime_type):
 
 
 @mod_scheduler.route('/scheduler-glissade', methods=['GET'])
-def start_glissade_scheduler():
+def persist_glissade_data():
     response = get_from_external_api(url_glissade, 'application/xml')
     if response.status_code == 200:
         save_all_glissade(response)
@@ -47,7 +47,7 @@ def start_glissade_scheduler():
     return {}, 400
 
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
-def start_pat_scheduler():
+def persist_patinoir_data():
     response =  get_from_external_api(url_patinoire, 'application/xml')
     if response.status_code == 200:
         save_pat_and_conditions(response)
@@ -56,7 +56,7 @@ def start_pat_scheduler():
 
 
 @mod_scheduler.route("/scheduler-aqua", methods=['GET'])
-def start_aqua_scheduler():
+def persist_aqua_data():
     response = get_from_external_api(url_aquatique, 'text/csv')
     if response.status_code == 200:
         create_aqua_installations(response)

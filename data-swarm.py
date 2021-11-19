@@ -1,50 +1,37 @@
 import pytz
 from inf5190_projet_src import create_app
-from inf5190_projet_src.controllers.data_requester import start_glissade_scheduler, start_pat_scheduler
-from config import JOB_STORES
+from inf5190_projet_src.controllers.data_requester import *
+from config import JOB_STORES, JOB_DEFAULTS
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 appplication = create_app()
-# def run_job(app):
-#     with app.app_context():
-#         #Import function that will be executed by the scheduler
-#         # from inf5190_projet_src.controllers.data_requester import save_uploaded_data
-#         scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-#         #scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-#         scheduler.add_job(func=save_uploaded_data, trigger='interval', minutes=2, timezone=pytz.utc)  #timezone=pytz.utc.dst
-#         #start the scheduler
-#         scheduler.start()
 
 def setting_job_1():
     with appplication.app_context():
-        start_pat_scheduler()
+        persist_patinoir_data()
 
 def setting_job_2():
     with appplication.app_context():
-        start_glissade_scheduler()
+        persist_aqua_data() 
 
-def run_job():
+def setting_job_3():
     with appplication.app_context():
-        scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-        scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.utc)  #timezone=pytz.utc.dst
-        scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.utc)
-        scheduler.start()
-    #return scheduler
+        persist_glissade_data()
 
-# with appplication.app_context():
-#     scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-#         #scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-#     scheduler.add_job(func=setting_job, trigger='interval', minutes=2, timezone=pytz.utc)  #timezone=pytz.utc.dst
-#         #start the scheduler
-#     scheduler.start()
+
+def run_jobs():
+    with appplication.app_context():
+        scheduler = BackgroundScheduler(jobstores=JOB_STORES, job_defaults=JOB_DEFAULTS)
+        scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.utc)
+        scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.utc)
+        scheduler.add_job(func=setting_job_3, trigger='interval', hours=24, timezone=pytz.utc)
+        scheduler.start()
 
 
 if __name__ == "__main__":
-    # run_job()
-    # scheduler = run_job()
-    # scheduler.start()
+    run_jobs()
     appplication.run(debug=True)
     

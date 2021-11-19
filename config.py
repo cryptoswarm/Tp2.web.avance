@@ -77,6 +77,6 @@ EXECUTORS= {
     'processpool': ProcessPoolExecutor(5)
 }
 JOB_DEFAULTS= {
-    'coalesce': False,
+    'coalesce': True,
     'max_instances': 3
 }

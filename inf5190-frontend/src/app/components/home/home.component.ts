@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   searchResult: boolean = false;
   selectedPatinoir: Patinoire = null as any;
   conditionsOfSelectedYear: PatinoirCondition[] = []
-  // conditionsNbrPerPatinoire: number = 0;
+  condsNbrPerPat : number = 0;
   instAquaNbr: number = 0;
 
   searchForm: FormGroup;
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
       this.condition_years.clear();
       this.patinoires_perm = [];
       this.glissades_perm = []
-      // this.conditionsNbrPerPatinoire = 0;
+      this.condsNbrPerPat  = 0;
       console.log('error status:', error.status);
       console.log('error message :', error.message);
       console.log('error statusText :',error.statusText)
@@ -197,7 +197,7 @@ export class HomeComponent implements OnInit {
       }
     });
     this.selectedPatinoir = result;
-    // this.conditionsNbrPerPatinoire = this.selectedPatinoir.conditions.length;
+    this.condsNbrPerPat = this.selectedPatinoir.conditions.length;
   }
 
   public filterByYear(): void {
@@ -208,7 +208,7 @@ export class HomeComponent implements OnInit {
                                     .filter(condition =>
                                     new Date(condition.date_heure).getFullYear() == selectedYear);
 
-    // this.conditionsNbrPerPatinoire = this.conditionsOfSelectedYear.length;
+    this.condsNbrPerPat  = this.conditionsOfSelectedYear.length;
 
   }
 
