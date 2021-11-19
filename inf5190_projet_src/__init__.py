@@ -107,3 +107,5 @@ def create_app(test_config=None):
         # from inf5190_projet_src.controllers.data_requester import run_job
         # run_job(app)
     return app
+
+application = create_app()

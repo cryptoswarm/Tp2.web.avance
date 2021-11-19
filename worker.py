@@ -1,8 +1,10 @@
 from inf5190_projet_src.controllers.data_requester import *
-from inf5190_projet_src import create_app
+# from inf5190_projet_src import create_app
+from inf5190_projet_src import application
 from config import JOB_STORES, JOB_DEFAULTS
 
-application = create_app()
+
+# application = create_app()
 
 def setting_job_1():
     with application.app_context():
