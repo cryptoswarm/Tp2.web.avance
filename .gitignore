@@ -131,3 +131,17 @@ dmypy.json
 # file extension
 *.json
 *.xml
+
+#ignore custom scripts
+scheduler.py
+splitter.py
+
+
+# ignore data stores
+app.db
+jobs.sqlite
+
+# ignore logs
+app.log
+
+

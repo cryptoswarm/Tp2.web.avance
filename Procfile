@@ -1,2 +1,2 @@
 web: gunicorn data-swarm:application
-worker: python3 worker.py
+worker: python3 scheduler.py

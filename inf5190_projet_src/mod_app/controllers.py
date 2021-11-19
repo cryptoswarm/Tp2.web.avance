@@ -1,6 +1,6 @@
 from re import search
-from flask import Blueprint, json, request, render_template, flash, \
-                                    redirect, url_for
+from flask import Blueprint, request, render_template, flash, \
+                                    redirect, url_for, jsonify
 from datetime import datetime
 
 
@@ -30,3 +30,9 @@ def delete_user():
         print('request to get privacy received')
     return render_template('index.html'), 200
 
+
+@mod_home.route('/current-time')
+def time():
+    #time = datetime.now().time()
+    time = datetime.now().time()
+    return jsonify({'Time now :':str(time)}), 200
