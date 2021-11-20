@@ -1,3 +1,4 @@
+import { Patinoire } from './../models/patinoire';
 import { InstallationAquatique } from './../models/installation-aquatique';
 import { Installation } from './../models/installation';
 import { Injectable } from '@angular/core';
@@ -29,5 +30,12 @@ export class ApiClientService {
     const url = `${this.apiServerUrl}/api/installations/${arron_name['search']}/aquatique/${aquaInstName}`
     console.log('url: ',url)
     return this.httpClient.get<InstallationAquatique[]>(url, httpOptions)
+  }
+
+  public getPatinoireDetails(arron_name:string, patinoireName: string): Observable<Patinoire>{
+    console.log('arron_name :',arron_name['search'])
+    const url = `${this.apiServerUrl}/api/installations/${arron_name['search']}/patinoire/${patinoireName}`
+    console.log('url: ',url)
+    return this.httpClient.get<Patinoire>(url, httpOptions)
   }
 }

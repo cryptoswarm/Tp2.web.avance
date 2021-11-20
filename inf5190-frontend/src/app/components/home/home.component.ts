@@ -27,22 +27,23 @@ export class HomeComponent implements OnInit {
   glissades: Glissade[] = [];
   glissades_perm: Glissade[] = [];
   patinoires: Patinoire[] = [];
-  patinoires_perm: Patinoire[] = [];
+  patinoire_details: Patinoire = null as any;
+  patinoire_nbr: number = 0;
   inst_names: string[] = []
   glissade_names : string[] = []
   patinoires_names : string[] = []
   condition_years:  Set<number> = new Set<number>();
   results: number = 0;
   searchResult: boolean = false;
-  selectedPatinoir: Patinoire = null as any;
+  selectedPatinoir: boolean = false;
   conditionsOfSelectedYear: PatinoirCondition[] = []
   condsNbrPerPat : number = 0;
   instAquaNbr: number = 0;
 
   searchForm: FormGroup;
-  instNamesForm: FormGroup;
+  instAquaForm: FormGroup;
   glissadeNamesForm: FormGroup;
-  patinoireNamesForm: FormGroup;
+  patinoireForm: FormGroup;
   yearsForm: FormGroup
 
 
@@ -50,13 +51,13 @@ export class HomeComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       search: ['', Validators.required]
     })
-    this.instNamesForm = this.formBuilder.group({
+    this.instAquaForm = this.formBuilder.group({
       aquaInstaName: ['', Validators.required]
     })
     this.glissadeNamesForm = this.formBuilder.group({
       glissadeName: ['', Validators.required]
     })
-    this.patinoireNamesForm = this.formBuilder.group({
+    this.patinoireForm = this.formBuilder.group({
       patinoireName: ['', Validators.required]
     })
     this.yearsForm = this.formBuilder.group({
@@ -68,32 +69,23 @@ export class HomeComponent implements OnInit {
 
 
   public getAllInstallations(){
+    this.ReInitialize()
     this.arr_name = this.searchForm.value;
     console.log('Search key word : ',this.searchForm.value)
-    this.apiClient.getInstallationsPerArrondissement(this.searchForm.value).subscribe((installations: Installation)=>{
+    this.apiClient.getInstallationsPerArrondissement(this.searchForm.value)
+                  .subscribe((installations: Installation)=>{
       this.searchResult = false;
       this.arr_cle = installations.arr_cle;
       this.aqua_inst = installations.aqua_inst;
-      console.log('this.aqua_inst :',this.aqua_inst)
       this.aqua_inst_nbr = this.aqua_inst.length
       this.glissades = installations.glissades
-      console.log('this.glissades :',this.glissades)
       this.patinoires = installations.patinoires
-      console.log('this.patinoires :',this.patinoires)
+      this.patinoire_nbr = this.patinoires.length;
       this.searchForm.reset()
     },
     (error: HttpErrorResponse)=>{
-      this.searchResult = true;
-      this.aqua_inst = [];
-      this.inst_names = [];
-      this.conditionsOfSelectedYear = [];
-      this.results = 0;
-      this.selectedPatinoir = null as any;
+      this.ReInitialize()
       this.errorMessage = error.error.message;
-      this.condition_years.clear();
-      this.patinoires_perm = [];
-      this.glissades_perm = []
-      this.condsNbrPerPat  = 0;
       console.log('error status:', error.status);
       console.log('error message :', error.message);
       console.log('error statusText :',error.statusText)
@@ -102,45 +94,94 @@ export class HomeComponent implements OnInit {
 
 
   public getAquaInstallationDetails(): void{
-    // alert(JSON.stringify(this.instNamesForm.value))
-    const aquaName = this.instNamesForm.value['aquaInstaName']
+    const aquaName = this.instAquaForm.value['aquaInstaName']
     console.log('Choosen aqua inst name :',aquaName)
     this.apiClient.getAquaInstallationDetails(this.arr_name, aquaName).subscribe((aquaInst: InstallationAquatique[])=>{
         this.aqua_inst_details = aquaInst;
         this.aqua_inst_nbr = aquaInst.length
         console.log(this.aqua_inst_details)
+    },
+    (error: HttpErrorResponse)=>{
+      console.log('error status:', error.status);
+      console.log('error message :', error.message);
+      console.log('error statusText :',error.statusText)
     })
   }
 
-
-
-  public getAquaInstallationName(installations: InstallationAquatique[]): string[]{
-    let inst_names: string[] = []
-    installations.forEach(element => {
-      inst_names.push(element.nom_installation)
-    });
-    return inst_names;
+  public getPatinoiresDetails(): void{
+    const patName = this.patinoireForm.value['patinoireName']
+    console.log('Choosen patinoire name :',patName)
+    this.apiClient.getPatinoireDetails(this.arr_name, patName).subscribe((response: Patinoire)=>{
+        this.patinoire_details = response;
+        this.patinoire_nbr = 1;
+        this.selectedPatinoir = true;
+        this.getAllYears(this.patinoire_details)
+        this.conditionsOfSelectedYear = []
+    },
+    (error: HttpErrorResponse)=>{
+      console.log('error status:', error.status);
+      console.log('error message :', error.message);
+      console.log('error statusText :',error.statusText)
+    })
   }
 
-  public getGlissadesNames(installations: Glissade[]): string[]{
-    let glissades_names: string[] = []
-    installations.forEach(element => {
-      glissades_names.push(element.name)
-    });
-    return glissades_names;
+  public getAllYears(patinoire: Patinoire): void {
+      patinoire.conditions?.forEach(condition => {
+        let year: number  = new Date(condition.date_heure).getFullYear();
+        this.condition_years.add(year);
+      });
   }
 
-  public getPatinoiresNames(installations: Patinoire[]): string[]{
-    let patinoires_names: string[] = []
-    installations.forEach(element => {
-      patinoires_names.push(element.nom_pat)
-      // element?.conditions.forEach(condition => {
-      //   let year:number  = new Date(condition.date_heure).getFullYear();
-      //   this.condition_years.add(year);
-      // });
-    });
-    return patinoires_names;
+  public filterByYear(): void {
+    this.conditionsOfSelectedYear = []
+    let selectedYear: number = this.yearsForm.value['conditionyear']
+    console.log('selected year : ',selectedYear)
+    this.patinoire_details.conditions?.forEach(condition => {
+      if(new Date(condition.date_heure).getFullYear() == selectedYear){
+        this.conditionsOfSelectedYear.push(condition)
+      }
+    })
+    this.patinoire_nbr  = this.conditionsOfSelectedYear.length;
   }
+
+  public ReInitialize(): void {
+    this.aqua_inst_nbr = 0;
+    this.patinoire_nbr = 0;
+    this.aqua_inst_details = []
+    this.selectedPatinoir = false
+    this.aqua_inst = [];
+    this.glissades = [];
+    this.patinoires = []
+    this.conditionsOfSelectedYear = []
+  }
+
+  // public getAquaInstallationName(installations: InstallationAquatique[]): string[]{
+  //   let inst_names: string[] = []
+  //   installations.forEach(element => {
+  //     inst_names.push(element.nom_installation)
+  //   });
+  //   return inst_names;
+  // }
+
+  // public getGlissadesNames(installations: Glissade[]): string[]{
+  //   let glissades_names: string[] = []
+  //   installations.forEach(element => {
+  //     glissades_names.push(element.name)
+  //   });
+  //   return glissades_names;
+  // }
+
+  // public getPatinoiresNames(installations: Patinoire[]): string[]{
+  //   let patinoires_names: string[] = []
+  //   installations.forEach(element => {
+  //     patinoires_names.push(element.nom_pat)
+  //     // element?.conditions.forEach(condition => {
+  //     //   let year:number  = new Date(condition.date_heure).getFullYear();
+  //     //   this.condition_years.add(year);
+  //     // });
+  //   });
+  //   return patinoires_names;
+  // }
 
   // public searchEmployees(key: string):void{
   //   console.log(key);
@@ -177,7 +218,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  public filterByGlissadeName(): void{
+  public getGlissadeDetails(): void{
     // alert(JSON.stringify(this.instNamesForm.value))
     const name = this.glissadeNamesForm.value['glissadeName']
     console.log('Choosen glissade name :',name)
@@ -194,30 +235,20 @@ export class HomeComponent implements OnInit {
   }
 
   public filterByPatinoireName(): void{
-    const name = this.patinoireNamesForm.value['patinoireName']
-    console.log('Choosen patinoire name :',name)
-    let result :Patinoire = null as any;
-    this.patinoires_perm.forEach(element => {
-      console.log('element.name patinoire: ',element.nom_pat);
-      if(element.nom_pat.indexOf(name) !== -1){
-        result = element;
-        console.log('filtering by :'+name+' gives :', result)
-      }
-    });
-    this.selectedPatinoir = result;
+    // const name = this.patinoireNamesForm.value['patinoireName']
+    // console.log('Choosen patinoire name :',name)
+    // let result :Patinoire = null as any;
+    // this.patinoires_perm.forEach(element => {
+    //   console.log('element.name patinoire: ',element.nom_pat);
+    //   if(element.nom_pat.indexOf(name) !== -1){
+    //     result = element;
+    //     console.log('filtering by :'+name+' gives :', result)
+    //   }
+    // });
+    // this.selectedPatinoir = result;
     // this.condsNbrPerPat = this.selectedPatinoir?.conditions.length;
   }
 
-  public filterByYear(): void {
-    // const selectedYear = this.yearsForm.value['conditionyear']
-    // console.log('selected year : ',selectedYear)
-    // this.conditionsOfSelectedYear = this.selectedPatinoir
-    //                                 ?.conditions
-    //                                 .filter(condition =>
-    //                                 new Date(condition.date_heure).getFullYear() == selectedYear);
 
-    // this.condsNbrPerPat  = this.conditionsOfSelectedYear.length;
-
-  }
 
 }

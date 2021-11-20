@@ -98,9 +98,9 @@
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <form [formGroup]="instNamesForm" (change)="getAquaInstallationDetails()">
+                                <form [formGroup]="instAquaForm" (change)="getAquaInstallationDetails()">
                                   <select class="selectpicker form-control" id="exampleOption_1" formControlName="aquaInstaName">
-                                    <option data-hidden="true" value="" disable>Choisir une installation aquatique</option>
+                                    <option  value="" disabled>Choisir une installation aquatique</option>
                                     <option *ngFor="let aqua of aqua_inst" [ngValue]="aqua?.nom_installation">
                                       {{aqua?.nom_installation}}</option>
                                     </select>
@@ -221,9 +221,9 @@
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <form [formGroup]="glissadeNamesForm" (change)="filterByGlissadeName()">
+                                <form [formGroup]="glissadeNamesForm" (change)="getGlissadeDetails()">
                                   <select class="selectpicker form-control" id="exampleOption_2" formControlName="glissadeName">
-                                    <option data-hidden="true" value="" disable>Choisir une glissade</option>
+                                    <option data-hidden="true" value="" disabled>Choisir une glissade</option>
                                     <option *ngFor="let glissade of glissades" [ngValue]="glissade?.name">
                                       {{glissade?.name}}</option>
                                   </select>
@@ -319,21 +319,21 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records"><b>{{condsNbrPerPat}}</b> resultats</div>
+                            <div class="records"><b>{{patinoire_nbr}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <form [formGroup]="patinoireNamesForm" (change)="filterByPatinoireName()" style="padding-right:5px ;">
+                                <form [formGroup]="patinoireForm" (change)="getPatinoiresDetails()" style="padding-right:5px ;">
                                   <select class="selectpicker form-control" id="patinoiresOption" formControlName="patinoireName">
-                                    <option data-hidden="true" value="" disable>Choisir une patinoire</option>
+                                    <option data-hidden="true" value="" disabled>Choisir une patinoire</option>
                                     <option *ngFor="let patinoire of patinoires" [ngValue]="patinoire?.nom_pat">
                                       {{patinoire?.nom_pat}}</option>
                                   </select>
                                 </form>
                                 <form *ngIf="selectedPatinoir" [formGroup]="yearsForm" (change)="filterByYear()">
                                   <select class="selectpicker form-control" id="yearOption" formControlName="conditionyear">
-                                    <option data-hidden="true" value="" disable>Année</option>
+                                    <option data-hidden="true" value="" disabled>Année</option>
                                     <option *ngFor="let year of condition_years" [ngValue]="year">
                                       {{year}}</option>
                                   </select>
@@ -343,7 +343,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="result-body">
+                      <div *ngIf="patinoire_details" class="result-body">
                         <div class="table-responsive">
                           <table class="table widget-26">
                             <!-- <div *ngFor="let patinoire of patinoires"> -->
