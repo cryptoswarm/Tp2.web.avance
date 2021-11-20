@@ -37,6 +37,22 @@ def get_from_external_api(url, mime_type):
         return response
     return response
 
+@mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
+def persist_patinoir_data():
+    response =  get_from_external_api(url_patinoire, 'application/xml')
+    if response.status_code == 200:
+        save_pat_and_conditions(response)
+        return jsonify({}), 201
+    return {}, 400
+
+@mod_scheduler.route("/scheduler-aqua", methods=['GET'])
+def persist_aqua_data():
+    response = get_from_external_api(url_aquatique, 'text/csv')
+    if response.status_code == 200:
+        create_aqua_installations(response)
+        return jsonify({}), 200
+    return {}, 400
+
 
 @mod_scheduler.route('/scheduler-glissade', methods=['GET'])
 def persist_glissade_data():
@@ -46,22 +62,6 @@ def persist_glissade_data():
         return json.jsonify({}), 200
     return {}, 400
 
-@mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
-def persist_patinoir_data():
-    response =  get_from_external_api(url_patinoire, 'application/xml')
-    if response.status_code == 200:
-        save_pat_and_conditions(response)
-        return jsonify({}), 201
-    return {}, 400
-
-
-@mod_scheduler.route("/scheduler-aqua", methods=['GET'])
-def persist_aqua_data():
-    response = get_from_external_api(url_aquatique, 'text/csv')
-    if response.status_code == 200:
-        create_aqua_installations(response)
-        return jsonify({}), 200
-    return {}, 400
 
         
 

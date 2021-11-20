@@ -31,7 +31,16 @@ def update_aqua(installation, data):
     installation.equipement_inst = data['equipement_inst']
     
 
+def find_aqua_inst_names_arr_id(arr_id):
+    return InstallationAquatique \
+           .query \
+           .with_entities(InstallationAquatique.nom_installation, InstallationAquatique.id) \
+           .filter_by(arron_id=arr_id).all()
 
+def find_aqua_installations(arrond_id, aqua_name):
+    return InstallationAquatique \
+           .query \
+           .filter_by(and_(arron_id=arrond_id, nom_installation=aqua_name)).all()
 
 # nom_installation = db.Column(db.String(255),  nullable=False)
 #     type_installation = db.Column(db.String(255), nullable=False)

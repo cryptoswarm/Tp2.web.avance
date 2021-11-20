@@ -146,6 +146,15 @@ def get_glissades_per_arr_id(arr_id):
         all_glissades.append(glissade.asDictionary())
     return all_glissades
 
+def get_glissades_names_arr_id(arr_id):
+    response = []
+    glissade_names = find_glissades_names_arr_id(arr_id)
+    if glissade_names is None:
+        return None
+    for glissade in glissade_names:
+        response.append({'id':glissade[1], 'name':glissade[0]})
+    return response
+
 def get_glissade_by_id(glissade_id):
     response = find_glissade_by_id(glissade_id)
     if response is None:

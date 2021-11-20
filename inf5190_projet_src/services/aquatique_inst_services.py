@@ -82,3 +82,20 @@ def get_aqua_inst_by_id(id):
 def update_aqua_inst(installation, data):
     updated_aqua = update_aqua(installation, data)
     return updated_aqua, 200
+
+
+def get_aqua_inst_names_arr_id(arr_id):
+    response = []
+    aqua_inst_names = find_aqua_inst_names_arr_id(arr_id)
+    if aqua_inst_names is None:
+        logging.debug('Search aqua inst names by arr id : {} not found'.format(arr_id))
+        return None
+    for aqua in aqua_inst_names:
+        response.append({'id': aqua[1], 'nom_installation':aqua[0]})
+    return response
+
+def get_aqua_installations(arrond_id, aqua_name):
+    aqua_intas = find_aqua_installations(arrond_id, aqua_name)
+    if aqua_intas is None:
+        return None
+    return aqua_intas

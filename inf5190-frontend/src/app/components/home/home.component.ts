@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
   inst_names: string[] = []
   glissade_names : string[] = []
   patinoires_names : string[] = []
-  // condition_years: number[] = []
   condition_years:  Set<number> = new Set<number>();
   results: number = 0;
   searchResult: boolean = false;
@@ -128,7 +127,7 @@ export class HomeComponent implements OnInit {
     let patinoires_names: string[] = []
     installations.forEach(element => {
       patinoires_names.push(element.nom_pat)
-      element.conditions.forEach(condition => {
+      element?.conditions.forEach(condition => {
         let year:number  = new Date(condition.date_heure).getFullYear();
         this.condition_years.add(year);
       });
@@ -197,14 +196,14 @@ export class HomeComponent implements OnInit {
       }
     });
     this.selectedPatinoir = result;
-    this.condsNbrPerPat = this.selectedPatinoir.conditions.length;
+    this.condsNbrPerPat = this.selectedPatinoir?.conditions.length;
   }
 
   public filterByYear(): void {
     const selectedYear = this.yearsForm.value['conditionyear']
     console.log('selected year : ',selectedYear)
     this.conditionsOfSelectedYear = this.selectedPatinoir
-                                    .conditions
+                                    ?.conditions
                                     .filter(condition =>
                                     new Date(condition.date_heure).getFullYear() == selectedYear);
 

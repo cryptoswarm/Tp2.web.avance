@@ -20,6 +20,11 @@ def find_glissade_by_name(glissade_name):
 def find_all_glissades_by_arr_id(arr_id):
     return Glissade.query.filter_by(arrondissement_id=arr_id).all()
 
+def find_glissades_names_arr_id(arr_id):
+    return Glissade.query.with_entities(Glissade.name, Glissade.id) \
+                   .filter_by(arrondissement_id=arr_id) \
+                   .all()
+
 def find_glissade_by_id(glissade_id):
     return Glissade.query.filter_by(id=glissade_id).first()
 

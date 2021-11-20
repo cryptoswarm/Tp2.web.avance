@@ -22,3 +22,8 @@ def find_patinoire_by_name(nom_pat):
 def find_patinoires_by_arr_id(arr_id):
     return Patinoire.query.filter_by(arron_id=arr_id).all()
 
+
+def find_patinoire_names_arr_id(arr_id):
+    return Patinoire.query.with_entities(Patinoire.nom_pat, Patinoire.id) \
+                    .filter_by(arron_id=arr_id) \
+                    .all()

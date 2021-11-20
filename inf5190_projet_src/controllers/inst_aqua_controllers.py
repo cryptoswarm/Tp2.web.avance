@@ -34,3 +34,18 @@ def edit_installation_aquatique(id):
     result = GlissadeSchema().dump(updated)
     print('Serialized data :',result)
     return {"status": "success", "data": result}, status
+
+
+
+@insta_aqua.route('/api/installations/<arrondissement>/aquatique/<name>', methods=['GET'])
+def get_aqua_inst(arrondissement, name):
+    
+    if all([arrondissement, name]):
+        arr = get_arr_by_name(arrondissement)
+        if arr is None:
+            return {}, 404
+        inst_names = get_aqua_installations(arr.id, name)
+        if inst_names is None:
+            return {}, 404
+        return inst_names, 200
+    return {}, 400

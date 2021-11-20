@@ -5,7 +5,7 @@ from flask.helpers import make_response
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
+from inf5190_projet_src.services.installation_service import *
 
 
 
@@ -15,15 +15,16 @@ mod_arron = Blueprint('arrondissement', __name__, url_prefix='')
 def get_installation_arr_name():
     arr_name = request.args.get('arrondissement', None, type=str)
     if arr_name is not None:
-        installations = get_installations_by_arr_name(arr_name)
-        if installations is None:
+        # installations = get_installations_by_arr_name(arr_name)
+        inst_names = get_inst_names_by_arr_name(arr_name)
+        print(inst_names)
+        if inst_names is None:
             return {}, 404
-        #installations = [installation.asDictionary() for installation in installations]
-        # response = make_response(json.dumps(installations, sort_keys=False))
-        # response.mimetype = 'application/json'
-        # response.status_code = 200
-        # return response
-        return jsonify(installations), 200
+        return jsonify(inst_names), 200
     return {}, 400
+
+
+
+
 
 

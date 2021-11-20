@@ -40,12 +40,12 @@ def run_jobs():
         scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_3, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-        scheduler.add_job(func=test, trigger='interval', seconds=59, timezone=pytz.timezone('CANADA/EASTERN'))
+        #scheduler.add_job(func=test, trigger='interval', seconds=59, timezone=pytz.timezone('CANADA/EASTERN'))
         #scheduler.add_job(func=db_insertion, trigger='interval', seconds=59, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.start()
 
 
 if __name__ == "__main__":
-    run_jobs()
+    # run_jobs()
     application.run(debug=True)
     
