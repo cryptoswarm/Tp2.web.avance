@@ -93,15 +93,15 @@
                       <div class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records"><b>{{aqua_inst?.length}}</b> resultats</div>
+                            <div class="records"><b>{{aqua_inst_nbr}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <form [formGroup]="instNamesForm" (change)="filterByInstallationName()">
-                                  <select class="selectpicker form-control" id="exampleOption_1" formControlName="instaName">
+                                <form [formGroup]="instNamesForm" (change)="getAquaInstallationDetails()">
+                                  <select class="selectpicker form-control" id="exampleOption_1" formControlName="aquaInstaName">
                                     <option data-hidden="true" value="" disable>Choisir une installation aquatique</option>
-                                    <option *ngFor="let aqua of aqua_inst_perm" [ngValue]="aqua?.nom_installation">
+                                    <option *ngFor="let aqua of aqua_inst" [ngValue]="aqua?.nom_installation">
                                       {{aqua?.nom_installation}}</option>
                                     </select>
                                 </form>
@@ -110,7 +110,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="result-body">
+                      <div *ngIf="aqua_inst_details.length != 0" class="result-body">
                         <div class="table-responsive">
                           <table class="table widget-26">
                             <thead>
@@ -152,7 +152,7 @@
                                 </th>
                               </tr>
                             </thead>
-                            <tbody *ngFor="let aqua of aqua_inst">
+                            <tbody *ngFor="let aqua_inst of aqua_inst_details">
                               <tr>
                                 <td>
                                   <div class="widget-26-job-emp-img">
@@ -161,32 +161,32 @@
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.nom_installation}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.nom_installation}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.type_installation}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.type_installation}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.adress}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.adress}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.propriete_installation}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.propriete_installation}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.gestion_inst}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.gestion_inst}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua?.equipement_inst}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.equipement_inst}}</p>
                                   </div>
                                 </td>
                               </tr>
@@ -224,7 +224,7 @@
                                 <form [formGroup]="glissadeNamesForm" (change)="filterByGlissadeName()">
                                   <select class="selectpicker form-control" id="exampleOption_2" formControlName="glissadeName">
                                     <option data-hidden="true" value="" disable>Choisir une glissade</option>
-                                    <option *ngFor="let glissade of glissades_perm" [ngValue]="glissade?.name">
+                                    <option *ngFor="let glissade of glissades" [ngValue]="glissade?.name">
                                       {{glissade?.name}}</option>
                                   </select>
                                 </form>
@@ -327,7 +327,7 @@
                                 <form [formGroup]="patinoireNamesForm" (change)="filterByPatinoireName()" style="padding-right:5px ;">
                                   <select class="selectpicker form-control" id="patinoiresOption" formControlName="patinoireName">
                                     <option data-hidden="true" value="" disable>Choisir une patinoire</option>
-                                    <option *ngFor="let patinoire of patinoires_perm" [ngValue]="patinoire?.nom_pat">
+                                    <option *ngFor="let patinoire of patinoires" [ngValue]="patinoire?.nom_pat">
                                       {{patinoire?.nom_pat}}</option>
                                   </select>
                                 </form>

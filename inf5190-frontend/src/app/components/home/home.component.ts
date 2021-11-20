@@ -19,10 +19,11 @@ export class HomeComponent implements OnInit {
 
   errorMessage: string = "";
 
-  arr_name!: string;
+  arr_name: string = "";
   arr_cle!: string;
   aqua_inst: InstallationAquatique[] = [];
-  aqua_inst_perm: InstallationAquatique[] = [];
+  aqua_inst_details: InstallationAquatique[] = [];
+  aqua_inst_nbr: number = 0;
   glissades: Glissade[] = [];
   glissades_perm: Glissade[] = [];
   patinoires: Patinoire[] = [];
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
       search: ['', Validators.required]
     })
     this.instNamesForm = this.formBuilder.group({
-      instaName: ['', Validators.required]
+      aquaInstaName: ['', Validators.required]
     })
     this.glissadeNamesForm = this.formBuilder.group({
       glissadeName: ['', Validators.required]
@@ -63,35 +64,27 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-    // this.getAllInstallations()
-  }
+  ngOnInit(): void {}
+
 
   public getAllInstallations(){
+    this.arr_name = this.searchForm.value;
     console.log('Search key word : ',this.searchForm.value)
     this.apiClient.getInstallationsPerArrondissement(this.searchForm.value).subscribe((installations: Installation)=>{
       this.searchResult = false;
-      this.arr_name = installations.arr_name;
       this.arr_cle = installations.arr_cle;
       this.aqua_inst = installations.aqua_inst;
-      this.aqua_inst_perm = installations.aqua_inst;
       console.log('this.aqua_inst :',this.aqua_inst)
-      this.inst_names = this.getAquaInstallationName(installations.aqua_inst);
-      this.instAquaNbr = installations.aqua_inst.length;
+      this.aqua_inst_nbr = this.aqua_inst.length
       this.glissades = installations.glissades
-      this.glissades_perm = installations.glissades
-      this.glissade_names = this.getGlissadesNames(this.glissades_perm)
       console.log('this.glissades :',this.glissades)
       this.patinoires = installations.patinoires
-      this.patinoires_perm = installations.patinoires
-      this.patinoires_names = this.getPatinoiresNames(this.patinoires_perm)
       console.log('this.patinoires :',this.patinoires)
       this.searchForm.reset()
     },
     (error: HttpErrorResponse)=>{
       this.searchResult = true;
       this.aqua_inst = [];
-      this.aqua_inst_perm = [];
       this.inst_names = [];
       this.conditionsOfSelectedYear = [];
       this.results = 0;
@@ -106,6 +99,20 @@ export class HomeComponent implements OnInit {
       console.log('error statusText :',error.statusText)
     })
   }
+
+
+  public getAquaInstallationDetails(): void{
+    // alert(JSON.stringify(this.instNamesForm.value))
+    const aquaName = this.instNamesForm.value['aquaInstaName']
+    console.log('Choosen aqua inst name :',aquaName)
+    this.apiClient.getAquaInstallationDetails(this.arr_name, aquaName).subscribe((aquaInst: InstallationAquatique[])=>{
+        this.aqua_inst_details = aquaInst;
+        this.aqua_inst_nbr = aquaInst.length
+        console.log(this.aqua_inst_details)
+    })
+  }
+
+
 
   public getAquaInstallationName(installations: InstallationAquatique[]): string[]{
     let inst_names: string[] = []
@@ -127,10 +134,10 @@ export class HomeComponent implements OnInit {
     let patinoires_names: string[] = []
     installations.forEach(element => {
       patinoires_names.push(element.nom_pat)
-      element?.conditions.forEach(condition => {
-        let year:number  = new Date(condition.date_heure).getFullYear();
-        this.condition_years.add(year);
-      });
+      // element?.conditions.forEach(condition => {
+      //   let year:number  = new Date(condition.date_heure).getFullYear();
+      //   this.condition_years.add(year);
+      // });
     });
     return patinoires_names;
   }
@@ -151,22 +158,24 @@ export class HomeComponent implements OnInit {
   //     this.getEmployees();
   //   }
   // }
-  public filterByInstallationName(): void{
-    // alert(JSON.stringify(this.instNamesForm.value))
-    const name = this.instNamesForm.value['instaName']
-    console.log('Choosen instllation name :',name)
-    const result :InstallationAquatique[] = [];
-    this.aqua_inst_perm.forEach(element => {
-      console.log('element.nom_installation: ',element.nom_installation);
-      console.log(element.nom_installation.indexOf(name) !== -1)
-      if(element.nom_installation.indexOf(name) !== -1){
-        result.push(element)
-        console.log('filtering by :'+name+' gives :', result)
-      }
-    });
-    this.aqua_inst = result;
-    this.instAquaNbr = this.aqua_inst.length;
-  }
+  // public filterByInstallationName(): void{
+  //   // alert(JSON.stringify(this.instNamesForm.value))
+  //   const name = this.instNamesForm.value['instaName']
+  //   console.log('Choosen instllation name :',name)
+  //   const result :InstallationAquatique[] = [];
+  //   this.aqua_inst_perm.forEach(element => {
+  //     console.log('element.nom_installation: ',element.nom_installation);
+  //     console.log(element.nom_installation.indexOf(name) !== -1)
+  //     if(element.nom_installation.indexOf(name) !== -1){
+  //       result.push(element)
+  //       console.log('filtering by :'+name+' gives :', result)
+  //     }
+  //   });
+  //   this.aqua_inst = result;
+  //   this.instAquaNbr = this.aqua_inst.length;
+  // }
+
+
 
   public filterByGlissadeName(): void{
     // alert(JSON.stringify(this.instNamesForm.value))
@@ -196,18 +205,18 @@ export class HomeComponent implements OnInit {
       }
     });
     this.selectedPatinoir = result;
-    this.condsNbrPerPat = this.selectedPatinoir?.conditions.length;
+    // this.condsNbrPerPat = this.selectedPatinoir?.conditions.length;
   }
 
   public filterByYear(): void {
-    const selectedYear = this.yearsForm.value['conditionyear']
-    console.log('selected year : ',selectedYear)
-    this.conditionsOfSelectedYear = this.selectedPatinoir
-                                    ?.conditions
-                                    .filter(condition =>
-                                    new Date(condition.date_heure).getFullYear() == selectedYear);
+    // const selectedYear = this.yearsForm.value['conditionyear']
+    // console.log('selected year : ',selectedYear)
+    // this.conditionsOfSelectedYear = this.selectedPatinoir
+    //                                 ?.conditions
+    //                                 .filter(condition =>
+    //                                 new Date(condition.date_heure).getFullYear() == selectedYear);
 
-    this.condsNbrPerPat  = this.conditionsOfSelectedYear.length;
+    // this.condsNbrPerPat  = this.conditionsOfSelectedYear.length;
 
   }
 

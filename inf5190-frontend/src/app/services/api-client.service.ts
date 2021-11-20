@@ -1,3 +1,4 @@
+import { InstallationAquatique } from './../models/installation-aquatique';
 import { Installation } from './../models/installation';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
@@ -21,5 +22,12 @@ export class ApiClientService {
   public getInstallationsPerArrondissement(arron_name: string): Observable<Installation>{
     const url = `${this.apiServerUrl}/api/installations?arrondissement=${arron_name['search']}`
     return this.httpClient.get<Installation>(url, httpOptions)
+  }
+
+  public getAquaInstallationDetails(arron_name:string, aquaInstName: string): Observable<InstallationAquatique[]>{
+    console.log('arron_name :',arron_name['search'])
+    const url = `${this.apiServerUrl}/api/installations/${arron_name['search']}/aquatique/${aquaInstName}`
+    console.log('url: ',url)
+    return this.httpClient.get<InstallationAquatique[]>(url, httpOptions)
   }
 }

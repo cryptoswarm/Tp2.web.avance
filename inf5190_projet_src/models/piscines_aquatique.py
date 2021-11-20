@@ -51,7 +51,8 @@ class InstallationAquatique(Base):
             self.equipement_inst)
 
     def asDictionary(self):
-        return {"nom_installation":self.nom_installation,
+        return {"id": self.id,
+                "nom_installation":self.nom_installation,
                 "type_installation": self.type_installation,
                 "adress": self.adress,
                 "propriete_installation": self.propriete_installation,

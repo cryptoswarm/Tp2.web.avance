@@ -37,10 +37,17 @@ def find_aqua_inst_names_arr_id(arr_id):
            .with_entities(InstallationAquatique.nom_installation, InstallationAquatique.id) \
            .filter_by(arron_id=arr_id).all()
 
-def find_aqua_installations(arrond_id, aqua_name):
+def find_aqua_installations(arr_id, aqua_name):
+    print('Aqua Repo --> Arrndissement id :{} and aqua_name : {}'.format(arr_id, aqua_name))
     return InstallationAquatique \
            .query \
-           .filter_by(and_(arron_id=arrond_id, nom_installation=aqua_name)).all()
+           .filter(and_(
+               (InstallationAquatique.arron_id==arr_id), 
+               (InstallationAquatique.nom_installation==aqua_name)
+               )).all()
+        #    .filter(and_(InstallationAquatique.c.arron_id == arr_id,
+        #                    InstallationAquatique.c.nom_installation == aqua_name)).all()
+          
 
 # nom_installation = db.Column(db.String(255),  nullable=False)
 #     type_installation = db.Column(db.String(255), nullable=False)

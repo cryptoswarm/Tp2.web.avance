@@ -95,7 +95,11 @@ def get_aqua_inst_names_arr_id(arr_id):
     return response
 
 def get_aqua_installations(arrond_id, aqua_name):
+    response = []
     aqua_intas = find_aqua_installations(arrond_id, aqua_name)
+    for aqua in aqua_intas:
+        # print('Aqua result :',aqua.asDictionary())
+        response.append(aqua.asDictionary())
     if aqua_intas is None:
         return None
-    return aqua_intas
+    return response

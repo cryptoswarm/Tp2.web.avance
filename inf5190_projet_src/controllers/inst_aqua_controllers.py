@@ -44,8 +44,8 @@ def get_aqua_inst(arrondissement, name):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
             return {}, 404
-        inst_names = get_aqua_installations(arr.id, name)
-        if inst_names is None:
+        aqua_insts = get_aqua_installations(arr.id, name)
+        if aqua_insts is None:
             return {}, 404
-        return inst_names, 200
+        return jsonify(aqua_insts), 200
     return {}, 400

@@ -17,7 +17,7 @@ def get_installation_arr_name():
     if arr_name is not None:
         # installations = get_installations_by_arr_name(arr_name)
         inst_names = get_inst_names_by_arr_name(arr_name)
-        print(inst_names)
+        # print(inst_names)
         if inst_names is None:
             return {}, 404
         return jsonify(inst_names), 200
