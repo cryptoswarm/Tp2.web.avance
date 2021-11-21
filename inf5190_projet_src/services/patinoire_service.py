@@ -38,4 +38,4 @@ def get_patinoire_details(arr_id, pat_name):
         response = pat.asDictionary()
         conditions = get_pat_conditions_by_pat_id(pat.id)
         response['conditions'] = conditions
-    return response
+    return response, 200

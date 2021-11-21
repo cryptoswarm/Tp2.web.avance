@@ -60,3 +60,15 @@ def delete_glissade(id):
 # Le système offre un service REST permettant de modifier l'état d'une glissade. Le client doit envoyer
 # un document JSON contenant les modifications à apporter à la glissade. Le document JSON doit être
 # validé avec json-schema.
+
+@mod_glissade.route('/api/installations/arrondissement/<arrondissement>/glissade/<name>', methods=['GET'])
+def get_glissade(arrondissement, name):
+    if all([arrondissement, name]):
+        arr = get_arr_by_name(arrondissement)
+        if arr is None:
+            return {}, 404
+        response, status = get_glissade_details(arr.id, name)
+        if response is None:
+            return {}, 404
+        return jsonify(response), 200
+    return {}, 400

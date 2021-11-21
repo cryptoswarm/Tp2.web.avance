@@ -12,12 +12,5 @@ def save_pat_condition(pat_condition):
     print(print('pat_condition created :',pat_condition.asDictionary()))
     return pat_condition
 
-# def find_patinoire_by_name(nom_pat):
-#     return Patinoire.query.filter_by(nom_pat=nom_pat) \
-#                         .first()
-
-    # db.session.add(patinoire)
-    # db.session.commit()
-
 def find_pat_conditions_by_pat_id(pat_id):
     return PatinoirCondition.query.filter_by(patinoire_id=pat_id).all()

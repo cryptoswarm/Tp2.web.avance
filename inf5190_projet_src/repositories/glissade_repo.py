@@ -40,3 +40,11 @@ def delete_by_id(id):
     glissade = find_glissade_by_id(id)
     db.session.delete(glissade)
     db.session.commit()
+
+def find_glissade_details(arr_id, glissade_name):
+    return Glissade \
+           .query \
+           .filter(and_(
+               (Glissade.arrondissement_id == arr_id), 
+               (Glissade.name == glissade_name)
+               )).all()

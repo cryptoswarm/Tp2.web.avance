@@ -37,7 +37,7 @@ def edit_installation_aquatique(id):
 
 
 
-@insta_aqua.route('/api/installations/<arrondissement>/aquatique/<name>', methods=['GET'])
+@insta_aqua.route('/api/installations/arrondissement/<arrondissement>/aquatique/<name>', methods=['GET'])
 def get_aqua_inst(arrondissement, name):
     
     if all([arrondissement, name]):

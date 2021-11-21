@@ -90,7 +90,7 @@
                 <div class="row search-body">
                   <div class="col-lg-12">
                     <div class="search-result">
-                      <div class="result-header">
+                      <div *ngIf="searchResult" class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="records"><b>{{aqua_inst_nbr}}</b> resultats</div>
@@ -192,10 +192,10 @@
                               </tr>
                             </tbody>
                           </table>
-                          <div *ngIf="searchResult == true" class="result-body d-flex justify-content-center">
-                            <h3>Aucun resultat pour cette recherche</h3>
-                          </div>
                         </div>
+                      </div>
+                      <div *ngIf="searchResult == false" class="result-body d-flex justify-content-center">
+                        <h3>Aucun resultat pour cette recherche</h3>
                       </div>
                     </div>
                   </div>
@@ -213,15 +213,15 @@
                 <div class="row search-body">
                   <div class="col-lg-12">
                     <div class="search-result">
-                      <div class="result-header">
+                      <div *ngIf="searchResult" class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="records"><b>{{glissades_perm?.length}}</b> resultats</div>
+                            <div class="records"><b>{{glissadesNbr}}</b> resultats</div>
                           </div>
                           <div class="col-lg-6">
                             <div class="result-actions">
                               <div class="result-sorting d-flex justify-content-center">
-                                <form [formGroup]="glissadeNamesForm" (change)="getGlissadeDetails()">
+                                <form [formGroup]="glissadeForm" (change)="getGlissadeDetails()">
                                   <select class="selectpicker form-control" id="exampleOption_2" formControlName="glissadeName">
                                     <option data-hidden="true" value="" disabled>Choisir une glissade</option>
                                     <option *ngFor="let glissade of glissades" [ngValue]="glissade?.name">
@@ -233,7 +233,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="result-body">
+                      <div *ngIf="glissades_details" class="result-body">
                         <div class="table-responsive">
                           <table class="table widget-26">
                             <thead>
@@ -265,40 +265,40 @@
                                 </th>
                               </tr>
                             </thead>
-                            <tbody *ngFor="let glissade of glissades_perm">
+                            <tbody>
                               <tr>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissade?.name}}</p>
+                                    <p class="text-muted m-0">{{glissades_details?.name}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissade?.date_maj}}</p>
+                                    <p class="text-muted m-0">{{glissades_details?.date_maj}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissade?.deblaye}}</p>
+                                    <p class="text-muted m-0">{{glissades_details?.deblaye}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissade?.ouvert}}</p>
+                                    <p class="text-muted m-0">{{glissades_details?.ouvert}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissade?.condition}}</p>
+                                    <p class="text-muted m-0">{{glissades_details?.condition}}</p>
                                   </div>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
-                          <div *ngIf="searchResult == true" class="result-body d-flex justify-content-center">
-                            <h3>Aucun resultat pour cette recherche</h3>
-                          </div>
                         </div>
+                      </div>
+                      <div *ngIf="searchResult == false" class="result-body d-flex justify-content-center">
+                        <h3>Aucun resultat pour cette recherche</h3>
                       </div>
                     </div>
                   </div>
@@ -316,7 +316,7 @@
                 <div class="row search-body">
                   <div class="col-lg-12">
                     <div class="search-result">
-                      <div class="result-header">
+                      <div *ngIf="searchResult" class="result-header">
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="records"><b>{{patinoire_nbr}}</b> resultats</div>
@@ -407,10 +407,10 @@
                             </tbody>
                             <!-- </div> -->
                           </table>
-                          <div *ngIf="searchResult == true" class="result-body d-flex justify-content-center">
-                            <h3>Aucun resultat pour cette recherche</h3>
-                          </div>
                         </div>
+                      </div>
+                      <div *ngIf="searchResult == false" class="result-body d-flex justify-content-center">
+                        <h3>Aucun resultat pour cette recherche</h3>
                       </div>
                     </div>
                   </div>

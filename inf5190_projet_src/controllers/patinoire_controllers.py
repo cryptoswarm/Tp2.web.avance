@@ -35,14 +35,14 @@ patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
 
 
 
-@patinoire.route('/api/installations/<arrondissement>/patinoire/<name>', methods=['GET'])
+@patinoire.route('/api/installations/arrondissement/<arrondissement>/patinoire/<name>', methods=['GET'])
 def get_patinoire(arrondissement, name):
     
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
             return {}, 404
-        patinoires = get_patinoire_details(arr.id, name)
+        patinoires, status = get_patinoire_details(arr.id, name)
         if patinoires is None:
             return {}, 404
         return jsonify(patinoires), 200

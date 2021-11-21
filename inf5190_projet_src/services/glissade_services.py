@@ -28,13 +28,13 @@ def get_arrondissement_detail(arr_details):
     date_maj = datetime.strptime(arr_details['date_maj'], "%Y-%m-%d %H:%M:%S")
     return {'nom_arr':nom_arr, 'cle':cle, 'date_maj': date_maj}
 
-def get_glissade_details(element, kwargs):
-    glissade_name = element[kwargs[0][0]]
-    print('type of element[kwargs[0][2]] :', type(element[kwargs[0][2]]))
-    ouvert = False if element[kwargs[0][2]] == '0' else True
-    deblaye = False if element[kwargs[0][3]] == '0' else True
-    condition = element[kwargs[0][4]]
-    return {'name':glissade_name, 'ouvert':ouvert, 'deblaye':deblaye, 'condition':condition}
+# def get_glissade_details(element, kwargs):
+#     glissade_name = element[kwargs[0][0]]
+#     print('type of element[kwargs[0][2]] :', type(element[kwargs[0][2]]))
+#     ouvert = False if element[kwargs[0][2]] == '0' else True
+#     deblaye = False if element[kwargs[0][3]] == '0' else True
+#     condition = element[kwargs[0][4]]
+#     return {'name':glissade_name, 'ouvert':ouvert, 'deblaye':deblaye, 'condition':condition}
 
 
 #'MAIN', 'arrondissement', ['nom_arr', 'patinoire']
@@ -167,4 +167,18 @@ def update_glissade(glissade, posted_glissade):
 
 def delete_glissade_by_id(id):
     delete_by_id(id)
+
+def get_glissade_details(arr_id, glissade_name):
+    response = {}
+    glissades = find_glissade_details(arr_id, glissade_name)
+    if glissades is None:
+        return None, 404
+    for glissade in glissades:
+        response = glissade.asDictionary()
+    return response, 200
+        
+
+
+
+
 
