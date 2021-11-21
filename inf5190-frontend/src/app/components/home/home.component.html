@@ -233,7 +233,7 @@
                           </div>
                         </div>
                       </div>
-                      <div *ngIf="glissades_details" class="result-body">
+                      <div *ngIf="glissadeDetails" class="result-body">
                         <div class="table-responsive">
                           <table class="table widget-26">
                             <thead>
@@ -269,30 +269,52 @@
                               <tr>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissades_details?.name}}</p>
+                                    <p class="text-muted m-0">{{glissadeDetails?.name}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissades_details?.date_maj}}</p>
+                                    <p class="text-muted m-0">{{glissadeDetails?.date_maj}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissades_details?.deblaye}}</p>
+                                    <p class="text-muted m-0">{{glissadeDetails?.deblaye}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissades_details?.ouvert}}</p>
+                                    <p class="text-muted m-0">{{glissadeDetails?.ouvert}}</p>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissades_details?.condition}}</p>
+                                    <p class="text-muted m-0">{{glissadeDetails?.condition}}</p>
                                   </div>
                                 </td>
+                                <!-- <td> -->
+                                  <div class="float-right btn-group btn-group-sm">
+                                    <a (click)="editGlissade(glissadeDetails?.glissade_id)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
+                                      data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                                    <a  (click)="deleteGlissade(glissadeDetails?.glissade_id)" id="del-btn" class="btn btn-secondary tooltips"
+                                      data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
+                                    </a>
+                                  </div>
+                                <!-- </td> -->
                               </tr>
+                              <!-- <div class="float-right btn-group btn-group-sm"> -->
+                                <!-- <a (click)="onOpenModal(employee, 'edit')" href="#" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>-->
+                                <!--a (click)="onOpenModal( employee, 'edit')" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
+                                  data-original-title="Edit"><i class="fa fa-pencil"></i> </a-->
+
+                                  <!-- <a (click)="editEmployeeFnc(employee)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
+                                  data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+
+
+
+                                  <a (click)="onOpenModal(employee, 'delete')" id="del-btn" class="btn btn-secondary tooltips"
+                                  data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                              </div> -->
                             </tbody>
                           </table>
                         </div>

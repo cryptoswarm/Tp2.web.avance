@@ -9,7 +9,7 @@ from inf5190_projet_src.services.aquatique_inst_services import *
 from inf5190_projet_src.services.glissade_services import *
 
 from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
+# from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
 from flask_json_schema import JsonSchema, JsonValidationError
 from inf5190_projet_src.schemas.schema import *
 from inf5190_projet_src import schema

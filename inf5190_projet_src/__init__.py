@@ -69,7 +69,7 @@ def create_app(test_config=None):
         # using its blueprint handler var (mod_article)
         from inf5190_projet_src.mod_app.controllers import mod_home as home_module
         from inf5190_projet_src.controllers.data_requester import mod_scheduler as scheduler_mod
-        from inf5190_projet_src.controllers.aqua_controllers import mod_arron as arrondissement_mod
+        from inf5190_projet_src.controllers.installations_controllers import mod_arron as arrondissement_mod
         from inf5190_projet_src.controllers.glissade_controllers import mod_glissade as glissade_module
         from inf5190_projet_src.controllers.inst_aqua_controllers import insta_aqua as aqua_inst_module
         from inf5190_projet_src.controllers.patinoire_controllers import patinoire as pat_module

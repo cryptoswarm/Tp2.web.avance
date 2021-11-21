@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { PatinoirCondition } from './../../models/patinoire-conditions';
 import { Installation } from './../../models/installation';
 import { Component, OnInit } from '@angular/core';
@@ -7,6 +8,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InstallationAquatique } from 'src/app/models/installation-aquatique';
 import { Glissade } from 'src/app/models/glissade';
 import { Patinoire } from 'src/app/models/patinoire';
+import { DeletionComponent } from '../deletion/deletion.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+const MODALS: { [name: string]: Type<any> } = {
+  autofocus: DeletionComponent,
+};
 
 @Component({
   selector: 'app-home',
@@ -25,19 +32,15 @@ export class HomeComponent implements OnInit {
   aqua_inst_details: InstallationAquatique[] = [];
   aqua_inst_nbr: number = 0;
   glissades: Glissade[] = [];
-  glissades_details: Glissade = null as any;
+  glissadeDetails: Glissade = null as any;
   glissadesNbr: number = 0;
   patinoires: Patinoire[] = [];
   patinoire_details: Patinoire = null as any;
   patinoire_nbr: number = 0;
-  inst_names: string[] = []
   condition_years:  Set<number> = new Set<number>();
-  results: number = 0;
   searchResult: boolean = true;
   selectedPatinoir: boolean = false;
   conditionsOfSelectedYear: PatinoirCondition[] = []
-  condsNbrPerPat : number = 0;
-  instAquaNbr: number = 0;
 
   searchForm: FormGroup;
   instAquaForm: FormGroup;
@@ -46,7 +49,9 @@ export class HomeComponent implements OnInit {
   yearsForm: FormGroup
 
 
-  constructor(private apiClient: ApiClientService, private formBuilder: FormBuilder) {
+  constructor(private apiClient: ApiClientService,
+              private formBuilder: FormBuilder,
+              private _modalService: NgbModal) {
     this.searchForm = this.formBuilder.group({
       search: ['', Validators.required]
     })
@@ -134,7 +139,8 @@ export class HomeComponent implements OnInit {
     console.log('Choosen glissade name :',name)
     this.apiClient.getGlissadeDetails(this.arr_name, name)
                   .subscribe((response : Glissade)=>{
-      this.glissades_details = response;
+      this.glissadeDetails = response;
+      console.log(this.glissadeDetails)
       this.glissadesNbr = 1;
 
     },
@@ -170,13 +176,34 @@ export class HomeComponent implements OnInit {
     this.patinoire_nbr = 0;
     this.glissadesNbr = 0;
     this.aqua_inst_details = []
-    this.glissades_details =  null as any;
+    this.glissadeDetails =  null as any;
     this.patinoire_details = null as any;
     this.selectedPatinoir = false
     this.aqua_inst = [];
     this.glissades = [];
     this.patinoires = []
     this.conditionsOfSelectedYear = []
+  }
+
+  public deleteGlissade(glissadeId: number | undefined): void {
+    console.log('delete button pressed')
+    if(glissadeId !== undefined){
+      this.open('autofocus');
+      console.log('Glissade id to be deleted :',glissadeId)
+    }
+
+  }
+
+  public editGlissade(glissadeId: number | undefined): void {
+    console.log('edit button pressed')
+    if(glissadeId !== undefined){
+      console.log('Glissade id to be updated:',glissadeId)
+    }
+  }
+
+
+  open(name: string) {
+    this._modalService.open(MODALS[name]);
   }
 
 }

@@ -5,7 +5,7 @@ from flask.helpers import make_response
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
+# from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
 from marshmallow import ValidationError
 
 
