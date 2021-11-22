@@ -9,15 +9,6 @@ export interface Glissade {
 }
 
 
-// export interface GlissadeForEdit {
-//   arrondissement_id: number,
-//   name: string,
-//   date_maj: string,
-//   ouvert: number,
-//   deblaye: number,
-//   condition: string
-// }
-
 export class GlissadeForEdit {
   arrondissement_id: number | undefined;
   name: string | undefined;
@@ -28,10 +19,3 @@ export class GlissadeForEdit {
 
 }
 
-//   arrondissement_id: number,
-//   name: string,
-//   date_maj: string,
-//   ouvert: number,
-//   deblaye: number,
-//   condition: string
-// }

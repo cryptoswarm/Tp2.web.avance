@@ -18,7 +18,7 @@
       <form [formGroup]="glissadeForEditForm">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" ngModel="{{editGlissade?.name}}" formControlName="name" class="form-control" id="name"
+          <input type="text"  formControlName="name" class="form-control" id="name"
             aria-describedby="glissadeName" placeholder="Name">
         </div>
         <!-- <input type="hidden" ngModel="{{editGlissade?.id}}" name="id" class="form-control" id="id"
@@ -27,22 +27,23 @@
           id="userCode" placeholder="Email"> -->
         <div class="form-group">
           <label for="date_maj">Date maj</label>
-          <input type="datetime-local" ngModel="{{date_maj}}" formControlName="date_maj" class="form-control" id="date_maj"
+          <input type="datetime-local"  formControlName="date_maj" class="form-control" id="date_maj"
             placeholder="date de mise à jour">
         </div>
+        <!-- ngModel="{{date_maj}}" -->
         <div class="form-group">
           <label for="ouvert">Ouverte</label>
-          <input type="text" ngModel="{{editGlissade?.ouvert}}" formControlName="ouvert" class="form-control" id="ouvert"
+          <input type="text"  formControlName="ouvert" class="form-control" id="ouvert"
             placeholder="Status de glissade : ouvert">
         </div>
         <div class="form-group">
           <label for="deblaye">Deblayée</label>
-          <input type="text" ngModel="{{deblayee}}" formControlName="deblaye" class="form-control" id="deblaye"
+          <input type="text"  formControlName="deblaye" class="form-control" id="deblaye"
             placeholder="Status de glissade : deblaye">
         </div>
         <div class="form-group">
           <label for="condition">condition</label>
-          <input type="text" ngModel="{{editGlissade?.condition}}" formControlName="condition" class="form-control" id="condition"
+          <input type="text"  formControlName="condition" class="form-control" id="condition"
             placeholder="Etat de glissade">
         </div>
         <div class="modal-footer">

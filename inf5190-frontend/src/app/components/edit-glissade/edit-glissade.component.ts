@@ -40,33 +40,35 @@ export class EditGlissadeComponent implements OnInit {
 
   ngOnInit(): void {
     this.editGlissade = this._sharedService.glissade;
+    if(this.editGlissade.name !== undefined){
+        this.glissadeForEditForm.get('name')?.setValue(this.editGlissade.name);
+    }
     if(this.editGlissade.date_maj !== undefined){
       let value = this._datePipe.transform(new Date(this.editGlissade.date_maj), 'yyyy-MM-ddTHH:mm')
       if(  value !== null){
-        this.date_maj = value;
+        this.glissadeForEditForm.get('date_maj')?.setValue(value);
       }
     }
     if(this.editGlissade.deblaye !== undefined){
       let value = this.editGlissade.deblaye == true ? 'Oui': 'Non'
       if(  value !== null){
-        this.deblayee = value;
+        this.glissadeForEditForm.get('deblaye')?.setValue(value);
       }
     }
     if(this.editGlissade.ouvert !== undefined){
       let value = this.editGlissade.ouvert == true ? 'Oui': 'Non'
       if(  value !== null){
-        this.ouvert = value;
+        this.glissadeForEditForm.get('ouvert')?.setValue(value);
       }
+    }
+    if(this.editGlissade.condition !== undefined){
+        this.glissadeForEditForm.get('condition')?.setValue(this.editGlissade.condition);
     }
   }
 
   public onUpdateGlissade(): void{
     const retrievedData = this.glissadeForEditForm.value;
-    console.log('retrievedDataFromEditForm glissade edit form: ',retrievedData)
-    // console.log('Glissade to be edited date before convert :',updatedGlissade.date_maj);
-    // console.log('Before editglissade :', updatedGlissade);
     let glissade = this.convertToGlissadeForEdit(retrievedData);
-    console.log('Glissade to be edited date after convert :',glissade.date_maj);
     this._glissadeService.editGlissade(glissade, this.editGlissade.glissade_id).subscribe(
       (response: Glissade) => {
         console.log("Glissade has been Updated to :",response);
@@ -85,11 +87,9 @@ export class EditGlissadeComponent implements OnInit {
     );
   }
 
-  private convertToGlissadeForEdit(updatedGlissade: Glissade): GlissadeForEdit{
+  private convertToGlissadeForEdit(updatedGlissade: any): GlissadeForEdit{
     let glissade = new GlissadeForEdit();
     if(updatedGlissade.date_maj !== undefined){
-      console.log('updatedGlissade.date_maj !== undefined :', updatedGlissade.date_maj !== undefined)
-      console.log('updatedGlissade.date_maj :',updatedGlissade.date_maj)
       glissade.date_maj = new Date(updatedGlissade.date_maj).toISOString();
     }
     glissade.arrondissement_id = this.editGlissade.arrondissement_id;
@@ -97,20 +97,12 @@ export class EditGlissadeComponent implements OnInit {
       glissade.condition = updatedGlissade.condition;
     }
     if(updatedGlissade.deblaye !== undefined){
-      console.log('Value from form updatedGlissade.deblaye :',updatedGlissade.deblaye)
-      console.log('glissade.deblaye before evaluating :',glissade.deblaye)
-      console.log('updatedGlissade.deblaye == true',updatedGlissade.deblaye === true)
-      console.log('typeof(updatedGlissade.deblaye)',typeof(updatedGlissade.deblaye))
-      // glissade.deblaye = updatedGlissade.deblaye == 'Oui' ? '1': '0';
-      console.log('After evaluating condition of deblaye :',glissade.deblaye)
+      glissade.deblaye = updatedGlissade.deblaye == 'Oui' ? '1': '0';
     }
     if(updatedGlissade.ouvert !== undefined){
-      console.log('Value from form updatedGlissade.ouvert :',updatedGlissade.ouvert)
-      glissade.ouvert = updatedGlissade.ouvert == true ? '1': '0';
-      console.log('After evaluating condition of ouvert :',glissade.ouvert)
+      glissade.ouvert = updatedGlissade.ouvert == 'Oui' ? '1': '0';
     }
     glissade.name = updatedGlissade.name;
-    console.log('updatedGlissade.name: ',glissade.name)
     return glissade;
   }
 }
