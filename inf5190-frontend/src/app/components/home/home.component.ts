@@ -159,6 +159,7 @@ export class HomeComponent implements OnInit {
 
   public getAllYears(patinoire: Patinoire): void {
       patinoire.conditions?.forEach(condition => {
+        console.log('Date-time sends by the server for patinoires :',condition.date_heure)
         let year: number  = new Date(condition.date_heure).getFullYear();
         this.condition_years.add(year);
       });

@@ -82,3 +82,4 @@ WTForms==2.3.3
 zipp==3.6.0
 gunicorn==20.1.0
 psycopg2-binary==2.9.1
+rfc3339-validator==0.1.4

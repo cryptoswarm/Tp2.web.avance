@@ -11,7 +11,7 @@ class Glissade(Base):
     __tablename__ = 'glissade'
     
     name = db.Column(db.String(255), unique=True,  nullable=False)
-    date_maj = db.Column(db.DateTime, nullable=False)
+    date_maj = db.Column(db.DateTime(timezone=True), nullable=False, default=db.func.current_timestamp())
     ouvert = db.Column(db.Boolean, nullable=False, default=False)
     deblaye = db.Column(db.Boolean, nullable=False, default=False)
     condition = db.Column(db.String(255), nullable=False)

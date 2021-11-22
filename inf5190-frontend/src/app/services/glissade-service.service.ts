@@ -1,3 +1,4 @@
+import { GlissadeForEdit } from './../models/glissade';
 import { Observable , throwError} from 'rxjs';
 import { Glissade } from 'src/app/models/glissade';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -20,10 +21,10 @@ export class GlissadeServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public editGlissade(glissade: Glissade): Observable<Glissade> {
+  public editGlissade(glissade: GlissadeForEdit, glissade_id: number): Observable<Glissade> {
     // /api/glissade/<id>
     console.log('Glissade to be updated in glissade service :',glissade)
-    const url = `${this.apiServerUrl}/api/glissade/${glissade.glissade_id}`
+    const url = `${this.apiServerUrl}/api/glissade/${glissade_id}`
     return this.httpClient.put<Glissade>(url, glissade, httpOptions);
     // .pipe(map(response =>{
     //   return response;

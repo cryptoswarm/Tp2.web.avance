@@ -15,10 +15,10 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
     </div>
     <div class="modal-body">
-      <form #editForm="ngForm">
+      <form [formGroup]="glissadeForEditForm">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" ngModel="{{editGlissade?.name}}" name="name" class="form-control" id="name"
+          <input type="text" ngModel="{{editGlissade?.name}}" formControlName="name" class="form-control" id="name"
             aria-describedby="glissadeName" placeholder="Name">
         </div>
         <!-- <input type="hidden" ngModel="{{editGlissade?.id}}" name="id" class="form-control" id="id"
@@ -26,23 +26,23 @@
         <input type="hidden" ngModel="{{editGlissade?.GlissadeCode}}" name="userCode" class="form-control"
           id="userCode" placeholder="Email"> -->
         <div class="form-group">
-          <label for="email">Date maj</label>
-          <input type="email" ngModel="{{editGlissade?.date_maj}}" name="email" class="form-control" id="email"
+          <label for="date_maj">Date maj</label>
+          <input type="datetime-local" ngModel="{{date_maj}}" formControlName="date_maj" class="form-control" id="date_maj"
             placeholder="date de mise à jour">
         </div>
         <div class="form-group">
-          <label for="phone">Ouverte</label>
-          <input type="text" ngModel="{{editGlissade?.ouvert}}" name="ouvert" class="form-control" id="ouvert"
+          <label for="ouvert">Ouverte</label>
+          <input type="text" ngModel="{{editGlissade?.ouvert}}" formControlName="ouvert" class="form-control" id="ouvert"
             placeholder="Status de glissade : ouvert">
         </div>
         <div class="form-group">
-          <label for="phone">Deblayée</label>
-          <input type="text" ngModel="{{editGlissade?.deblaye}}" name="deblaye" class="form-control" id="deblaye"
+          <label for="deblaye">Deblayée</label>
+          <input type="text" ngModel="{{deblayee}}" formControlName="deblaye" class="form-control" id="deblaye"
             placeholder="Status de glissade : deblaye">
         </div>
         <div class="form-group">
-          <label for="phone">condition</label>
-          <input type="text" ngModel="{{editGlissade?.condition}}" name="condition" class="form-control" id="condition"
+          <label for="condition">condition</label>
+          <input type="text" ngModel="{{editGlissade?.condition}}" formControlName="condition" class="form-control" id="condition"
             placeholder="Etat de glissade">
         </div>
         <div class="modal-footer">

@@ -15,6 +15,7 @@ from inf5190_projet_src.schemas.schema import *
 from inf5190_projet_src import schema
 from inf5190_projet_src.models.glissade import GlissadeSchema
 from marshmallow import ValidationError
+from jsonschema import FormatChecker
 
 
 glissade_schema = GlissadeSchema()
@@ -23,7 +24,7 @@ glissade_schema = GlissadeSchema()
 mod_glissade = Blueprint('glissade', __name__, url_prefix='')
 
 @mod_glissade.route('/api/glissade/<id>', methods=['PUT'])
-@schema.validate(edit_glissade)
+@schema.validate(edit_glissade, format_checker=FormatChecker())
 def edit_glissade(id):
     glissade_data = request.get_json()
     print('Received data for update : ',glissade_data)

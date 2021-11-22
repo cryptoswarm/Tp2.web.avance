@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Glissade } from '../models/glissade';
+import { map , catchError} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -42,8 +43,15 @@ export class ApiClientService {
   }
 
   public getGlissadeDetails(arrName: string, glissadeName: string): Observable<Glissade> {
+    // console.log('arron_name :',arrName['search'])
+    // const url = `${this.apiServerUrl}/api/installations/arrondissement/${arrName['search']}/glissade/${glissadeName}`
+    // return this.httpClient.get<Glissade>(url, httpOptions);
     console.log('arron_name :',arrName['search'])
     const url = `${this.apiServerUrl}/api/installations/arrondissement/${arrName['search']}/glissade/${glissadeName}`
-    return this.httpClient.get<Glissade>(url, httpOptions);
+    return this.httpClient.get<Glissade>(url, httpOptions)
+    .pipe(map(response =>{
+      console.log('Glissade response from server inside service :',response);
+      return response;
+    }))
   }
 }
