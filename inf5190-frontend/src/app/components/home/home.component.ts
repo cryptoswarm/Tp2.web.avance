@@ -3,20 +3,24 @@ import { PatinoirCondition } from './../../models/patinoire-conditions';
 import { Installation } from './../../models/installation';
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from 'src/app/services/api-client.service';
+import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InstallationAquatique } from 'src/app/models/installation-aquatique';
 import { Glissade } from 'src/app/models/glissade';
 import { Patinoire } from 'src/app/models/patinoire';
 import { DeletionComponent } from '../deletion/deletion.component';
+import { EditGlissadeComponent } from '../edit-glissade/edit-glissade.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const MODALS: { [name: string]: Type<any> } = {
   autofocus: DeletionComponent,
+  regular: EditGlissadeComponent
 };
 
 @Component({
   selector: 'app-home',
+  // directives: [EditGlissadeComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -50,6 +54,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private apiClient: ApiClientService,
+              private _sharedService :SharedServiceService,
               private formBuilder: FormBuilder,
               private _modalService: NgbModal) {
     this.searchForm = this.formBuilder.group({
@@ -194,10 +199,12 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public editGlissade(glissadeId: number | undefined): void {
+  public editGlissade(glissade: Glissade | undefined): void {
     console.log('edit button pressed')
-    if(glissadeId !== undefined){
-      console.log('Glissade id to be updated:',glissadeId)
+    if(glissade !== undefined){
+      this._sharedService.glissade = glissade;
+      this.open('regular');
+      console.log('Glissade id to be updated:',glissade.glissade_id)
     }
   }
 

@@ -26,6 +26,7 @@ mod_glissade = Blueprint('glissade', __name__, url_prefix='')
 @schema.validate(edit_glissade)
 def edit_glissade(id):
     glissade_data = request.get_json()
+    print('Received data for update : ',glissade_data)
     try:
         posted_glissade = GlissadeSchema().load(glissade_data) 
     except ValidationError as err:
@@ -39,10 +40,8 @@ def edit_glissade(id):
     if arrondissement.id != glissade.arrondissement_id:
         return jsonify({"message":"Given glissade does not belong to given arrondissement"}), 400
     updated, status = update_glissade(glissade, posted_glissade)
-    print('received updated :',updated)
     result = GlissadeSchema().dump(updated)
-    print('Serialized data :',result)
-    return {"status": "success", "data": result}, status
+    return jsonify(result), status
 
 
 @mod_glissade.route('/api/glissade/<id>', methods=['DELETE'])

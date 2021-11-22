@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletionComponent } from './components/deletion/deletion.component';
+import { EditGlissadeComponent } from './components/edit-glissade/edit-glissade.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DeletionComponent
+    DeletionComponent,
+    EditGlissadeComponent
   ],
   imports: [
     BrowserModule,

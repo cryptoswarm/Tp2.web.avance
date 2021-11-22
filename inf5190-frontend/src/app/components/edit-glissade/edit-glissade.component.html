@@ -1,0 +1,82 @@
+
+    <div class="modal-header">
+      <h5 class="modal-title" id="updateGlissadeModalLabel">Edit Glissade {{editGlissade?.name}}</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-warning">
+      <strong>Warning!</strong> {{errorMessage | json}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;
+      </button>
+    </div>
+    <div *ngFor="let message of errorMessages"class="alert alert-danger" >
+      <strong>Warning!</strong> {{message | json}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form #editForm="ngForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" ngModel="{{editGlissade?.name}}" name="name" class="form-control" id="name"
+            aria-describedby="glissadeName" placeholder="Name">
+        </div>
+        <!-- <input type="hidden" ngModel="{{editGlissade?.id}}" name="id" class="form-control" id="id"
+          placeholder="Email">
+        <input type="hidden" ngModel="{{editGlissade?.GlissadeCode}}" name="userCode" class="form-control"
+          id="userCode" placeholder="Email"> -->
+        <div class="form-group">
+          <label for="email">Date maj</label>
+          <input type="email" ngModel="{{editGlissade?.date_maj}}" name="email" class="form-control" id="email"
+            placeholder="date de mise à jour">
+        </div>
+        <div class="form-group">
+          <label for="phone">Ouverte</label>
+          <input type="text" ngModel="{{editGlissade?.ouvert}}" name="ouvert" class="form-control" id="ouvert"
+            placeholder="Status de glissade : ouvert">
+        </div>
+        <div class="form-group">
+          <label for="phone">Deblayée</label>
+          <input type="text" ngModel="{{editGlissade?.deblaye}}" name="deblaye" class="form-control" id="deblaye"
+            placeholder="Status de glissade : deblaye">
+        </div>
+        <div class="form-group">
+          <label for="phone">condition</label>
+          <input type="text" ngModel="{{editGlissade?.condition}}" name="condition" class="form-control" id="condition"
+            placeholder="Etat de glissade">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+          <button (click)="onUpdateGlissade()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+          <!-- disable attribute enles the form is valid-->
+        </div>
+      </form>
+    </div>
+
+
+
+<!-- glissade_id: number,
+name: string,
+date_maj?: Date,
+ouvert?: boolean,
+deblaye?: boolean,
+condition?: string -->
+
+
+<!-- <div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Profile deletion</h4>
+  <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p><strong>Are you sure you want to delete <span class="text-primary">"John Doe"</span> profile?</strong></p>
+  <p>All information associated to this user profile will be permanently deleted.
+  <span class="text-danger">This operation can not be undone.</span>
+  </p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+  <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
+</div> -->
+
