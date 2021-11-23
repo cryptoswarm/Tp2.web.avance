@@ -14,6 +14,7 @@ import { DeletionComponent } from '../deletion/deletion.component';
 import { EditGlissadeComponent } from '../edit-glissade/edit-glissade.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+
 const MODALS: { [name: string]: Type<any> } = {
   autofocus: DeletionComponent,
   regular: EditGlissadeComponent
@@ -223,5 +224,6 @@ export class HomeComponent implements OnInit {
   open(name: string) {
     this._modalService.open(MODALS[name]);
   }
+
 
 }

@@ -1,3 +1,4 @@
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { GlissadeForEdit } from './../../models/glissade';
 import { Glissade } from 'src/app/models/glissade';
@@ -6,6 +7,7 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { GlissadeServiceService } from 'src/app/services/glissade-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import Swal, { SweetAlertIcon } from 'sweetalert2'
 
 @Component({
   selector: 'app-edit-glissade',
@@ -30,7 +32,8 @@ export class EditGlissadeComponent implements OnInit {
   constructor(private _sharedService:SharedServiceService,
               private _glissadeService : GlissadeServiceService,
               private _datePipe: DatePipe,
-              private _formBuilder: FormBuilder) {}
+              private _formBuilder: FormBuilder,
+              public modal: NgbActiveModal) {}
 
   ngOnInit(): void {
 
@@ -80,12 +83,12 @@ export class EditGlissadeComponent implements OnInit {
     this._glissadeService.editGlissade(glissade, this.editGlissade.glissade_id).subscribe(
       (response: Glissade) => {
         console.log("Glissade has been Updated to :",response);
-        // this.getEmployees();
         this._sharedService.glissade = response;
-        // this.updatedGlissadEvent.emit(response);
         console.log('Update successful :',this._sharedService.glissade);
-        // this.glissadeForEditForm.
+        this.modal.close('Ok click');
+        this.showSuccessMessage('', `Modification de ${response.name} a reussit!`, 'success');
         this.success = true;
+
       },
       (error: HttpErrorResponse) => {
         console.log('error . error[errors] :', error.error['errors'])
@@ -121,4 +124,14 @@ export class EditGlissadeComponent implements OnInit {
     console.log('glissade :',glissade);
     return glissade;
   }
+
+  showSuccessMessage( title: string, message: string, icon: SweetAlertIcon){
+    Swal.fire(
+      'Good job!',
+      message= message,
+      icon = icon
+    )
+  }
+
+
 }
