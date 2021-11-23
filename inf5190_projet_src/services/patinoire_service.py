@@ -2,6 +2,7 @@
 
 
 import re
+from inf5190_projet_src.models.patinoire import PatAndCondition
 from inf5190_projet_src.repositories.patinoire_repo import *
 from inf5190_projet_src.services.glissade_services import get_patinoire_condition
 from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id
@@ -30,12 +31,10 @@ def get_patinoire_names_arr_id(arr_id):
     return response
 
 def get_patinoire_details(arr_id, pat_name):
-    response = {}
-    patinoires = find_patinoires_details(arr_id, pat_name)
-    if patinoires is None:
+    patinoire = find_patinoires_details(arr_id, pat_name)
+    if patinoire is None:
         return None, 404
-    for pat in patinoires:
-        response = pat.asDictionary()
-        conditions = get_pat_conditions_by_pat_id(pat.id)
-        response['conditions'] = conditions
-    return response, 200
+    conditions = get_pat_conditions_by_pat_id(patinoire.id)
+    pat_conditions = PatAndCondition(patinoire.id, patinoire.nom_pat, patinoire.arron_id, conditions)
+    return pat_conditions, 200
+

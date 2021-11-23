@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import jsonify, request
-from inf5190_projet_src.models.patinoire import PatinoireSchema
+from inf5190_projet_src.models.patinoire import PatinoireSchema, PatAndConditionSchema, EditPatAndConditionSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
@@ -12,27 +12,30 @@ patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
 
 
 pat_schema = PatinoireSchema(many=True)
+pat_cond_schema = PatAndConditionSchema()
+edit_pat_cond_sch = EditPatAndConditionSchema()
 
-# @patinoire.route('/api/patinoire/id', methods=['PUT'])
-# def edit_patinoire(id):
-#     patinoire = request.get_json()
-#     try:
-#         posted_inst_aqua = GlissadeSchema().load(insta_aqua_data) 
-#     except ValidationError as err:
-#         return jsonify(err.messages), 400
-#     arrondissement, status = get_arr_by_id(posted_inst_aqua['arrondissement_id'])
-#     if arrondissement is None:
-#         return jsonify({"message":"arrondissement does not exist!"}), status
-#     aqua_inst, status = get_aqua_inst_by_id(id)
-#     if aqua_inst is None:
-#         return jsonify({"message":"Aqua installation does not exist!"}), status
-#     if arrondissement.id != aqua_inst.arron_id:
-#         return jsonify({"message":"Given aqua inst does not belong to given arrondissement"}), 400
-#     updated, status = update_aqua_inst(aqua_inst, posted_inst_aqua)
-#     print('received updated :',updated)
-#     result = GlissadeSchema().dump(updated)
-#     print('Serialized data :',result)
-#     return {"status": "success", "data": result}, status
+@patinoire.route('/api/patinoire/<id>', methods=['PUT'])
+def edit_patinoire(id):
+    pat_condition= request.get_json()
+    try:
+        posted_pat_con = edit_pat_cond_sch.load(pat_condition) 
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    return jsonify(posted_pat_con), 200
+    # arrondissement, status = get_arr_by_id(posted_inst_aqua['arrondissement_id'])
+    # if arrondissement is None:
+    #     return jsonify({"message":"arrondissement does not exist!"}), status
+    # aqua_inst, status = get_aqua_inst_by_id(id)
+    # if aqua_inst is None:
+    #     return jsonify({"message":"Aqua installation does not exist!"}), status
+    # if arrondissement.id != aqua_inst.arron_id:
+    #     return jsonify({"message":"Given aqua inst does not belong to given arrondissement"}), 400
+    # updated, status = update_aqua_inst(aqua_inst, posted_inst_aqua)
+    # print('received updated :',updated)
+    # result = GlissadeSchema().dump(updated)
+    # print('Serialized data :',result)
+    # return {"status": "success", "data": result}, status
 
 
 
@@ -46,6 +49,6 @@ def get_patinoire(arrondissement, name):
         patinoires, status = get_patinoire_details(arr.id, name)
         if patinoires is None:
             return {}, 404
-        sirialized_pats = pat_schema.dump(patinoires)
-        return jsonify(sirialized_pats), 200
+        sirialized_pat = pat_cond_schema.dump(patinoires)
+        return jsonify(sirialized_pat), 200
     return {}, 400

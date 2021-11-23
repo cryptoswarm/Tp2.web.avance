@@ -35,4 +35,4 @@ def find_patinoires_details(arr_id, pat_name):
            .filter(and_(
                (Patinoire.arron_id == arr_id), 
                (Patinoire.nom_pat == pat_name)
-               )).all()
+               )).first()

@@ -6,12 +6,14 @@ from sqlalchemy.orm import relationship
 from marshmallow import schema, fields, pre_load, validate
 from flask_marshmallow import Marshmallow
 
+from inf5190_projet_src.models.patinoir_condition import PatConditionSchema
+
 
 ma = Marshmallow()
 
 class Patinoire(Base):
 
-    __tablename__ = 'patinoire'
+    __tablename__ = 'patinoire' 
     
     nom_pat = db.Column(db.String(255), unique=True,  nullable=False)
     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
@@ -30,12 +32,28 @@ class Patinoire(Base):
         return {"id": self.id,
                 "nom_pat":self.nom_pat
                 }
-    
+
+
+class PatAndCondition(Patinoire):
+
+    def __init__(self, id, nom_pat, arron_id, conditions):
+        super().__init__(nom_pat, arron_id)
+        self.id = id
+        self.conditions = conditions
+ 
 class PatinoireSchema(ma.Schema):
     id = fields.Number()
     nom_pat = fields.String(required=True, validate=validate.Length(1))
-    # date_maj = fields.DateTime(required=True)
-    # ouvert = fields.Boolean(required=True)
-    # deblaye = fields.Boolean(required=True)
-    # condition = fields.String(required=True, validate=validate.Length(1))
     arron_id = fields.Number(required=True)
+
+
+class PatAndConditionSchema(ma.Schema):
+    id = fields.Number()
+    nom_pat = fields.String(required=True, validate=validate.Length(1))
+    arron_id = fields.Number(required=True)
+    conditions = fields.Nested(PatConditionSchema, many=True)
+
+class EditPatAndConditionSchema(ma.Schema):
+    nom_pat = fields.String(required=True, validate=validate.Length(1))
+    arron_id = fields.Number(required=True)
+    conditions = fields.Nested(PatConditionSchema)
