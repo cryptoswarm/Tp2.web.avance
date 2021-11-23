@@ -1,4 +1,5 @@
-import { Type } from '@angular/core';
+import { GlissadeServiceService } from 'src/app/services/glissade-service.service';
+import { ComponentRef, Type } from '@angular/core';
 import { PatinoirCondition } from './../../models/patinoire-conditions';
 import { Installation } from './../../models/installation';
 import { Component, OnInit } from '@angular/core';
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
   installations: Installation = null as any;
 
   errorMessage: string = "";
+  updateSuccess: boolean = false;
 
   arr_name: string = "";
   arr_cle!: string;
@@ -52,11 +54,11 @@ export class HomeComponent implements OnInit {
   patinoireForm: FormGroup;
   yearsForm: FormGroup
 
-
   constructor(private apiClient: ApiClientService,
               private _sharedService :SharedServiceService,
               private formBuilder: FormBuilder,
-              private _modalService: NgbModal) {
+              private _modalService: NgbModal,
+              private _glissadeService: GlissadeServiceService) {
     this.searchForm = this.formBuilder.group({
       search: ['', Validators.required]
     })
@@ -74,7 +76,8 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 
   public getAllInstallations(){
@@ -140,6 +143,7 @@ export class HomeComponent implements OnInit {
 
 
   public getGlissadeDetails(): void{
+    this.updateSuccess = false;
     const name = this.glissadeForm.value['glissadeName']
     console.log('Choosen glissade name :',name)
     this.apiClient.getGlissadeDetails(this.arr_name, name)
@@ -202,9 +206,15 @@ export class HomeComponent implements OnInit {
 
   public editGlissade(glissade: Glissade | undefined): void {
     console.log('edit button pressed')
+    this.updateSuccess = false;
     if(glissade !== undefined){
       this._sharedService.glissade = glissade;
       this.open('regular');
+      this._glissadeService.refreshNeeded$
+          .subscribe(()=>{
+          this.getGlissadeDetails();
+          this.updateSuccess = true;
+      })
       console.log('Glissade id to be updated:',glissade.glissade_id)
     }
   }

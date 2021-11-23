@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { GlissadeForEdit } from './../../models/glissade';
 import { Glissade } from 'src/app/models/glissade';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { GlissadeServiceService } from 'src/app/services/glissade-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,31 +14,40 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class EditGlissadeComponent implements OnInit {
 
+  // @Output() updatedGlissadEvent = new EventEmitter<Glissade>();
+  // // @Output() updatedGlissadEvent = new EventEmitter<boolean>();
   editGlissade!: Glissade;
-  // glissade!: GlissadeForEdit;
+
   errorMessage: string = "";
   errorMessages: string[] = [];
   date_maj: string = '';
   deblayee: string = ''
   ouvert: string = '';
+  success : boolean = false;
 
-  glissadeForEditForm: FormGroup;
+  glissadeForEditForm!: FormGroup;
 
   constructor(private _sharedService:SharedServiceService,
               private _glissadeService : GlissadeServiceService,
               private _datePipe: DatePipe,
-              private _formBuilder: FormBuilder) {
-
-                this.glissadeForEditForm = this._formBuilder.group({
-                  name: ['', Validators.required],
-                  date_maj: ['', Validators.required],
-                  ouvert: ['', Validators.required],
-                  deblaye: ['', Validators.required],
-                  condition: ['', Validators.required]
-                })
-               }
+              private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+
+    this.glissadeForEditForm = this._formBuilder.group({
+      name: ['', Validators.required],
+      date_maj: ['', Validators.required],
+      ouvert: ['', [Validators.required,
+                    Validators.pattern('(^Oui$)|(^Non$)'),
+                    Validators.min(3),
+                    Validators.max(3)]],
+      deblaye: ['', [Validators.required,
+                    Validators.pattern('(^Oui$)|(^Non$)'),
+                    Validators.min(3),
+                    Validators.max(3)]],
+      condition: ['', Validators.required]
+    })
+
     this.editGlissade = this._sharedService.glissade;
     if(this.editGlissade.name !== undefined){
         this.glissadeForEditForm.get('name')?.setValue(this.editGlissade.name);
@@ -67,14 +76,16 @@ export class EditGlissadeComponent implements OnInit {
   }
 
   public onUpdateGlissade(): void{
-    const retrievedData = this.glissadeForEditForm.value;
-    let glissade = this.convertToGlissadeForEdit(retrievedData);
+    let glissade = this.convertToGlissadeForEdit();
     this._glissadeService.editGlissade(glissade, this.editGlissade.glissade_id).subscribe(
       (response: Glissade) => {
         console.log("Glissade has been Updated to :",response);
         // this.getEmployees();
         this._sharedService.glissade = response;
+        // this.updatedGlissadEvent.emit(response);
         console.log('Update successful :',this._sharedService.glissade);
+        // this.glissadeForEditForm.
+        this.success = true;
       },
       (error: HttpErrorResponse) => {
         console.log('error . error[errors] :', error.error['errors'])
@@ -87,22 +98,27 @@ export class EditGlissadeComponent implements OnInit {
     );
   }
 
-  private convertToGlissadeForEdit(updatedGlissade: any): GlissadeForEdit{
+  private convertToGlissadeForEdit(): GlissadeForEdit{
+    const retrievedData = this.glissadeForEditForm.value;
     let glissade = new GlissadeForEdit();
-    if(updatedGlissade.date_maj !== undefined){
-      glissade.date_maj = new Date(updatedGlissade.date_maj).toISOString();
+    console.log('Data retrieved from form :',glissade)
+    console.log('this.glissadeForEditForm.get(ouvert)?.value:',this.glissadeForEditForm.get('ouvert')?.value)
+    console.log('retrievedData.ouvert !== undefined ;',retrievedData.ouvert !== undefined);
+    if(retrievedData.date_maj !== undefined){
+      glissade.date_maj = new Date(retrievedData.date_maj).toISOString();
     }
     glissade.arrondissement_id = this.editGlissade.arrondissement_id;
-    if(updatedGlissade.condition){
-      glissade.condition = updatedGlissade.condition;
+    if(retrievedData.condition){
+      glissade.condition = retrievedData.condition;
     }
-    if(updatedGlissade.deblaye !== undefined){
-      glissade.deblaye = updatedGlissade.deblaye == 'Oui' ? '1': '0';
+    if(retrievedData.deblaye){
+      glissade.deblaye = retrievedData.deblaye == 'Oui' ? '1': '0';
     }
-    if(updatedGlissade.ouvert !== undefined){
-      glissade.ouvert = updatedGlissade.ouvert == 'Oui' ? '1': '0';
+    if(retrievedData.ouvert){
+      glissade.ouvert = retrievedData.ouvert == 'Oui' ? '1': '0';
     }
-    glissade.name = updatedGlissade.name;
+    glissade.name = retrievedData.name;
+    console.log('glissade :',glissade);
     return glissade;
   }
 }

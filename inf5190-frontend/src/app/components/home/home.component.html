@@ -269,7 +269,8 @@
                               <tr>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{glissadeDetails?.name}}</p>
+                                    <!-- <i *ngIf="updateSuccess" class="fa fa-check-circle" aria-hidden="true"></i> -->
+                                    <p class="text-muted m-0">{{glissadeDetails?.name}} <span><i *ngIf="updateSuccess" class="fa fa-check-circle" style="color:green" aria-hidden="true"></i></span></p>
                                   </div>
                                 </td>
                                 <td>
@@ -301,6 +302,7 @@
                                       data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
                                     </a>
                                   </div>
+                                  <!-- <app-edit-glissade (updatedGlissadEvent)="updateSuccess($event)"></app-edit-glissade> -->
                                 <!-- </td> -->
                               </tr>
                               <!-- <div class="float-right btn-group btn-group-sm"> -->

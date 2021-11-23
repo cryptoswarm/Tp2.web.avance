@@ -15,43 +15,52 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
     </div>
     <div class="modal-body">
-      <form [formGroup]="glissadeForEditForm">
+      <form [formGroup]="glissadeForEditForm" [hidden]="success" (ngSubmit)="onUpdateGlissade()">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text"  formControlName="name" class="form-control" id="name"
             aria-describedby="glissadeName" placeholder="Name">
         </div>
-        <!-- <input type="hidden" ngModel="{{editGlissade?.id}}" name="id" class="form-control" id="id"
-          placeholder="Email">
-        <input type="hidden" ngModel="{{editGlissade?.GlissadeCode}}" name="userCode" class="form-control"
-          id="userCode" placeholder="Email"> -->
         <div class="form-group">
           <label for="date_maj">Date maj</label>
           <input type="datetime-local"  formControlName="date_maj" class="form-control" id="date_maj"
             placeholder="date de mise à jour">
+          <span class="text-danger" *ngIf="glissadeForEditForm.controls['date_maj'].invalid && glissadeForEditForm.controls['date_maj'].touched">
+              Veuillez choisir une date!
+          </span>
         </div>
-        <!-- ngModel="{{date_maj}}" -->
         <div class="form-group">
           <label for="ouvert">Ouverte</label>
           <input type="text"  formControlName="ouvert" class="form-control" id="ouvert"
             placeholder="Status de glissade : ouvert">
+          <span class="text-danger" *ngIf="glissadeForEditForm.controls.ouvert.touched && glissadeForEditForm.controls.ouvert.invalid">
+              Oui pour ouvert sinon Non
+          </span>
         </div>
         <div class="form-group">
           <label for="deblaye">Deblayée</label>
           <input type="text"  formControlName="deblaye" class="form-control" id="deblaye"
             placeholder="Status de glissade : deblaye">
+          <span class="text-danger" *ngIf="glissadeForEditForm.controls['deblaye'].invalid && glissadeForEditForm.controls['deblaye'].touched">
+              Oui pour deblayée sinon Non
+          </span>
         </div>
         <div class="form-group">
           <label for="condition">condition</label>
           <input type="text"  formControlName="condition" class="form-control" id="condition"
             placeholder="Etat de glissade">
+          <span class="text-danger" *ngIf="glissadeForEditForm.controls['condition'].invalid && glissadeForEditForm.controls['condition'].touched">
+              Condition est requise
+          </span>
         </div>
         <div class="modal-footer">
           <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
-          <button (click)="onUpdateGlissade()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
-          <!-- disable attribute enles the form is valid-->
+          <button data-dismiss="modal" class="btn btn-primary" [disabled]="glissadeForEditForm.invalid">Save changes</button>
         </div>
       </form>
+    </div>
+    <div *ngIf="success">
+      Yay! We received your submission
     </div>
 
 

@@ -1,10 +1,10 @@
 import { GlissadeForEdit } from './../models/glissade';
-import { Observable , throwError} from 'rxjs';
+import { Observable , Subject, throwError} from 'rxjs';
 import { Glissade } from 'src/app/models/glissade';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { map , catchError} from 'rxjs/operators';
+import { map , catchError, tap} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,13 +19,25 @@ export class GlissadeServiceService {
 
   private apiServerUrl = environment.apiBaseUrl;
 
+  private _refreshNeeded$ = new Subject<void>();
+
   constructor(private httpClient: HttpClient) { }
+
+  get refreshNeeded$(){
+    return this._refreshNeeded$;
+  }
 
   public editGlissade(glissade: GlissadeForEdit, glissade_id: number): Observable<Glissade> {
     // /api/glissade/<id>
     console.log('Glissade to be updated in glissade service :',glissade)
     const url = `${this.apiServerUrl}/api/glissade/${glissade_id}`
-    return this.httpClient.put<Glissade>(url, glissade, httpOptions);
+    return this.httpClient.put<Glissade>(url, glissade, httpOptions)
+    .pipe(
+      tap(()=>{
+        this._refreshNeeded$.next();
+        console.log('glissade  has been updated in glissade service');
+       }),
+    );
     // .pipe(map(response =>{
     //   return response;
     // }),
