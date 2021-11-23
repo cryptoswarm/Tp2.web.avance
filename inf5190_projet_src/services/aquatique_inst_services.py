@@ -99,6 +99,7 @@ def get_aqua_installations(arrond_id, aqua_name):
     aqua_intas = find_aqua_installations(arrond_id, aqua_name)
     if aqua_intas is None:
         return None
-    for aqua in aqua_intas:
-        response.append(aqua.asDictionary())
-    return response
+    # for aqua in aqua_intas:
+    #     response.append(aqua.asDictionary())
+    # return response
+    return aqua_intas

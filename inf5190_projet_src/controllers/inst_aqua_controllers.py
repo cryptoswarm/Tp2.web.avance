@@ -2,6 +2,7 @@ from flask import Blueprint, json, Request
 from flask import render_template, flash, request
 from flask import redirect, url_for, jsonify
 from flask.helpers import make_response
+from inf5190_projet_src.models.piscines_aquatique import InstallationAquatiqueSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
@@ -12,16 +13,19 @@ from marshmallow import ValidationError
 insta_aqua = Blueprint('insta_aquatique', __name__, url_prefix='')
 
 
+aquatique_Schema = InstallationAquatiqueSchema()
+aquatiques_schema = InstallationAquatiqueSchema(many=True)
 
+# http://localhost:5000/api/installation_aquatique/126
 
-@insta_aqua.route('/api/installation_aquatique/id', methods=['PUT'])
+@insta_aqua.route('/api/installation_aquatique/<id>', methods=['PUT'])
 def edit_installation_aquatique(id):
     insta_aqua_data = request.get_json()
     try:
-        posted_inst_aqua = GlissadeSchema().load(insta_aqua_data) 
+        posted_inst_aqua = aquatique_Schema.load(insta_aqua_data) 
     except ValidationError as err:
         return jsonify(err.messages), 400
-    arrondissement, status = get_arr_by_id(posted_inst_aqua['arrondissement_id'])
+    arrondissement, status = get_arr_by_id(posted_inst_aqua['arron_id'])
     if arrondissement is None:
         return jsonify({"message":"arrondissement does not exist!"}), status
     aqua_inst, status = get_aqua_inst_by_id(id)
@@ -30,12 +34,13 @@ def edit_installation_aquatique(id):
     if arrondissement.id != aqua_inst.arron_id:
         return jsonify({"message":"Given aqua inst does not belong to given arrondissement"}), 400
     updated, status = update_aqua_inst(aqua_inst, posted_inst_aqua)
-    print('received updated :',updated)
-    result = GlissadeSchema().dump(updated)
-    print('Serialized data :',result)
-    return {"status": "success", "data": result}, status
+    print('Aqua Installation received for updated :',posted_inst_aqua)
+    print('Aqua Installation updated to :',updated)
+    result = aquatique_Schema.dump(updated)
+    return jsonify(result), status
 
 
+# http://localhost:5000/api/installations/arrondissement/LaSalle/aquatique/Parc Leroux
 
 @insta_aqua.route('/api/installations/arrondissement/<arrondissement>/aquatique/<name>', methods=['GET'])
 def get_aqua_inst(arrondissement, name):
@@ -47,5 +52,6 @@ def get_aqua_inst(arrondissement, name):
         aqua_insts = get_aqua_installations(arr.id, name)
         if aqua_insts is None:
             return {}, 404
-        return jsonify(aqua_insts), 200
+        aquatiques = aquatiques_schema.dump(aqua_insts)
+        return jsonify(aquatiques), 200
     return {}, 400

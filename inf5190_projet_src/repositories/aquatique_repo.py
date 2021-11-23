@@ -29,6 +29,8 @@ def update_aqua(installation, data):
     installation.propriete_installation = data['propriete_installation']
     installation.gestion_inst = data['gestion_inst']
     installation.equipement_inst = data['equipement_inst']
+    db.session.commit()
+    return installation
     
 
 def find_aqua_inst_names_arr_id(arr_id):
@@ -39,14 +41,15 @@ def find_aqua_inst_names_arr_id(arr_id):
 
 def find_aqua_installations(arr_id, aqua_name):
     print('Aqua Repo --> Arrndissement id :{} and aqua_name : {}'.format(arr_id, aqua_name))
-    return InstallationAquatique \
+    response =  InstallationAquatique \
            .query \
            .filter(and_(
                (InstallationAquatique.arron_id==arr_id), 
                (InstallationAquatique.nom_installation==aqua_name)
                )).all()
-        #    .filter(and_(InstallationAquatique.c.arron_id == arr_id,
-        #                    InstallationAquatique.c.nom_installation == aqua_name)).all()
+    print('Aqua inst found :', response)
+    return response
+
           
 
 # nom_installation = db.Column(db.String(255),  nullable=False)
