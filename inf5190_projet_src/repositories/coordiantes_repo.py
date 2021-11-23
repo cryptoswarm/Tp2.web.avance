@@ -19,3 +19,5 @@ def find_by_hash(hash):
 
 def find_by_id(pos_id):
      return Coordiante.query.filter_by(id=pos_id).first()
+
+    

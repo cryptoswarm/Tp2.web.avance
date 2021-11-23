@@ -1,5 +1,6 @@
 from flask import Blueprint
-from flask import jsonify
+from flask import jsonify, request
+from inf5190_projet_src.models.patinoire import PatinoireSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
@@ -10,11 +11,11 @@ from marshmallow import ValidationError
 patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
 
 
+pat_schema = PatinoireSchema(many=True)
 
-
-# @insta_aqua.route('/api/installation_aquatique/id', methods=['PUT'])
-# def edit_installation_aquatique(id):
-#     insta_aqua_data = request.get_json()
+# @patinoire.route('/api/patinoire/id', methods=['PUT'])
+# def edit_patinoire(id):
+#     patinoire = request.get_json()
 #     try:
 #         posted_inst_aqua = GlissadeSchema().load(insta_aqua_data) 
 #     except ValidationError as err:
@@ -45,5 +46,6 @@ def get_patinoire(arrondissement, name):
         patinoires, status = get_patinoire_details(arr.id, name)
         if patinoires is None:
             return {}, 404
-        return jsonify(patinoires), 200
+        sirialized_pats = pat_schema.dump(patinoires)
+        return jsonify(sirialized_pats), 200
     return {}, 400

@@ -6,10 +6,10 @@ from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
+from marshmallow import schema, fields, pre_load, validate
+from flask_marshmallow import Marshmallow
 
-
-
-
+ma = Marshmallow()
 class Coordiante(Base):
 
     __tablename__ = 'coordiantes'
@@ -42,3 +42,11 @@ class Coordiante(Base):
     def calculate_hash(self):
         hash = hashlib.md5(str(self.point_x + self.point_y + self.longitude + self.latitude).encode('utf-8')).hexdigest()
         return hash
+
+class CoordinateSchema(ma.Schema):
+    id = fields.Number()
+    point_x = fields.String(required=True, validate=validate.Length(1))
+    point_y = fields.String(required=True, validate=validate.Length(1))
+    longitude = fields.String(required=True, validate=validate.Length(1))
+    latitude = fields.String(required=True, validate=validate.Length(1))
+    

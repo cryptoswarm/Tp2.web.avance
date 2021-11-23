@@ -1,6 +1,6 @@
 from flask_sqlalchemy import Pagination
 from inf5190_projet_src import db
-from inf5190_projet_src.models.piscines_aquatique import InstallationAquatique
+from inf5190_projet_src.models.inst_aquatique import InstallationAquatique
 from sqlalchemy import or_, and_, func, desc
 
 
@@ -50,16 +50,11 @@ def find_aqua_installations(arr_id, aqua_name):
     print('Aqua inst found :', response)
     return response
 
-          
+def delete_aqua_by_id(id):
+    aqua = find_aqua_by_id(id)
+    db.session.delete(aqua)
+    db.session.commit()
+    return aqua
 
-# nom_installation = db.Column(db.String(255),  nullable=False)
-#     type_installation = db.Column(db.String(255), nullable=False)
-#     adress = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
-#     propriete_installation = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
-#     gestion_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
-#     equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
-#     aqua_hash = db.Column(db.String(255), unique=True, nullable=False)
-#     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
-#     position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
 
 

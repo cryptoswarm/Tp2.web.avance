@@ -40,6 +40,7 @@ def delete_by_id(id):
     glissade = find_glissade_by_id(id)
     db.session.delete(glissade)
     db.session.commit()
+    return glissade
 
 def find_glissade_details(arr_id, glissade_name):
     return Glissade \

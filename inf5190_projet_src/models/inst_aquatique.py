@@ -1,12 +1,12 @@
-from enum import unique
-from re import A
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
+from inf5190_projet_src.models.coordiante import CoordinateSchema
 import hashlib
 from marshmallow import schema, fields, pre_load, validate
 from flask_marshmallow import Marshmallow
+
 
 ma = Marshmallow()
 
@@ -41,15 +41,9 @@ class InstallationAquatique(Base):
 
         
     def __repr__(self):
-        return "<InstallationAquatique(installation_id='%d',\
-                                       nom_installation='%s',\
-                                       type_installation='%s',\
-                                       adress='%s',\
-                                       propriete_installation='%s',\
-                                       gestion_inst='%s',\
-                                       equipement_inst='%s'\
-                                       arron_id='%d',\
-                                       position_id='%d')>" % (
+        return "<InstallationAquatique(installation_id='%d', nom_installation='%s',type_installation='%s',\
+                adress='%s', propriete_installation='%s', gestion_inst='%s', equipement_inst='%s'\
+                arron_id='%d', position_id='%d')>" % (
             self.id, self.nom_installation, self.type_installation,
             self.adress, self.propriete_installation,
             self.gestion_inst,
@@ -74,6 +68,16 @@ class InstallationAquatique(Base):
                             self.gestion_inst+ self.equipement_inst).encode('utf-8')).hexdigest()
         return aqua_hash
 
+class InstAquatiquePosition(InstallationAquatique):
+
+    def __init__(self, id, nom_installation, type_installation, adress,
+                 propriete_installation, gestion_inst, equipement_inst,
+                 arron_id, position_id, position):
+        super().__init__(nom_installation, type_installation, adress,
+                 propriete_installation, gestion_inst, equipement_inst,
+                 arron_id, position_id)
+        self.id = id
+        self.position = position
 
 class InstallationAquatiqueSchema(ma.Schema):
     id = fields.Number()
@@ -85,8 +89,15 @@ class InstallationAquatiqueSchema(ma.Schema):
     equipement_inst = fields.String(required=True, validate=validate.Length(0))
     arron_id = fields.Number(required=True)
     position_id = fields.Number(required=True)
-    # # fields.DateTime(required=True)
-    # ouvert = fields.Boolean(required=True)
-    # deblaye = fields.Boolean(required=True)
-    # condition = fields.String(required=True, validate=validate.Length(1))
-    
+
+
+class InstAquatiquePositionSchema(ma.Schema):
+    id = fields.Number()
+    nom_installation = fields.String(required=True, validate=validate.Length(1))
+    type_installation = fields.String(required=True, validate=validate.Length(1))
+    adress = fields.String(required=True, validate=validate.Length(1))
+    propriete_installation = fields.String(required=True, validate=validate.Length(1))
+    gestion_inst = fields.String(required=True, validate=validate.Length(1))
+    equipement_inst = fields.String(required=True, validate=validate.Length(0))
+    arron_id = fields.Number(required=True)
+    position = fields.Nested(CoordinateSchema)    

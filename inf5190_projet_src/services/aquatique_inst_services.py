@@ -2,7 +2,7 @@ import csv
 import logging
 from requests.models import Response
 from inf5190_projet_src.repositories.arrondissement_repo import *
-from inf5190_projet_src.models.piscines_aquatique import InstallationAquatique
+from inf5190_projet_src.models.inst_aquatique import InstAquatiquePosition, InstallationAquatique
 from inf5190_projet_src.repositories.aquatique_repo import *
 from inf5190_projet_src.services.arron_service import *
 from inf5190_projet_src.services.coordinate_service import *
@@ -83,6 +83,10 @@ def update_aqua_inst(installation, data):
     updated_aqua = update_aqua(installation, data)
     return updated_aqua, 200
 
+def delete_aqua_inst_by_id(id):
+    deleted_aqua = delete_aqua_by_id(id)
+    return deleted_aqua
+
 
 def get_aqua_inst_names_arr_id(arr_id):
     response = []
@@ -99,7 +103,13 @@ def get_aqua_installations(arrond_id, aqua_name):
     aqua_intas = find_aqua_installations(arrond_id, aqua_name)
     if aqua_intas is None:
         return None
-    # for aqua in aqua_intas:
-    #     response.append(aqua.asDictionary())
-    # return response
-    return aqua_intas
+    for aqua in aqua_intas:
+        position = get_position_by_id(aqua.position_id)
+        if position is not None:
+            aqua_inst_and_pos = InstAquatiquePosition(aqua.id, aqua.nom_installation,
+            aqua.type_installation, aqua.adress,
+            aqua.propriete_installation, aqua.gestion_inst,
+            aqua.equipement_inst, aqua.arron_id,
+            aqua.position_id, position)
+            response.append(aqua_inst_and_pos)
+    return response
