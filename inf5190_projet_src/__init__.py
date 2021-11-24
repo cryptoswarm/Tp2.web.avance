@@ -40,20 +40,7 @@ def create_app(config_name):
     with app.app_context():
     # Configurations
         app.config.from_object(config_by_name[config_name])
-        # app.config.from_object('config')
-
-        # if test_config is None:
-        #     # load the instance config, if it exists, when not testing
-        #     app.config.from_pyfile("config.py", silent=True)
-        # else:
-        #     # load the test config if passed in
-        #     app.config.update(test_config)
-
-        # The folowing fct is for test purposes only
-        @app.route("/hello")
-        def hello():
-            return "Hello, World!"
-
+        
         # db object which is imported by modules and controllers
         db.init_app(app)
         schema.init_app(app)

@@ -138,10 +138,10 @@ splitter.py
 
 
 # ignore data stores
-app.db
-jobs.sqlite
+*.db
+*.sqlite
 
 # ignore logs
-app.log
+*.log
 
 
