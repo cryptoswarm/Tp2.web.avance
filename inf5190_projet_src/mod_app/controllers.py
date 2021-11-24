@@ -11,8 +11,8 @@ mod_home = Blueprint('home', __name__, url_prefix='')
 @mod_home.route('/')
 def home():
     #time = datetime.now().time()
-    time = datetime.utcnow().time()
-    return render_template('index.html', time=time)
+    # time = datetime.utcnow().time()
+    return render_template('index.html')
 
 @mod_home.route('/privacy', methods=['GET','POST'])
 def privacy():
