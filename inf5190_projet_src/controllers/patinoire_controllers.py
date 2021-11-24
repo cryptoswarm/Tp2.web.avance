@@ -1,9 +1,11 @@
 from flask import Blueprint
 from flask import jsonify, request
-from inf5190_projet_src.models.patinoire import PatinoireSchema, PatAndConditionSchema, EditPatAndConditionSchema
+from inf5190_projet_src.models.patinoir_condition import EditPatConditionSchema
+from inf5190_projet_src.models.patinoire import EditPatinoireSchema, PatinoireSchema, PatAndConditionSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
+from inf5190_projet_src.services.pat_conditions_service import *
 from inf5190_projet_src.services.patinoire_service import *
 from marshmallow import ValidationError
 
@@ -13,31 +15,46 @@ patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
 
 pat_schema = PatinoireSchema(many=True)
 pat_cond_schema = PatAndConditionSchema()
-edit_pat_cond_sch = EditPatAndConditionSchema()
+edit_pat_cond_sch = EditPatConditionSchema()
+edit_pat_schema = EditPatinoireSchema()
 
-@patinoire.route('/api/patinoire/<id>', methods=['PUT'])
-def edit_patinoire(id):
+@patinoire.route('/api/patinoire-condition/<id>', methods=['PUT'])
+def edit_patinoire_condition(id):
     pat_condition= request.get_json()
     try:
         posted_pat_con = edit_pat_cond_sch.load(pat_condition) 
     except ValidationError as err:
         return jsonify(err.messages), 400
-    return jsonify(posted_pat_con), 200
-    # arrondissement, status = get_arr_by_id(posted_inst_aqua['arrondissement_id'])
-    # if arrondissement is None:
-    #     return jsonify({"message":"arrondissement does not exist!"}), status
-    # aqua_inst, status = get_aqua_inst_by_id(id)
-    # if aqua_inst is None:
-    #     return jsonify({"message":"Aqua installation does not exist!"}), status
-    # if arrondissement.id != aqua_inst.arron_id:
-    #     return jsonify({"message":"Given aqua inst does not belong to given arrondissement"}), 400
-    # updated, status = update_aqua_inst(aqua_inst, posted_inst_aqua)
-    # print('received updated :',updated)
-    # result = GlissadeSchema().dump(updated)
-    # print('Serialized data :',result)
-    # return {"status": "success", "data": result}, status
+    pat_condition, status = get_pat_condition_cond_id(id)
+    if pat_condition is None:
+        return jsonify({"message":"Condition does not exist!"}), status
+    updated_condition = update_pat_condition(pat_condition, posted_pat_con)
+    serialized_cond = edit_pat_cond_sch.dump(updated_condition)
+    return jsonify(serialized_cond), 200
 
 
+@patinoire.route('/api/patinoire-condition/<int:id>', methods=['DELETE'])
+def delete_patinoire_condition(id):
+    pat_condition, status = get_pat_condition_cond_id(id)
+    if pat_condition is None:
+        return jsonify({"message":"Condition does not exist!"}), status
+    deleted_condition = delete_pat_condition(id)
+    serialized_cond = edit_pat_cond_sch.dump(deleted_condition)
+    return jsonify(serialized_cond), 200
+
+@patinoire.route('/api/patinoire/<int:id>', methods=['PUT'])
+def edit_patinoire(id):
+    posted_patinoire= request.get_json()
+    try:
+        posted_patinoire = edit_pat_schema.load(posted_patinoire) 
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    patinoire, status = get_patinoire_by_id(id)
+    if patinoire is None:
+        return jsonify({"message":"Patinoire does not exist!"}), status
+    updated_pat = update_patinoire(patinoire, posted_patinoire)
+    serialized_pat = edit_pat_schema.dump(updated_pat)
+    return jsonify(serialized_pat), 200
 
 @patinoire.route('/api/installations/arrondissement/<arrondissement>/patinoire/<name>', methods=['GET'])
 def get_patinoire(arrondissement, name):
@@ -45,10 +62,11 @@ def get_patinoire(arrondissement, name):
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
-            return {}, 404
+            return {"message":"Arrondissement does not exist"}, 404
         patinoires, status = get_patinoire_details(arr.id, name)
         if patinoires is None:
-            return {}, 404
+            return {"Message":"Patinoire does not exist"}, 404
         sirialized_pat = pat_cond_schema.dump(patinoires)
         return jsonify(sirialized_pat), 200
     return {}, 400
+

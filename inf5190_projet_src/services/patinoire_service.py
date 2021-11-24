@@ -38,3 +38,13 @@ def get_patinoire_details(arr_id, pat_name):
     pat_conditions = PatAndCondition(patinoire.id, patinoire.nom_pat, patinoire.arron_id, conditions)
     return pat_conditions, 200
 
+def get_patinoire_by_id(patinoire_id):
+    patinoire = find_patinoire_by_id(patinoire_id)
+    if patinoire is None:
+        return None, 404
+    return patinoire, 200
+
+def update_patinoire(pat, posted_pat):
+    updated_pat = do_update_patinoire(pat, posted_pat)
+    return updated_pat
+

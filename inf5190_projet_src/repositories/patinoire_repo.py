@@ -36,3 +36,11 @@ def find_patinoires_details(arr_id, pat_name):
                (Patinoire.arron_id == arr_id), 
                (Patinoire.nom_pat == pat_name)
                )).first()
+
+def find_patinoire_by_id(patinoire_id):
+    return Patinoire.query.filter_by(id=patinoire_id).first()
+
+def do_update_patinoire(existed_pat, posted_pat):
+    existed_pat.nom_pat = posted_pat['nom_pat']
+    db.session.commit()
+    return existed_pat

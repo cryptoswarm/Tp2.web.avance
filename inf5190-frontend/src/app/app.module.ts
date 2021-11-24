@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletionComponent } from './components/deletion/deletion.component';
 import { EditGlissadeComponent } from './components/edit-glissade/edit-glissade.component';
+import { EditAquaComponent } from './components/edit-aqua/edit-aqua.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { EditGlissadeComponent } from './components/edit-glissade/edit-glissade.
     AppComponent,
     HomeComponent,
     DeletionComponent,
-    EditGlissadeComponent
+    EditGlissadeComponent,
+    EditAquaComponent
   ],
   imports: [
     BrowserModule,

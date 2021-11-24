@@ -1,0 +1,76 @@
+  <div class="modal-header">
+    <h5 class="modal-title" id="updateGlissadeModalLabel">Modification de l'installation aquatique: {{editAquaInst?.nom_installation}}</h5>
+    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-warning">
+    <strong>Warning!</strong> {{errorMessage | json}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;
+    </button>
+  </div>
+  <div *ngFor="let message of errorMessages"class="alert alert-danger" >
+    <strong>Warning!</strong> {{message | json}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="aquaInstForEditForm"  (ngSubmit)="onUpdateAquaInst()">
+      <div class="form-group">
+        <label for="name">Nom installation</label>
+        <input type="text"  formControlName="nom_installation" class="form-control" id="name"
+          aria-describedby="aquaInstName" placeholder="nom installation aquatique">
+      </div>
+      <div class="form-group">
+        <label for="type_inst">Type de l'installation</label>
+        <input type="text"  formControlName="type_installation" class="form-control" id="type_inst"
+          placeholder="Type de l'installation">
+        <span class="text-danger" *ngIf="aquaInstForEditForm.controls['type_installation'].invalid && aquaInstForEditForm.controls['type_installation'].touched">
+            Veuillez entrez un type d'installation
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="adress">Adress</label>
+        <input type="text"  formControlName="adress" class="form-control" id="adress"
+          placeholder="L'adress de l'installation aquatique">
+        <span class="text-danger" *ngIf="aquaInstForEditForm.controls.adress.touched && aquaInstForEditForm.controls.adress.invalid">
+           Une adress est requise
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="propr_inst">Propriete d'installation</label>
+        <input type="text"  formControlName="propriete_installation" class="form-control" id="propr_inst"
+          placeholder="Propriete de l'installation">
+        <span class="text-danger" *ngIf="aquaInstForEditForm.controls['propriete_installation'].invalid && aquaInstForEditForm.controls['propriete_installation'].touched">
+          La propriete d'installation est requise
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="gestion">Gestion installation</label>
+        <input type="text"  formControlName="gestion_inst" class="form-control" id="gestion"
+          placeholder="Gestion de l'installation">
+        <span class="text-danger" *ngIf="aquaInstForEditForm.controls['gestion_inst'].invalid && aquaInstForEditForm.controls['gestion_inst'].touched">
+          La gestion de l'installation est requise
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="equi_inst">Equipement installation</label>
+        <input type="text"  formControlName="equipement_inst" class="form-control" id="equi_inst"
+          placeholder="Equipement installation">
+        <span class="text-danger" *ngIf="aquaInstForEditForm.controls['equipement_inst'].invalid && aquaInstForEditForm.controls['equipement_inst'].touched">
+          Veuillez spécifier l'equipement de l'installation
+        </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Annuler</button>
+        <button data-dismiss="modal" class="btn btn-primary" [disabled]="aquaInstForEditForm.invalid" data-backdrop="false">Sauvegarder</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- nom_installation: string = '';
+  type_installation: string= '';
+  adress: string= '';
+  propriete_installation: string= '';
+  gestion_inst: string= '';
+  equipement_inst: string= ''; -->

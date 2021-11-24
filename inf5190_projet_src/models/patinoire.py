@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from marshmallow import schema, fields, pre_load, validate
 from flask_marshmallow import Marshmallow
 
-from inf5190_projet_src.models.patinoir_condition import PatConditionSchema
+from inf5190_projet_src.models.patinoir_condition import EditPatConditionSchema, PatConditionSchema
 
 
 ma = Marshmallow()
@@ -46,6 +46,8 @@ class PatinoireSchema(ma.Schema):
     nom_pat = fields.String(required=True, validate=validate.Length(1))
     arron_id = fields.Number(required=True)
 
+class EditPatinoireSchema(ma.Schema):
+    nom_pat = fields.String(required=True, validate=validate.Length(1))
 
 class PatAndConditionSchema(ma.Schema):
     id = fields.Number()
@@ -53,7 +55,3 @@ class PatAndConditionSchema(ma.Schema):
     arron_id = fields.Number(required=True)
     conditions = fields.Nested(PatConditionSchema, many=True)
 
-class EditPatAndConditionSchema(ma.Schema):
-    nom_pat = fields.String(required=True, validate=validate.Length(1))
-    arron_id = fields.Number(required=True)
-    conditions = fields.Nested(PatConditionSchema)

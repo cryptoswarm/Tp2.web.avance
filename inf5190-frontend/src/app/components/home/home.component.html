@@ -161,7 +161,7 @@
                                 </td>
                                 <td>
                                   <div class="widget-26-job-info">
-                                    <p class="text-muted m-0">{{aqua_inst?.nom_installation}}</p>
+                                    <p class="text-muted m-0">{{aqua_inst?.nom_installation}} <span><i *ngIf="updateSuccess" class="fa fa-check-circle" style="color:green" aria-hidden="true"></i></span></p>
                                   </div>
                                 </td>
                                 <td>
@@ -189,6 +189,14 @@
                                     <p class="text-muted m-0">{{aqua_inst?.equipement_inst}}</p>
                                   </div>
                                 </td>
+                                <div class="float-right btn-group btn-group-sm">
+                                  <a (click)="editAquaInstallation(aqua_inst)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
+                                    data-original-title="Edit" ><i class="fa fa-pencil"></i>
+                                  </a>
+                                  <a  (click)="deleteAquaInstallation(aqua_inst?.id)" id="del-btn" class="btn btn-secondary tooltips"
+                                    data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
+                                  </a>
+                                </div>
                               </tr>
                             </tbody>
                           </table>
@@ -428,6 +436,14 @@
                                     <p class="text-muted m-0">{{condition?.resurface}}</p>
                                   </div>
                                 </td>
+                                <div class="float-right btn-group btn-group-sm">
+                                  <a (click)="editGlissade(glissadeDetails)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
+                                    data-original-title="Edit" ><i class="fa fa-pencil"></i>
+                                  </a>
+                                  <a  (click)="deleteGlissade(glissadeDetails?.glissade_id)" id="del-btn" class="btn btn-secondary tooltips"
+                                    data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
+                                  </a>
+                                </div>
                               </tr>
                             </tbody>
                             <!-- </div> -->

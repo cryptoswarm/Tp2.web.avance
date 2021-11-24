@@ -1,4 +1,6 @@
+import { EditAquaComponent } from './../edit-aqua/edit-aqua.component';
 import { GlissadeServiceService } from 'src/app/services/glissade-service.service';
+import { AquaInstService } from 'src/app/services/aqua-inst.service';
 import { ComponentRef, Type } from '@angular/core';
 import { PatinoirCondition } from './../../models/patinoire-conditions';
 import { Installation } from './../../models/installation';
@@ -17,7 +19,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const MODALS: { [name: string]: Type<any> } = {
   autofocus: DeletionComponent,
-  regular: EditGlissadeComponent
+  regular: EditGlissadeComponent,
+  aquaInst: EditAquaComponent
 };
 
 @Component({
@@ -59,7 +62,8 @@ export class HomeComponent implements OnInit {
               private _sharedService :SharedServiceService,
               private formBuilder: FormBuilder,
               private _modalService: NgbModal,
-              private _glissadeService: GlissadeServiceService) {
+              private _glissadeService: GlissadeServiceService,
+              private _aquaInstallationService: AquaInstService) {
     this.searchForm = this.formBuilder.group({
       search: ['', Validators.required]
     })
@@ -203,6 +207,24 @@ export class HomeComponent implements OnInit {
       console.log('Glissade id to be deleted :',glissadeId)
     }
 
+  }
+
+  public deleteAquaInstallation(aquaInstId: number| undefined): void {
+
+  }
+
+  public editAquaInstallation(aqua_inst: InstallationAquatique){
+    console.log('aqua_inst data in home compo update method:', aqua_inst)
+    this.updateSuccess = false;
+    if(aqua_inst !== undefined){
+      this._sharedService.aquaInstallation = aqua_inst;
+      this.open('aquaInst');
+      this._aquaInstallationService.refreshNeeded$
+          .subscribe(()=>{
+              this.getAquaInstallationDetails();
+              this.updateSuccess = true;
+          })
+    }
   }
 
   public editGlissade(glissade: Glissade | undefined): void {

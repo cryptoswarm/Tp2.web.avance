@@ -49,3 +49,10 @@ class PatConditionSchema(ma.Schema):
     deblaye= fields.Boolean(required=True)
     resurface = fields.Boolean(required=True)
     patinoire_id = fields.Number(required=True)
+
+class EditPatConditionSchema(ma.Schema):
+    date_heure = fields.DateTime(required=True)    
+    ouvert = fields.Boolean(required=True)
+    arrose = fields.Boolean(required=True)
+    deblaye= fields.Boolean(required=True)
+    resurface = fields.Boolean(required=True)

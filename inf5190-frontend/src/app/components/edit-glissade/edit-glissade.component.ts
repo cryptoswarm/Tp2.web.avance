@@ -7,7 +7,7 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { GlissadeServiceService } from 'src/app/services/glissade-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import Swal, { SweetAlertIcon } from 'sweetalert2'
+import { NotifierService } from 'src/app/services/notifier.service';
 
 @Component({
   selector: 'app-edit-glissade',
@@ -31,6 +31,7 @@ export class EditGlissadeComponent implements OnInit {
 
   constructor(private _sharedService:SharedServiceService,
               private _glissadeService : GlissadeServiceService,
+              private _notifierService:NotifierService,
               private _datePipe: DatePipe,
               private _formBuilder: FormBuilder,
               public modal: NgbActiveModal) {}
@@ -86,7 +87,7 @@ export class EditGlissadeComponent implements OnInit {
         this._sharedService.glissade = response;
         console.log('Update successful :',this._sharedService.glissade);
         this.modal.close('Ok click');
-        this.showSuccessMessage('', `Modification de ${response.name} a reussit!`, 'success');
+        this._notifierService.showSuccessMessage('', `Modification de ${response.name} a reussit!`, 'success');
         this.success = true;
 
       },
@@ -123,14 +124,6 @@ export class EditGlissadeComponent implements OnInit {
     glissade.name = retrievedData.name;
     console.log('glissade :',glissade);
     return glissade;
-  }
-
-  showSuccessMessage( title: string, message: string, icon: SweetAlertIcon){
-    Swal.fire(
-      'Good job!',
-      message= message,
-      icon = icon
-    )
   }
 
 
