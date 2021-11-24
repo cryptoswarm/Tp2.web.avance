@@ -1,1 +1,1 @@
-web: gunicorn data-swarm:application
+web: flask db upgrade; gunicorn app:application

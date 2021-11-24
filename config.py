@@ -8,49 +8,49 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 import pytz
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
+
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Enable the dev env
-DEBUG = True
+# DEBUG = True
 
 # Define the db
 # SQLite for the current app or postgresql
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+#SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
 #         'postgres://', 'postgresql://') or \
 #         'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
-JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
+# JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
 
-DATABASE_CONNECT_OPTIONS = {}
+# DATABASE_CONNECT_OPTIONS = {}
 
 
 # unique ans secret key for signing the data
-CSRF_SESSION_KEY = os.environ.get('CSRF_SESSION_KEY')
+# CSRF_SESSION_KEY = os.environ.get('CSRF_SESSION_KEY')
 
 # Secret key for signing cookies
 
-COOKIES_SIGNIN_SECRET_KEY = os.environ.get('COOKIES_SIGNIN_SECRET_KEY')
+# COOKIES_SIGNIN_SECRET_KEY = os.environ.get('COOKIES_SIGNIN_SECRET_KEY')
 
 # Silence 
-SQLALCHEMY_TRACK_MODIFICATIONS = False
+# SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-# number of articles per page
-ARTICLES_PER_PAGE = 5
 
 # JWT SECRET_KEY : import os then os.urandom(24)
-JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+# JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
 
 # Oauth credentials
-OAUTH_CREDENTIALS = {
-    'facebook': {
-        'id': os.environ.get('FACEBOOK_CLIENT_ID'),
-        'secret': os.environ.get('FACEBOOK_CLIENT_SECRET')
-    },
-    'twitter': {
-        'id': os.environ.get('TWITTER_CLIENT_ID'),
-        'secret': os.environ.get('TWITTER_CLIENT_SECRET')
-    }
-}
+# OAUTH_CREDENTIALS = {
+#     'facebook': {
+#         'id': os.environ.get('FACEBOOK_CLIENT_ID'),
+#         'secret': os.environ.get('FACEBOOK_CLIENT_SECRET')
+#     },
+#     'twitter': {
+#         'id': os.environ.get('TWITTER_CLIENT_ID'),
+#         'secret': os.environ.get('TWITTER_CLIENT_SECRET')
+#     }
+# }
 
 # Generate an access token :
 # curl -X GET "https://graph.facebook.com/oauth/access_token
@@ -61,22 +61,110 @@ OAUTH_CREDENTIALS = {
 #curl -X GET "https://graph.facebook.com/oauth/access_token?client_id=300878321886706&client_secret=3522525c38f6ece07ae317197da2fc24&grant_type=client_credentials"
 
 # Logging to stdout, useful when running heroku logs
-LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+# LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
 
 # Upload folder
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
+# UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
 
 
 
 
-JOB_STORES = {
-    'default': SQLAlchemyJobStore(JOB_STORE_URL)
-}
-EXECUTORS= {
-    'default': ThreadPoolExecutor(20),
-    'processpool': ProcessPoolExecutor(5)
-}
-JOB_DEFAULTS= {
-    'coalesce': True,
-    'max_instances': 3
-}
+
+
+
+
+# uncomment the line below for postgres database url from environment variable
+# postgres_local_base = os.environ['DATABASE_URL']
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    # Logging to stdout, useful when running heroku logs
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    # unique ans secret key for signing the data
+    CSRF_SESSION_KEY = os.environ.get('CSRF_SESSION_KEY')
+    # JWT SECRET_KEY : import os then os.urandom(24)
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+    # Silence 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Oauth credentials
+    OAUTH_CREDENTIALS = {
+        'facebook': {
+            'id': os.environ.get('FACEBOOK_CLIENT_ID'),
+            'secret': os.environ.get('FACEBOOK_CLIENT_SECRET')
+        },
+        'twitter': {
+            'id': os.environ.get('TWITTER_CLIENT_ID'),
+            'secret': os.environ.get('TWITTER_CLIENT_SECRET')
+        }
+    }
+    # Upload folder
+    DEBUG = False
+
+
+class DevelopmentConfig(Config):
+    # uncomment the line below to use postgres
+    # SQLALCHEMY_DATABASE_URI = postgres_local_base
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JOB_STORES = {
+        'default': SQLAlchemyJobStore(JOB_STORE_URL)
+    }
+    EXECUTORS= {
+        'default': ThreadPoolExecutor(20),
+        'processpool': ProcessPoolExecutor(5)
+    }
+    JOB_DEFAULTS= {
+        'coalesce': True,
+        'max_instances': 3
+    }
+
+
+class TestingConfig(Config):
+    DEBUG = True
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app_test.db')
+    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs_test.sqlite')
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JOB_STORES = {
+        'default': SQLAlchemyJobStore(JOB_STORE_URL)
+    }
+    EXECUTORS= {
+        'default': ThreadPoolExecutor(20),
+        'processpool': ProcessPoolExecutor(5)
+    }
+    JOB_DEFAULTS= {
+        'coalesce': True,
+        'max_instances': 3
+    }
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+    # uncomment the line below to use postgres
+    DATABASE_URL= os.environ.get('DATABASE_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    JOB_STORES = {
+        'default': SQLAlchemyJobStore(DATABASE_URL)
+    }
+    EXECUTORS= {
+        'default': ThreadPoolExecutor(20),
+        'processpool': ProcessPoolExecutor(5)
+    }
+    JOB_DEFAULTS= {
+        'coalesce': True,
+        'max_instances': 3
+    }
+    
+
+
+config_by_name = dict(
+    dev=DevelopmentConfig,
+    test=TestingConfig,
+    prod=ProductionConfig
+)
+
+key = Config.SECRET_KEY

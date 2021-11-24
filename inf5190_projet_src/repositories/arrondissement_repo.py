@@ -1,7 +1,6 @@
 from werkzeug.wrappers import response
 from inf5190_projet_src import db
 from inf5190_projet_src.models.arrondissement import Arrondissement
-from config import ARTICLES_PER_PAGE
 from sqlalchemy import or_, and_, func, desc
 
 

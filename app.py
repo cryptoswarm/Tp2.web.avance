@@ -1,14 +1,17 @@
 import pytz
-# from inf5190_projet_src import create_app
-from inf5190_projet_src import application
+from inf5190_projet_src import create_app
+# from inf5190_projet_src import application
 from inf5190_projet_src.controllers.data_requester import *
 from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-from config import JOB_STORE_URL, JOB_STORES, JOB_DEFAULTS
+# from config import JOB_STORE_URL, JOB_STORES, JOB_DEFAULTS
 from inf5190_projet_src.models.scheduler_test import SchedulerTest
 from inf5190_projet_src.repositories.test_insert_scheduler import add
+
+# One of dev, prod or test
+application = create_app('prod')
 
 def test():
     with application.app_context():
@@ -36,7 +39,8 @@ def setting_job_3():
 
 def run_jobs():
     with application.app_context():
-        scheduler = BackgroundScheduler(jobstores=JOB_STORES, job_defaults=JOB_DEFAULTS)
+        # scheduler = BackgroundScheduler(jobstores=JOB_STORES, job_defaults=JOB_DEFAULTS)
+        scheduler = BackgroundScheduler(jobstores=application.config['JOB_STORES'], job_defaults=application.config['JOB_DEFAULTS'])
         scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_3, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
@@ -47,5 +51,6 @@ def run_jobs():
 
 if __name__ == "__main__":
     # run_jobs()
+    # application.run(debug=True)
     application.run(debug=True)
     

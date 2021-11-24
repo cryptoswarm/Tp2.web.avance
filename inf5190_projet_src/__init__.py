@@ -9,15 +9,18 @@ from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from flask_json_schema import JsonSchema, JsonValidationError
+from config import config_by_name
+from flask_migrate import Migrate
 
-
-
+app = Flask(__name__)
 db = SQLAlchemy()
 schema = JsonSchema()
+migrate = Migrate()
 
-def create_app(test_config=None):
+# def create_app(test_config=None): # was working fine
+def create_app(config_name):
     # Here the WSGI app object is defined
-    app = Flask(__name__)
+    # app = Flask(__name__)
     # CORS(app) or the way below 
     # CORS(app, resources=r'/*', headers='Content-Type') or
     # CORS(app, resources={r"/*": {"origins":"*"}},headers='Content-Type') #or
@@ -36,15 +39,15 @@ def create_app(test_config=None):
 
     with app.app_context():
     # Configurations
-        
-        app.config.from_object('config')
+        app.config.from_object(config_by_name[config_name])
+        # app.config.from_object('config')
 
-        if test_config is None:
-            # load the instance config, if it exists, when not testing
-            app.config.from_pyfile("config.py", silent=True)
-        else:
-            # load the test config if passed in
-            app.config.update(test_config)
+        # if test_config is None:
+        #     # load the instance config, if it exists, when not testing
+        #     app.config.from_pyfile("config.py", silent=True)
+        # else:
+        #     # load the test config if passed in
+        #     app.config.update(test_config)
 
         # The folowing fct is for test purposes only
         @app.route("/hello")
@@ -54,6 +57,7 @@ def create_app(test_config=None):
         # db object which is imported by modules and controllers
         db.init_app(app)
         schema.init_app(app)
+        migrate.init_app(app, db)
 
         # HTTP error handling
         @app.errorhandler(404)
@@ -67,7 +71,7 @@ def create_app(test_config=None):
 
         # Import the only module in the app which is article, 
         # using its blueprint handler var (mod_article)
-        from inf5190_projet_src.mod_app.controllers import mod_home as home_module
+        from inf5190_projet_src.controllers.home_controllers import mod_home as home_module
         from inf5190_projet_src.controllers.data_requester import mod_scheduler as scheduler_mod
         from inf5190_projet_src.controllers.installations_controllers import mod_arron as arrondissement_mod
         from inf5190_projet_src.controllers.glissade_controllers import mod_glissade as glissade_module
@@ -94,4 +98,4 @@ def create_app(test_config=None):
 
     return app
 
-application = create_app()
+# application = create_app()
