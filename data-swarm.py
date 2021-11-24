@@ -13,7 +13,7 @@ from inf5190_projet_src.repositories.test_insert_scheduler import add
 def test():
     with application.app_context():
         print('Display to console not in logging : Task is running {} :'.format(datetime.now()))
-        logging.info('Task is running')
+        logging.info('Task is running every 15 min')
 
 # def db_insertion():
 #     with application.app_context():
@@ -40,7 +40,7 @@ def run_jobs():
         scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.add_job(func=setting_job_3, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-        #scheduler.add_job(func=test, trigger='interval', seconds=59, timezone=pytz.timezone('CANADA/EASTERN'))
+        scheduler.add_job(func=test, trigger='interval', minutes=15, timezone=pytz.timezone('CANADA/EASTERN'))
         #scheduler.add_job(func=db_insertion, trigger='interval', seconds=59, timezone=pytz.timezone('CANADA/EASTERN'))
         scheduler.start()
 
