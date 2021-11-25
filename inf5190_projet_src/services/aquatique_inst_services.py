@@ -79,8 +79,11 @@ def get_aqua_inst_by_id(id):
         return None, 404
     return installation, 200
 
-def update_aqua_inst(installation, data):
-    updated_aqua = update_aqua(installation, data)
+# def update_aqua_inst(installation, data):
+#     updated_aqua = update_aqua(installation, data)
+#     return updated_aqua, 200
+def update_aqua_inst(id, data):
+    updated_aqua = update_aqua(id, data)
     return updated_aqua, 200
 
 def delete_aqua_inst_by_id(id):

@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const MODALS: { [name: string]: Type<any> } = {
   autofocus: DeletionComponent,
-  regular: EditGlissadeComponent,
+  glissade: EditGlissadeComponent,
   aquaInst: EditAquaComponent
 };
 
@@ -113,6 +113,7 @@ export class HomeComponent implements OnInit {
 
 
   public getAquaInstallationDetails(): void{
+    this.updateSuccess = false;
     const aquaName = this.instAquaForm.value['aquaInstaName']
     console.log('Choosen aqua inst name :',aquaName)
     this.apiClient.getAquaInstallationDetails(this.arr_name, aquaName)
@@ -129,6 +130,7 @@ export class HomeComponent implements OnInit {
   }
 
   public getPatinoiresDetails(): void{
+    this.updateSuccess = false;
     const patName = this.patinoireForm.value['patinoireName']
     console.log('Choosen patinoire name :',patName)
     this.apiClient.getPatinoireDetails(this.arr_name, patName)
@@ -168,7 +170,6 @@ export class HomeComponent implements OnInit {
 
   public getAllYears(patinoire: Patinoire): void {
       patinoire.conditions?.forEach(condition => {
-        console.log('Date-time sends by the server for patinoires :',condition.date_heure)
         let year: number  = new Date(condition.date_heure).getFullYear();
         this.condition_years.add(year);
       });
@@ -177,7 +178,6 @@ export class HomeComponent implements OnInit {
   public filterByYear(): void {
     this.conditionsOfSelectedYear = []
     let selectedYear: number = this.yearsForm.value['conditionyear']
-    console.log('selected year : ',selectedYear)
     this.patinoire_details.conditions?.forEach(condition => {
       if(new Date(condition.date_heure).getFullYear() == selectedYear){
         this.conditionsOfSelectedYear.push(condition)
@@ -198,15 +198,6 @@ export class HomeComponent implements OnInit {
     this.glissades = [];
     this.patinoires = []
     this.conditionsOfSelectedYear = []
-  }
-
-  public deleteGlissade(glissadeId: number | undefined): void {
-    console.log('delete button pressed')
-    if(glissadeId !== undefined){
-      this.open('autofocus');
-      console.log('Glissade id to be deleted :',glissadeId)
-    }
-
   }
 
   public deleteAquaInstallation(aquaInstId: number| undefined): void {
@@ -232,13 +223,21 @@ export class HomeComponent implements OnInit {
     this.updateSuccess = false;
     if(glissade !== undefined){
       this._sharedService.glissade = glissade;
-      this.open('regular');
+      this.open('glissade');
       this._glissadeService.refreshNeeded$
           .subscribe(()=>{
           this.getGlissadeDetails();
           this.updateSuccess = true;
       })
       console.log('Glissade id to be updated:',glissade.glissade_id)
+    }
+  }
+
+  public deleteGlissade(glissadeId: number | undefined): void {
+    console.log('delete button pressed')
+    if(glissadeId !== undefined){
+      this.open('autofocus');
+      console.log('Glissade id to be deleted :',glissadeId)
     }
   }
 

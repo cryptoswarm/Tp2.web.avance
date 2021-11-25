@@ -1,7 +1,9 @@
+import logging
 from flask_sqlalchemy import Pagination
 from inf5190_projet_src import db
 from inf5190_projet_src.models.inst_aquatique import InstallationAquatique
 from sqlalchemy import or_, and_, func, desc
+
 
 
 
@@ -22,16 +24,20 @@ def find_aqua_insta_by_hash(hash):
 def find_aqua_by_id(id):
     return InstallationAquatique.query.filter_by(id=id).first()
 
-def update_aqua(installation, data):
-    installation.nom_installation = data['nom_installation']
-    installation.type_installation = data['type_installation']
-    installation.adress = data['adress']
-    installation.propriete_installation = data['propriete_installation']
-    installation.gestion_inst = data['gestion_inst']
-    installation.equipement_inst = data['equipement_inst']
+
+def update_aqua(id, data):
+    to_be_updated = find_aqua_by_id(id)
+    to_be_updated.nom_installation = data['nom_installation']
+    to_be_updated.type_installation = data['type_installation']
+    to_be_updated.adress = data['adress']
+    to_be_updated.propriete_installation = data['propriete_installation']
+    to_be_updated.gestion_inst = data['gestion_inst']
+    to_be_updated.equipement_inst = data['equipement_inst']
+    logging.info('Before update --> installation.aqua_hash: {}'.format(to_be_updated.aqua_hash))
+    to_be_updated.aqua_hash = to_be_updated.calculate_hash()
+    logging.info('Recalc hash : {}'.format(to_be_updated.aqua_hash))
     db.session.commit()
-    return installation
-    
+    return to_be_updated
 
 def find_aqua_inst_names_arr_id(arr_id):
     return InstallationAquatique \

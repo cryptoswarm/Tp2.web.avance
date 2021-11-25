@@ -1,5 +1,7 @@
 import { Component, OnInit, Type } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Glissade } from 'src/app/models/glissade';
+import { SharedServiceService } from 'src/app/services/shared-service.service';
 
 
 @Component({
@@ -9,10 +11,17 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DeletionComponent implements OnInit {
 
+  deleteInstallationId!: number;
 
-  constructor(public modal: NgbActiveModal) {}
+  constructor(public modal: NgbActiveModal,
+              private _sharedService:SharedServiceService) {}
 
   ngOnInit(): void {
+    this.deleteInstallationId = this._sharedService.installationId;
+  }
+
+  public onDeleteInstallation(): void{
+
   }
 
 }

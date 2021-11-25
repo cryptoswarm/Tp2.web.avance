@@ -17,7 +17,7 @@ db = SQLAlchemy()
 schema = JsonSchema()
 migrate = Migrate()
 
-# def create_app(test_config=None): # was working fine
+
 def create_app(config_name):
     # Here the WSGI app object is defined
     # app = Flask(__name__)
@@ -76,12 +76,6 @@ def create_app(config_name):
 
         # Build the database: will create the db file using SQLAlchemy
         db.create_all()
-
-        # make url_for('accueil') == url_for('article.accueil')
-        # in another app, you might define a separate main accueil here with
-        # app.route, while giving the article blueprint a url_prefix, but for
-        # the tutorial the article will be the main index
-        #app.add_url_rule("/", endpoint="accueil")
 
     return app
 

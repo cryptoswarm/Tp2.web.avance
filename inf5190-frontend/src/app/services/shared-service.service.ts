@@ -10,9 +10,18 @@ export class SharedServiceService {
 
   constructor() { }
 
+  private _instId!:number
   private _glissadeEditData!: Glissade;
   private _aquaInstallationData!: InstallationAquatique;
   private _patinoireData!: Patinoire;
+
+  get installationId(){
+    return this._instId;
+  }
+
+  set installationId(id: number){
+    this._instId = id;
+  }
 
   get glissade() {
     return this._glissadeEditData;

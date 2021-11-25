@@ -44,7 +44,6 @@ class Config:
             'secret': os.environ.get('TWITTER_CLIENT_SECRET')
         }
     }
-    # Upload folder
     DEBUG = False
 
 

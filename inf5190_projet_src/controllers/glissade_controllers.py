@@ -62,9 +62,10 @@ def get_glissade(arrondissement, name):
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
-            return {}, 404
+            return jsonify({"message":"Arrondissement does not exist"}), 404
         response, status = get_glissade_details(arr.id, name)
         if response is None:
-            return {}, 404
-        return jsonify(response), 200
+            return jsonify({"message":"Glissade does not exist"}), status
+        serialized_glissade = glissade_schema.dump(response)
+        return jsonify(serialized_glissade), 200
     return {}, 400

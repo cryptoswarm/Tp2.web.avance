@@ -8,7 +8,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 # One of dev, prod or test
-application = create_app('prod')
+application = create_app('dev')
 
 def test():
     with application.app_context():
@@ -40,5 +40,5 @@ def run_jobs():
 
 if __name__ == "__main__":
     run_jobs()
-    application.run(debug=True)
+    application.run()
     

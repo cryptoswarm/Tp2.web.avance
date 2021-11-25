@@ -20,6 +20,7 @@ export class EditGlissadeComponent implements OnInit {
   // // @Output() updatedGlissadEvent = new EventEmitter<boolean>();
   editGlissade!: Glissade;
 
+
   errorMessage: string = "";
   errorMessages: string[] = [];
   date_maj: string = '';

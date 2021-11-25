@@ -171,12 +171,13 @@ def delete_glissade_by_id(id):
 
 def get_glissade_details(arr_id, glissade_name):
     response = {}
-    glissades = find_glissade_details(arr_id, glissade_name)
-    if glissades is None:
+    glissade = find_glissade_details(arr_id, glissade_name)
+    if glissade is None:
         return None, 404
-    for glissade in glissades:
-        response = glissade.asDictionary()
-    return response, 200
+    # for glissade in glissades:
+    #     response = glissade.asDictionary()
+    # return response, 200
+    return glissade, 200
         
 
 
