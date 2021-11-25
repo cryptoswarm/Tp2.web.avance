@@ -12,7 +12,7 @@ from flask_json_schema import JsonSchema, JsonValidationError
 from config import config_by_name
 from flask_migrate import Migrate
 
-app = Flask(__name__)
+
 db = SQLAlchemy()
 schema = JsonSchema()
 migrate = Migrate()
@@ -20,7 +20,7 @@ migrate = Migrate()
 
 def create_app(config_name):
     # Here the WSGI app object is defined
-    # app = Flask(__name__)
+    app = Flask(__name__)
     # CORS(app) or the way below 
     # CORS(app, resources=r'/*', headers='Content-Type') or
     # CORS(app, resources={r"/*": {"origins":"*"}},headers='Content-Type') #or
@@ -33,10 +33,9 @@ def create_app(config_name):
     # app.config['CORS_HEADERS'] = "Content-Type"
     # app.config['CORS_RESOURCES'] = {r'/*': {"origins":"*"}}
     # CORS(app)
-    #logging.basicConfig()
-    #logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+    
     logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
-
+    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     with app.app_context():
     # Configurations
         app.config.from_object(config_by_name[config_name])
