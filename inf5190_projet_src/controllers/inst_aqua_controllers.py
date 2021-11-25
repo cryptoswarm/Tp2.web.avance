@@ -43,7 +43,7 @@ def edit_installation_aquatique(id):
     result = aquatique_Schema.dump(updated)
     return jsonify(result), status
 
-@insta_aqua.route('/api/installation_aquatique/<id>', methods=['DELETE'])
+@insta_aqua.route('/api/installation-aquatique/<id>', methods=['DELETE'])
 def delete_aqua_inst(id):
     print('Rceived id: ',id)
     aqua_inst, status = get_aqua_inst_by_id(id)

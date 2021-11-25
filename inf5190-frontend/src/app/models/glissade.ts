@@ -1,6 +1,6 @@
 export interface Glissade {
   arrondissement_id: number,
-  glissade_id: number,
+  id: number,
   name: string,
   date_maj?: Date,
   ouvert?: boolean,

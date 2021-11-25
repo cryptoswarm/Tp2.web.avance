@@ -67,5 +67,7 @@ def get_glissade(arrondissement, name):
         if response is None:
             return jsonify({"message":"Glissade does not exist"}), status
         serialized_glissade = glissade_schema.dump(response)
+        print('serialized_glissade: ',serialized_glissade)
+        logging.warning('Glissade to be returned :', serialized_glissade)
         return jsonify(serialized_glissade), 200
     return {}, 400

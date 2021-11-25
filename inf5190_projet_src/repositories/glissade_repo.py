@@ -1,3 +1,4 @@
+import logging
 from inf5190_projet_src import db
 from inf5190_projet_src.models.glissade import Glissade
 from sqlalchemy import or_, and_, func, desc
@@ -43,9 +44,12 @@ def delete_by_id(id):
     return glissade
 
 def find_glissade_details(arr_id, glissade_name):
-    return Glissade \
+    glissade = Glissade \
            .query \
            .filter(and_(
                (Glissade.arrondissement_id == arr_id), 
                (Glissade.name == glissade_name)
-               )).all()
+               )).first()
+    print('Glissade :', glissade)
+    logging.info('Glissade: ', glissade)
+    return glissade

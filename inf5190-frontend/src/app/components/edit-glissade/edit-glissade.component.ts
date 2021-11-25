@@ -82,7 +82,7 @@ export class EditGlissadeComponent implements OnInit {
 
   public onUpdateGlissade(): void{
     let glissade = this.convertToGlissadeForEdit();
-    this._glissadeService.editGlissade(glissade, this.editGlissade.glissade_id).subscribe(
+    this._glissadeService.editGlissade(glissade, this.editGlissade.id).subscribe(
       (response: Glissade) => {
         console.log("Glissade has been Updated to :",response);
         this._sharedService.glissade = response;

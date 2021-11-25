@@ -27,6 +27,7 @@ export class GlissadeServiceService {
     return this._refreshNeeded$;
   }
 
+
   public editGlissade(glissade: GlissadeForEdit, glissade_id: number): Observable<Glissade> {
     // /api/glissade/<id>
     console.log('Glissade to be updated in glissade service :',glissade)

@@ -152,15 +152,16 @@ export class HomeComponent implements OnInit {
   public getGlissadeDetails(): void{
     this.updateSuccess = false;
     const name = this.glissadeForm.value['glissadeName']
-    console.log('Choosen glissade name :',name)
+    console.log('Glissade name update/delete:',name)
     this.apiClient.getGlissadeDetails(this.arr_name, name)
                   .subscribe((response : Glissade)=>{
       this.glissadeDetails = response;
-      console.log(this.glissadeDetails)
+      console.log('Glissade details update/delete: ',this.glissadeDetails)
       this.glissadesNbr = 1;
 
     },
     (error: HttpErrorResponse)=>{
+      this.glissadesNbr = 0;
       console.log('error status:', error.status);
       console.log('error message :', error.message);
       console.log('error statusText :',error.statusText)
@@ -229,21 +230,44 @@ export class HomeComponent implements OnInit {
           this.getGlissadeDetails();
           this.updateSuccess = true;
       })
-      console.log('Glissade id to be updated:',glissade.glissade_id)
+      console.log('Glissade id to be updated:',glissade.id)
     }
   }
 
-  public deleteGlissade(glissadeId: number | undefined): void {
+  public deleteInstallation(id: number | undefined, type: string, name: string| undefined): void {
     console.log('delete button pressed')
-    if(glissadeId !== undefined){
+    if(id !== undefined && type != undefined && name!= undefined){
+      this._sharedService.installationId = id;
+      this._sharedService.installationType = type;
+      this._sharedService.installationName = name;
       this.open('autofocus');
-      console.log('Glissade id to be deleted :',glissadeId)
+      this._aquaInstallationService.deleteNotifier$
+          .subscribe(()=>{
+          if(type == 'glissade'){
+            this.deleteHelper(this.glissades, id);
+            this.glissadeDetails = null as any;
+            this.glissadesNbr = 0;
+          }else if(type == 'installation-aquatique'){
+            this.deleteHelper(this.aqua_inst, id);
+            this.aqua_inst_details = null as any;
+            this.aqua_inst_nbr = 0;
+          }else if(type == 'patinoire-condition'){
+            this.deleteHelper(this.conditionsOfSelectedYear, id);
+            this.patinoire_nbr = this.patinoire_nbr > 1 ? this.patinoire_nbr -1 : 0;
+          }
+      })
+      console.log('Installation id to be deleted :',id)
     }
   }
 
 
   open(name: string) {
     this._modalService.open(MODALS[name]);
+  }
+
+  private deleteHelper(inst: Glissade[] | InstallationAquatique[] | PatinoirCondition[], id: number): void{
+    const index = inst.findIndex(inst => inst.id == id);
+    inst.splice(index, 1);
   }
 
 

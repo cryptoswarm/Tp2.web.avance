@@ -193,7 +193,7 @@
                                   <a (click)="editAquaInstallation(aqua_inst)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
                                     data-original-title="Edit" ><i class="fa fa-pencil"></i>
                                   </a>
-                                  <a  (click)="deleteAquaInstallation(aqua_inst?.id)" id="del-btn" class="btn btn-secondary tooltips"
+                                  <a  (click)="deleteInstallation(aqua_inst?.id, 'installation-aquatique', aqua_inst?.nom_installation)" id="del-btn" class="btn btn-secondary tooltips"
                                     data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
                                   </a>
                                 </div>
@@ -306,7 +306,7 @@
                                     <a (click)="editGlissade(glissadeDetails)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
                                       data-original-title="Edit" ><i class="fa fa-pencil"></i>
                                     </a>
-                                    <a  (click)="deleteGlissade(glissadeDetails?.glissade_id)" id="del-btn" class="btn btn-secondary tooltips"
+                                    <a  (click)="deleteInstallation(glissadeDetails?.id, 'glissade', glissadeDetails?.name)" id="del-btn" class="btn btn-secondary tooltips"
                                       data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
                                     </a>
                                   </div>
@@ -440,7 +440,7 @@
                                   <a (click)="editGlissade(glissadeDetails)" id="edit-btn" class="btn btn-primary tooltips" data-placement="top"
                                     data-original-title="Edit" ><i class="fa fa-pencil"></i>
                                   </a>
-                                  <a  (click)="deleteGlissade(glissadeDetails?.glissade_id)" id="del-btn" class="btn btn-secondary tooltips"
+                                  <a  (click)="deleteInstallation(condition?.id, 'patinoire-condition', patinoire_details?.nom_pat)" id="del-btn" class="btn btn-secondary tooltips"
                                     data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>
                                   </a>
                                 </div>

@@ -14,6 +14,24 @@ export class SharedServiceService {
   private _glissadeEditData!: Glissade;
   private _aquaInstallationData!: InstallationAquatique;
   private _patinoireData!: Patinoire;
+  private _installationType!: string;
+  private _installationName!: string;
+
+  get installationName(){
+    return this._installationName;
+  }
+
+  set installationName(name:string){
+    this._installationName = name;
+  }
+
+  get installationType(){
+    return this._installationType;
+  }
+
+  set installationType(type: string){
+    this._installationType = type
+  }
 
   get installationId(){
     return this._instId;
