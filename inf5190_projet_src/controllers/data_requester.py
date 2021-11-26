@@ -63,20 +63,6 @@ def persist_glissade_data():
     return {}, 400
 
 
-        
-
-# scheduler = BackgroundScheduler()
-
-# def run_job(app):
-#     with app.app_context():
-#         #Import function that will be executed by the scheduler
-#         # from inf5190_projet_src.controllers.data_requester import save_uploaded_data
-#         scheduler = BackgroundScheduler(jobstores=JOB_STORES)
-#         #scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-#         scheduler.add_job(func=save_uploaded_data, trigger='interval', minutes=2, timezone=pytz.utc)  #timezone=pytz.utc.dst
-#         #start the scheduler
-#         scheduler.start()
-
 
 
 
