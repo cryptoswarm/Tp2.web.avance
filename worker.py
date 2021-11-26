@@ -28,14 +28,14 @@ def setting_job_3():
         persist_glissade_data()
 
 def setting_job_4():
-    with app.app_context():
-        print('Print fct: This job is run every 1 min. utc time')
-        app.logger.info('Logger fct: This job is run every 1 min. utc time')
+    # with app.app_context():
+    print('Print fct: This job is run every 1 min. utc time')
+    app.logger.info('Logger fct: This job is run every 1 min. utc time')
 
 def setting_job_5():
-    with app.app_context():
-        print('Print fct: This job is run every 2 min. canada/easter')
-        app.logger.info('This job is run every 2 min. canada/easter')
+    # with app.app_context():
+    print('Print fct: This job is run every 2 min. canada/easter')
+    app.logger.info('This job is run every 2 min. canada/easter')
 
 # def start_working():
 #     scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults=app.config['JOB_DEFAULTS'])
@@ -56,7 +56,7 @@ def setting_job_5():
 #     start_working()
 
 
-scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults=app.config['JOB_DEFAULTS'])
+#scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults=app.config['JOB_DEFAULTS'])
 
 
     #scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
@@ -65,9 +65,12 @@ scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults
     # scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
     # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
     # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], executors=app.config['EXECUTORS'], job_defaults=app.config['JOB_DEFAULTS'])
+
 scheduler.add_job(func=setting_job_3, trigger='interval', minutes=10, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
 scheduler.add_job(func=setting_job_4, trigger='interval', minutes=1, timezone=pytz.utc)
+scheduler.add_job(func=setting_job_4, trigger='cron', minutes=1)
 scheduler.add_job(func=setting_job_5, trigger='interval', minutes=2, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.start()
 
