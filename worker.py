@@ -18,12 +18,20 @@ def setting_job_3():
     with app.app_context():
         persist_glissade_data()
 
-scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults=app.config['JOB_DEFAULTS'])
-scheduler.start()
+def start_working():
+    scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults=app.config['JOB_DEFAULTS'])
+    scheduler.start()
 
-scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
+    scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
+    scheduler.add_job(func=setting_job_1, trigger='interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
+    scheduler.add_job(func=setting_job_1, trigger='interval', minutes=5, timezone=pytz.utc)
+    scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
+    scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
+    scheduler.add_job(func=setting_job_3, trigger='interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
+    scheduler.add_job(func=setting_job_3, trigger='interval', minutes=1, timezone=pytz.utc)
+
+if __name__ == '__main__':
+    start_working()
 
 
 
