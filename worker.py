@@ -6,6 +6,11 @@ from inf5190_projet_src.controllers.data_requester import *
 
 app = create_app('prod')
 
+if app.config['LOG_TO_STDOUT']:
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
+
 
 def setting_job_1():
     with app.app_context():
@@ -60,7 +65,8 @@ scheduler = BackgroundScheduler(jobstores=app.config['JOB_STORES'], job_defaults
     # scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
     # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
     # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
-    # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=1, timezone=pytz.utc)
+scheduler.add_job(func=setting_job_3, trigger='interval', minutes=10, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
 scheduler.add_job(func=setting_job_4, trigger='interval', minutes=1, timezone=pytz.utc)
 scheduler.add_job(func=setting_job_5, trigger='interval', minutes=2, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.start()
