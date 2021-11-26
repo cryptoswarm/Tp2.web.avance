@@ -115,3 +115,4 @@ config_by_name = dict(
 )
 
 key = Config.SECRET_KEY
+JWT = Config.JWT_SECRET_KEY

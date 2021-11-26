@@ -23,10 +23,12 @@ def setting_job_3():
 
 def setting_job_4():
     with app.app_context():
-        app.logger.info('This job is run every 1 min. utc time')
+        print('Print fct: This job is run every 1 min. utc time')
+        app.logger.info('Logger fct: This job is run every 1 min. utc time')
 
 def setting_job_5():
     with app.app_context():
+        print('Print fct: This job is run every 2 min. canada/easter')
         app.logger.info('This job is run every 2 min. canada/easter')
 
 def start_working():
@@ -34,7 +36,7 @@ def start_working():
     scheduler.start()
 
     #scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-    scheduler.add_job(func=setting_job_1, trigger='interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
+    #scheduler.add_job(func=setting_job_1, trigger='interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
     #scheduler.add_job(func=setting_job_1, trigger='interval', minutes=5, timezone=pytz.utc)
     # scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
     # scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
@@ -44,8 +46,8 @@ def start_working():
     scheduler.add_job(func=setting_job_5, trigger='interval', minutes=2, timezone=pytz.timezone('CANADA/EASTERN'))
     
 
-# if __name__ == '__main__':
-#     start_working()
+if __name__ == '__main__':
+    start_working()
 
 
 
