@@ -4,7 +4,7 @@ from inf5190_projet_src.controllers.data_requester import *
 
 
 
-app = create_app('dev')
+app = create_app('prod')
 
 def setting_job_1():
     with app.app_context():
