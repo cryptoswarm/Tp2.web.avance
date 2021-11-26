@@ -23,7 +23,7 @@ scheduler.start()
 
 scheduler.add_job(func=setting_job_1, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(func=setting_job_2, trigger='interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(func=setting_job_3, trigger='interval', minutes=5, timezone=pytz.utc)
 
 
 
