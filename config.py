@@ -50,7 +50,7 @@ class Config:
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
     # SQLALCHEMY_DATABASE_URI = postgres_local_base
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
     JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

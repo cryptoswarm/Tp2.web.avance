@@ -49,7 +49,6 @@ def edit_glissade(id):
 def delete_glissade(id):
     print('Rceived id: ',id)
     glissade, status = get_glissade_by_id(id)
-    print('glissade :', glissade)
     if glissade is None:
         return jsonify({"status": "fail", "message":"glissade does not exist"}), 404
     deleted = delete_glissade_by_id(id)
@@ -68,6 +67,5 @@ def get_glissade(arrondissement, name):
             return jsonify({"message":"Glissade does not exist"}), status
         serialized_glissade = glissade_schema.dump(response)
         print('serialized_glissade: ',serialized_glissade)
-        logging.warning('Glissade to be returned :', serialized_glissade)
         return jsonify(serialized_glissade), 200
     return {}, 400
