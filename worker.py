@@ -14,15 +14,17 @@ app = create_app('prod')
 #     app.logger.addHandler(handler)
 
 
-# def setting_job_1():
-#     with app.app_context():
-#         app.logger.info('Starting patinoire scheduler')
-#         persist_patinoir_data()
+def setting_job_1():
+    with app.app_context():
+        print('Patinoire scheduler is triggered')
+        app.logger.info('Starting patinoire scheduler')
+        persist_patinoir_data()
 
-# def setting_job_2():
-#     with app.app_context():
-#         app.logger.info('Starting aqua scheduler')
-#         persist_aqua_data() 
+def setting_job_2():
+    with app.app_context():
+        print('Aqua scheduler is triggered')
+        app.logger.info('Starting aqua scheduler')
+        persist_aqua_data() 
 
 def setting_job_3():
     with app.app_context():
@@ -74,15 +76,17 @@ def setting_job_3():
 # scheduler.add_job(func=setting_job_5, trigger='interval', minutes=2, timezone=pytz.timezone('CANADA/EASTERN'))
 # scheduler.start()
 
-def setting_job_5():
+def setting_job_4():
     # with app.app_context():
     print('Print fct: This job is run every 2 min. no time zone specified')
 
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(setting_job_5, 'interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(setting_job_3, 'interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_1, 'interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_2, 'interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_3, 'interval', hours=24, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_4, 'interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.start()
 
 if __name__ == "__main__":
