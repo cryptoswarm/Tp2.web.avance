@@ -1,4 +1,4 @@
-from app import db
+from inf5190_projet_src import db
 from datetime import datetime
 
 

@@ -3,22 +3,17 @@ import jwt
 from datetime import datetime, timedelta
 from config import JWT
 from inf5190_projet_src.models.black_listed import BlacklistToken
+from inf5190_projet_src.models.base import Base
+from marshmallow import schema, fields, pre_load, validate
+from flask_marshmallow import Marshmallow
 
-# Define the base model
+from inf5190_projet_src.models.profile import ProfileSchema
 
-
-class Base(db.Model):
-
-    __abstract__ = True
-    id = db.Column(db.Integer, primary_key=True)
-
+ma = Marshmallow()
 
 class User(Base):
     __tablename__ = 'user'  
-
-    # email of user
-    email = db.Column(db.String(100), unique=True,  nullable=False)
-
+    
     # username of user
     username = db.Column(db.String(100), unique=True,  nullable=False)
     # password of user
@@ -89,3 +84,9 @@ class User(Base):
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
+
+class UserSchema(ma.Schema):
+    id = fields.Number()
+    email = fields.String(required=True, validate=validate.Length(1))
+    arron_id = fields.Number(required=True)
+    profile = fields.Nested(ProfileSchema, many=True)

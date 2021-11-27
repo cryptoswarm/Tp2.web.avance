@@ -65,6 +65,7 @@ def create_app(config_name):
         from inf5190_projet_src.controllers.glissade_controllers import mod_glissade as glissade_module
         from inf5190_projet_src.controllers.inst_aqua_controllers import insta_aqua as aqua_inst_module
         from inf5190_projet_src.controllers.patinoire_controllers import patinoire as pat_module
+        from inf5190_projet_src.controllers.account_controllers import mod_user as user_module
 
         # Register blueprints
         app.register_blueprint(home_module)
@@ -73,6 +74,7 @@ def create_app(config_name):
         app.register_blueprint(glissade_module)
         app.register_blueprint(aqua_inst_module)
         app.register_blueprint(pat_module)
+        app.register_blueprint(user_module)
 
 
         # Build the database: will create the db file using SQLAlchemy
