@@ -1,17 +1,7 @@
-import csv
-import logging
 import requests
-import xml.etree.ElementTree as ET
-import pytz
-from flask import Blueprint, json, request, render_template, flash, \
-                                    redirect, url_for, jsonify
-from logging import error
+from flask import Blueprint, json,jsonify
 from inf5190_projet_src.services.glissade_services import *
 from inf5190_projet_src.services.aquatique_inst_services import *
-from datetime import datetime
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from inf5190_projet_src.writer.write_file import *
 
 

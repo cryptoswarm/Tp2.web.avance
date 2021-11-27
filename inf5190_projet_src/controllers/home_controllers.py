@@ -8,11 +8,10 @@ from datetime import datetime
 mod_home = Blueprint('home', __name__, url_prefix='')
 
 
-@mod_home.route('/')
-def home():
-    #time = datetime.now().time()
-    # time = datetime.utcnow().time()
-    return render_template('index.html')
+# @mod_home.route('/')
+# def home():
+#     """For developpement"""
+#     return render_template('index.html')
 
 @mod_home.route('/privacy', methods=['GET','POST'])
 def privacy():
@@ -31,8 +30,8 @@ def delete_user():
     return render_template('index.html'), 200
 
 
-@mod_home.route('/current-time')
-def time():
-    #time = datetime.now().time()
-    time = datetime.now().time()
-    return jsonify({'Time now :':str(time)}), 200
+
+@mod_home.route('/')
+def doc():
+    """Server in prod is poiting to /doc"""
+    return render_template('index.html')

@@ -144,4 +144,7 @@ splitter.py
 # ignore logs
 *.log
 
+# igmore all frontend folder
+inf5190-frontend/
+
 

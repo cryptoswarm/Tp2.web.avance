@@ -97,10 +97,10 @@ def save_all_glissade(request_response):
     content = []
     root = ET.fromstring(request_response.text)
     for glissade_elm in root:
-        arrondissement = get_arrondissement(glissade_elm)
-        checked_arr = find_by_arr_name(arrondissement.name)
+        arr_name, cle = get_arrondissement(glissade_elm)
+        checked_arr = find_by_arr_name(arr_name)
         if checked_arr is None:
-            checked_arr = save_arrondissement(arrondissement)
+            checked_arr = save_arrondissement(arr_name, cle)
             logging.info('Creation of new arr: {}'.format(checked_arr))
         glissade = get_glissade(glissade_elm, checked_arr.id)
         checked_glissade = find_glissade_by_name(glissade.name)
@@ -115,7 +115,8 @@ def get_arrondissement(glissade_elem):
     new_arr_name = split_and_join(name)
     logging.info('Tweak arr name {} to {}'.format(name, new_arr_name))
     cle = arr_elem.find('cle').text
-    return Arrondissement(new_arr_name, cle)
+    # return Arrondissement(new_arr_name, cle)
+    return new_arr_name, cle
 
 
 def get_glissade(glissade_elem, arr_id):

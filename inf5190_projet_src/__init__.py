@@ -1,7 +1,5 @@
 import os
 import logging
-import datetime
-import pytz
 from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -23,14 +21,16 @@ migrate = Migrate()
 def create_app(config_name):
     # Here the WSGI app object is defined
     app = Flask(__name__)
-    # CORS(app) or the way below 
-    # CORS(app, resources=r'/*', headers='Content-Type') or
-    # CORS(app, resources={r"/*": {"origins":"*"}},headers='Content-Type') #or
-    #CORS(app, resources={r"/*": {"origins":"http://localhost:4200"}},headers='Content-Type') #or
-    # CORS(app, resources={r"/*": {"origins":["http://localhost:4200", "http://localhost:5000"]}},headers='Content-Type')
-    # e.g., CORS(app, origins=[“http://localhost:8000”, “https://example.com”]).
-    # CORS(app, resources={r"/*": {"origins":"http://localhost:4200"}},headers='Content-Type')
-    CORS(app, resources={r"/*": {"origins":["http://127.0.0.1:5000", "http://localhost:4200"]}},headers='Content-Type')
+
+    CORS(app, resources={r"/*": {"origins":
+                                        [
+                                            "http://127.0.0.1:5000", 
+                                            "http://localhost:4200",
+                                            "https://flask-data-swarm.herokuapp.com"
+                                        ]
+                                }
+                        }
+        ,headers='Content-Type')
     
     # app.config['CORS_HEADERS'] = "Content-Type"
     # app.config['CORS_RESOURCES'] = {r'/*': {"origins":"*"}}
