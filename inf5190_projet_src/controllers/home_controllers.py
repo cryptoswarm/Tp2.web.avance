@@ -34,4 +34,4 @@ def delete_user():
 @mod_home.route('/')
 def doc():
     """Server in prod is poiting to /doc"""
-    return render_template('index.html')
+    return render_template('doc.html')
