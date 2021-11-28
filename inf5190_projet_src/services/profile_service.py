@@ -24,6 +24,7 @@ def create_profile_followed_arr(data):
             profile = add_profile(data)
         existed_arr = find_followed_arr_by_name(name)
         if existed_arr is None:
+            print('name',name, 'profile.id', profile.id)
             save_followed_arr(name, profile.id)
     
     response = {"name": profile.complete_name,

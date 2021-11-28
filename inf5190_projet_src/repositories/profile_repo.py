@@ -1,6 +1,6 @@
 from inf5190_projet_src import db
 from inf5190_projet_src.models.profile import Profile
-from inf5190_projet_src.models.followed_arr import Followed
+from inf5190_projet_src.models.followed_arr import InspectedArr
 
 
 def find_profile_by_email(email:str)->Profile or None:
@@ -15,17 +15,20 @@ def save_profile(profile: Profile)->Profile:
 
 
 def save_followed_arr(name:str, profile_id:int):
-    followed = Followed(name, profile_id)
+    print('**********************************************')
+    print('Just before saving into followed table name {} and profile id {}'.format(name, profile_id))
+    # followed = InspectedArr('mokhtar', 1)
+    followed = InspectedArr(name, profile_id)
     db.session.add(followed)
     db.session.commit()
     return followed
 
-def find_followed_arr_by_name(name:str)->Followed or None:
-    followed = Followed.query.filter_by(name=name) \
+def find_followed_arr_by_name(name:str)->InspectedArr or None:
+    followed = InspectedArr.query.filter_by(name=name) \
                         .first()
     return followed
 
 def find_followed_by_profile_id(id:int):
-    all = Followed.query.filter_by(profile_id=id) \
+    all = InspectedArr.query.filter_by(profile_id=id) \
                         .all()
     return all

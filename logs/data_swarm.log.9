@@ -1,10 +1,10 @@
-2021-11-27 14:41:18,512 ERROR: Exception on /api/profile [POST] [in /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask/app.py:1454]
+2021-11-28 01:05:44,075 ERROR: Exception on /api/profile [POST] [in /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask/app.py:1454]
 Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1799, in _execute_context
     self.dialect.do_execute(
   File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlite3.OperationalError: table followed_arrondissement has no column named name
+sqlite3.InterfaceError: Error binding parameter 0 - probably unsupported type.
 
 The above exception was the direct cause of the following exception:
 
@@ -19,7 +19,11 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/flask/app.py", line 1499, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
-  File "/Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/controllers/account_controllers.py", line 38, in create_profile
+  File "/Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/controllers/account_controllers.py", line 29, in create_profile
+    response = create_profile_followed_arr(data)
+  File "/Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/services/profile_service.py", line 28, in create_profile_followed_arr
+    save_followed_arr(name, profile.id)
+  File "/Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/repositories/profile_repo.py", line 20, in save_followed_arr
     db.session.commit()
   File "<string>", line 2, in commit
   File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 1428, in commit
@@ -62,8 +66,8 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 717, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) table followed_arrondissement has no column named name
-[SQL: INSERT INTO followed_arrondissement (name, profile_id) VALUES (?, ?)]
-[parameters: (('arrondissement',), 1)]
-(Background on this error at: https://sqlalche.me/e/14/e3q8)
-2021-11-27 14:42:58,733 INFO: data swarm start [in /Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/__init__.py:102]
+sqlalchemy.exc.InterfaceError: (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: INSERT INTO followed (name, profile_id) VALUES (?, ?)]
+[parameters: (('arrondissement1',), 1)]
+(Background on this error at: https://sqlalche.me/e/14/rvf5)
+2021-11-28 01:06:10,686 INFO: data swarm start [in /Users/mokhtarsafir/Projects/Tp2.web.avance/inf5190_projet_src/__init__.py:102]

@@ -4,7 +4,7 @@ from inf5190_projet_src import db
 from marshmallow import schema, fields, pre_load, validate
 from flask_marshmallow import Marshmallow
 
-from inf5190_projet_src.models.followed_arr import FollowedArrSchema
+# from inf5190_projet_src.models.followed_arr import FollowedArrSchema
 
 ma = Marshmallow()
 
@@ -13,7 +13,7 @@ class Profile(Base):
 
     complete_name = db.Column(db.String(255), unique=False,  nullable=False)
     email = db.Column(db.String(80), unique=True,  nullable=False)
-    followed_arr = relationship("Followed")
+    followed_arr = relationship("InspectedArr")
 
 
     def __init__(self, complete_name, email):
@@ -32,18 +32,18 @@ class Profile(Base):
                 "email": self.email
                 } 
 
-class ProfileCreateSchema(ma.Schema):
-    id = fields.Number()
-    complete_name = fields.String(required=True, validate=validate.Length(4))
-    email = fields.Str(
-        required=True, validate=validate.Email(error="Not a valid email address")
-    )
-    followed_arr = fields.List(fields.String(), required=True)
+# class ProfileCreateSchema(ma.Schema):
+#     id = fields.Number()
+#     complete_name = fields.String(required=True, validate=validate.Length(4))
+#     email = fields.Str(
+#         required=True, validate=validate.Email(error="Not a valid email address")
+#     )
+#     followed_arr = fields.List(fields.String(), required=True)
 
-class ProfileResponseSchema(ma.Schema):
-    id = fields.Number()
-    complete_name = fields.String(required=True, validate=validate.Length(4))
-    email = fields.Str(
-        required=True, validate=validate.Email(error="Not a valid email address")
-    ),
-    followed_arr = fields.Nested(FollowedArrSchema)    
+# class ProfileResponseSchema(ma.Schema):
+#     id = fields.Number()
+#     complete_name = fields.String(required=True, validate=validate.Length(4))
+#     email = fields.Str(
+#         required=True, validate=validate.Email(error="Not a valid email address")
+#     ),
+#     followed_arr = fields.Nested(FollowedArrSchema)    

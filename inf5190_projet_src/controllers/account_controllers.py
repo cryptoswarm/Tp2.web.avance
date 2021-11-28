@@ -5,12 +5,12 @@ from inf5190_projet_src import db
 from marshmallow.exceptions import ValidationError
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
-from inf5190_projet_src.models.profile import ProfileCreateSchema
+# from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 
 
 
-profile_create_sch = ProfileCreateSchema()
+# profile_create_sch = ProfileCreateSchema()
 # profile_res_sch = ProfileResponseSchema()
 # followed_arr = FollowedArrSchema(many=True)
 
@@ -21,10 +21,11 @@ mod_user = Blueprint("user", __name__, url_prefix="/")
 @mod_user.route('/api/profile', methods=["POST"])
 def create_profile():
 
-    try:
-        data = profile_create_sch.load(request.get_json())
-    except ValidationError as err:
-        return jsonify(err.messages), 400
+    data = request.get_json()
+    # try:
+    #     data = profile_create_sch.load(request.get_json())
+    # except ValidationError as err:
+    #     return jsonify(err.messages), 400
     response = create_profile_followed_arr(data)
         
     
@@ -34,8 +35,9 @@ def create_profile():
     #             "email": data['email'],
     #             "followed_arr": data['followed_arr']
     #           }
-    profile = profile_create_sch.dump(response)
-    return jsonify(profile), 201
+    # profile = profile_create_sch.dump(response)
+    # return jsonify(profile), 201
+    return jsonify(response), 201
 
     
 
