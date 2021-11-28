@@ -9,7 +9,7 @@ class InspectedArr(Base):
 
     __tablename__ = 'profile_arrondissement'
 
-    name = db.Column(db.String(255), unique=True,  nullable=False)
+    name = db.Column(db.String(255), unique=False,  nullable=False)
     profile_id = db.Column(db.Integer, ForeignKey('profile.id'))
 
     def __init__(self, name, profile_id):
@@ -28,7 +28,7 @@ class InspectedArr(Base):
                     "profile_id":self.profile_id
                } 
 
-# class FollowedArrSchema(ma.Schema):
-#     id = fields.Number()
-#     name = fields.String(required=True, validate=validate.Length(3))
+class FollowedArrSchema(ma.Schema):
+    id = fields.Number()
+    name = fields.String(required=True, validate=validate.Length(3))
 

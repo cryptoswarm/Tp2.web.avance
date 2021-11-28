@@ -1,16 +1,18 @@
-from flask import g, make_response, jsonify
+from functools import wraps
+from flask import g, make_response, jsonify, session
 from flask import Blueprint, request, render_template, flash, \
                                     redirect, url_for
-from inf5190_projet_src import db
 from marshmallow.exceptions import ValidationError
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
-# from inf5190_projet_src.models.profile import ProfileCreateSchema
+from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
+from inf5190_projet_src.helpers.helper import *
 
 
 
-# profile_create_sch = ProfileCreateSchema()
+
+profile_create_sch = ProfileCreateSchema()
 # profile_res_sch = ProfileResponseSchema()
 # followed_arr = FollowedArrSchema(many=True)
 
@@ -21,41 +23,21 @@ mod_user = Blueprint("user", __name__, url_prefix="/")
 @mod_user.route('/api/profile', methods=["POST"])
 def create_profile():
 
-    data = request.get_json()
-    # try:
-    #     data = profile_create_sch.load(request.get_json())
-    # except ValidationError as err:
-    #     return jsonify(err.messages), 400
+    try:
+        data = profile_create_sch.load(request.get_json())
+    except ValidationError as err:
+        return jsonify(err.messages), 400
     response = create_profile_followed_arr(data)
-        
-    
-    # followed_arr: data['followed_arr'
-    # profile = {
-    #             "name": data['complete_name'],
-    #             "email": data['email'],
-    #             "followed_arr": data['followed_arr']
-    #           }
-    # profile = profile_create_sch.dump(response)
-    # return jsonify(profile), 201
-    return jsonify(response), 201
+    profile = profile_create_sch.dump(response)
+    return jsonify(profile), 201
+
+
+
 
     
 
 
-# @mod_user.before_app_request
-# def load_logged_in_user():
-#     """If a user id is stored in the session,
-#     load the user object from the db into ``g.user``.
-#     """
-#     user_id = session.get("user_id")
-#     print('user_id: ', user_id)
 
-#     if user_id is None:
-#         g.user = None
-#     else:
-#         # g.user = find_existing_user_by_id(user_id)
-#         g.user = find_existing_user_by_id(user_id).id
-#         print('user should be found: ',g.user)
 
 
 # @mod_user.route("/register", methods=["GET", "POST"])

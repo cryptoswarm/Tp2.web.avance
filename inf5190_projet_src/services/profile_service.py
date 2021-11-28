@@ -18,18 +18,14 @@ def create_profile_followed_arr(data):
     content = []
     followed_arron = data['followed_arr']
     email = data['email']
+    profile, status = get_profile_by_email(email)
+    if profile is None:
+        profile = add_profile(data)
     for name in followed_arron:
-        profile, status = get_profile_by_email(email)
-        if profile is None:
-            profile = add_profile(data)
-        existed_arr = find_followed_arr_by_name(name)
+        existed_arr = find_followed_arr_name_id(name, profile.id)
         if existed_arr is None:
-            print('name',name, 'profile.id', profile.id)
             save_followed_arr(name, profile.id)
-    
-    response = {"name": profile.complete_name,
-                "email": profile.email,
-                }
+    response = profile.asDictionary()
     items = find_followed_by_profile_id(profile.id)
     for item in items:
         content.append(item.asDictionary())

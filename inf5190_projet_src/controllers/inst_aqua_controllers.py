@@ -1,12 +1,11 @@
 from flask import Blueprint, json, Request
-from flask import render_template, flash, request
+from flask import request, session, g
 from flask import redirect, url_for, jsonify
 from flask.helpers import make_response
 from inf5190_projet_src.models.inst_aquatique import InstAquatiquePosition, InstAquatiquePositionSchema, InstallationAquatiqueSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
-
+from inf5190_projet_src.helpers.helper import *
 from inf5190_projet_src.services.arron_service import *
-# from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
 from marshmallow import ValidationError
 
 
@@ -16,6 +15,17 @@ insta_aqua = Blueprint('insta_aquatique', __name__, url_prefix='')
 aquatique_Schema = InstallationAquatiqueSchema()
 aquatiques_schema = InstallationAquatiqueSchema(many=True)
 aqua_sch_pos = InstAquatiquePositionSchema(many=True)
+
+
+@insta_aqua.before_app_request
+def load_logged_in_user():
+    """If a user id is stored in the session,
+    load the user object from the db into ``g.user``.
+    """
+    user_id = session.get("user_id")
+    print('user_id: ', user_id)
+    if user_id is None:
+        g.user = None
 
 
 # http://localhost:5000/api/installation_aquatique/126
@@ -44,6 +54,7 @@ def edit_installation_aquatique(id):
     return jsonify(result), status
 
 @insta_aqua.route('/api/installation-aquatique/<id>', methods=['DELETE'])
+@requires_auth
 def delete_aqua_inst(id):
     print('Rceived id: ',id)
     aqua_inst, status = get_aqua_inst_by_id(id)

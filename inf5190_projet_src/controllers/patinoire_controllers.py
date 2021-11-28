@@ -1,13 +1,13 @@
 from flask import Blueprint
-from flask import jsonify, request
+from flask import jsonify, request, session, g
 from inf5190_projet_src.models.patinoir_condition import EditPatConditionSchema
 from inf5190_projet_src.models.patinoire import EditPatinoireSchema, PatinoireSchema, PatAndConditionSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
-
 from inf5190_projet_src.services.arron_service import *
 from inf5190_projet_src.services.pat_conditions_service import *
 from inf5190_projet_src.services.patinoire_service import *
 from marshmallow import ValidationError
+from inf5190_projet_src.helpers.helper import *
 
 
 patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
@@ -17,6 +17,22 @@ pat_schema = PatinoireSchema(many=True)
 pat_cond_schema = PatAndConditionSchema()
 edit_pat_cond_sch = EditPatConditionSchema()
 edit_pat_schema = EditPatinoireSchema()
+
+
+@patinoire.before_app_request
+def load_logged_in_user():
+    """If a user id is stored in the session,
+    load the user object from the db into ``g.user``.
+    """
+    user_id = session.get("user_id")
+    print('user_id: ', user_id)
+
+    if user_id is None:
+        g.user = None
+    # else:
+    #     # g.user = find_existing_user_by_id(user_id)
+    #     g.user = find_existing_user_by_id(user_id).id
+    #     print('user should be found: ',g.user)
 
 @patinoire.route('/api/patinoire-condition/<id>', methods=['PUT'])
 def edit_patinoire_condition(id):
@@ -34,6 +50,7 @@ def edit_patinoire_condition(id):
 
 
 @patinoire.route('/api/patinoire-condition/<int:id>', methods=['DELETE'])
+@requires_auth
 def delete_patinoire_condition(id):
     pat_condition, status = get_pat_condition_cond_id(id)
     if pat_condition is None:

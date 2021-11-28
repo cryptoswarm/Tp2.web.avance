@@ -1,15 +1,39 @@
-import functools
-from flask import g
-from flask import redirect, url_for
+import base64
+from functools import wraps
+from flask import g, request, session
+from flask import redirect, url_for, jsonify
+from config import USERNAME, PASSWORD, ADMIN_ID
 
-def login_required(view):
-    """View decorator that redirects anonymous users to the login page."""
 
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for("user.login"))
 
-        return view(**kwargs)
+def check_auth(authorization_header):
+    """Check if a username/password combination is valid."""
+    print('Authorization header: ',authorization_header)
+    encoded_uname_pass = authorization_header.split()[-1]
+    creadential = USERNAME + ":" + PASSWORD
+    decoded = base64.b64decode(encoded_uname_pass).decode("utf-8")
+    print('received after decoding: ',decoded)
+    if decoded == creadential:
+        return True
+    return False
 
-    return wrapped_view
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        authorization_header = request.headers.get('Authorization')
+        if not authorization_header or not check_auth(authorization_header):
+            return define_response()
+        # store the user id in a new session
+        session.clear()
+        # Storing the user_id in a session
+        session["user_id"] = int(ADMIN_ID, base=10)
+        return f(*args, **kwargs)
+    return decorated
+
+def define_response():
+    resp = jsonify({"message": "Please authenticate."})
+    resp.status_code = 401
+    resp.headers["WWW-Authenticate"] = 'Basic'
+    return resp
+    

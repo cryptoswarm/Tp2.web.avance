@@ -1,3 +1,4 @@
+from operator import and_
 from inf5190_projet_src import db
 from inf5190_projet_src.models.profile import Profile
 from inf5190_projet_src.models.followed_arr import InspectedArr
@@ -15,9 +16,6 @@ def save_profile(profile: Profile)->Profile:
 
 
 def save_followed_arr(name:str, profile_id:int):
-    print('**********************************************')
-    print('Just before saving into followed table name {} and profile id {}'.format(name, profile_id))
-    # followed = InspectedArr('mokhtar', 1)
     followed = InspectedArr(name, profile_id)
     db.session.add(followed)
     db.session.commit()
@@ -32,3 +30,13 @@ def find_followed_by_profile_id(id:int):
     all = InspectedArr.query.filter_by(profile_id=id) \
                         .all()
     return all
+
+def find_followed_arr_name_id(name:str, profile_id:int)->InspectedArr or None:
+    followed = InspectedArr \
+               .query \
+               .filter(and_(
+                   (InspectedArr.name==name),
+                   (InspectedArr.profile_id==profile_id)
+                   )).first()
+    return followed
+

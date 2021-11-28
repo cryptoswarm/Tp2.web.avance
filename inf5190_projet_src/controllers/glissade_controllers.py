@@ -1,7 +1,7 @@
 
 from copy import error
 from os import stat
-from flask import Blueprint, json, Request
+from flask import Blueprint, request, session, g
 from flask import render_template, flash, request
 from flask import redirect, url_for, jsonify
 from flask.helpers import make_response
@@ -16,12 +16,29 @@ from inf5190_projet_src import schema
 from inf5190_projet_src.models.glissade import GlissadeSchema
 from marshmallow import ValidationError
 from jsonschema import FormatChecker
+from inf5190_projet_src.helpers.helper import *
 
 
 glissade_schema = GlissadeSchema()
 
 
 mod_glissade = Blueprint('glissade', __name__, url_prefix='')
+
+
+@mod_glissade.before_app_request
+def load_logged_in_user():
+    """If a user id is stored in the session,
+    load the user object from the db into ``g.user``.
+    """
+    user_id = session.get("user_id")
+    print('user_id: ', user_id)
+
+    if user_id is None:
+        g.user = None
+    # else:
+    #     # g.user = find_existing_user_by_id(user_id)
+    #     g.user = find_existing_user_by_id(user_id).id
+    #     print('user should be found: ',g.user)
 
 @mod_glissade.route('/api/glissade/<id>', methods=['PUT'])
 @schema.validate(edit_glissade, format_checker=FormatChecker())
@@ -46,6 +63,7 @@ def edit_glissade(id):
 
 
 @mod_glissade.route('/api/glissade/<id>', methods=['DELETE'])
+@requires_auth
 def delete_glissade(id):
     print('Rceived id: ',id)
     glissade, status = get_glissade_by_id(id)

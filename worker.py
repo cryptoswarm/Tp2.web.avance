@@ -78,7 +78,7 @@ def setting_job_3():
 
 def setting_job_4():
     # with app.app_context():
-    print('Print fct: This job is run every 2 min. no time zone specified')
+    print('Print fct: This job is run every 1 min. no time zone specified')
 
 
 

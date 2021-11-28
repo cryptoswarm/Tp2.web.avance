@@ -45,12 +45,15 @@ class Config:
         }
     }
     DEBUG = False
+    ADMIN_USERNAME= os.environ.get('APP_ADMIN_USERNAME')
+    ADMIN_PASS = os.environ.get('APP_ADMIN_PASS')
+    ADMIN_ID = os.environ.get('APP_ADMIN_ID')
 
 
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
     # SQLALCHEMY_DATABASE_URI = postgres_local_base
-    DEBUG = False
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
     JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -116,3 +119,6 @@ config_by_name = dict(
 
 key = Config.SECRET_KEY
 JWT = Config.JWT_SECRET_KEY
+USERNAME = Config.ADMIN_USERNAME
+PASSWORD = Config.ADMIN_PASS
+ADMIN_ID = Config.ADMIN_ID
