@@ -21,6 +21,7 @@ def check_auth(authorization_header):
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        print('checking if user is authorize')
         authorization_header = request.headers.get('Authorization')
         if not authorization_header or not check_auth(authorization_header):
             return define_response()
