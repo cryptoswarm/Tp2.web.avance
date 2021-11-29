@@ -8,7 +8,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 # One of dev, prod or test
-application = create_app('dev')
+application = create_app('prod')
 
 if __name__ == "__main__":
     application.run()
