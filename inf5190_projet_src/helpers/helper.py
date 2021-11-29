@@ -37,4 +37,10 @@ def define_response():
     resp.status_code = 401
     resp.headers["WWW-Authenticate"] = 'Basic'
     return resp
+
+
+def split_and_join(sentence):
+    if ' - ' or ' – ' in sentence:
+        new_sentence = str(sentence).replace(" - ","–")
+    return new_sentence
     

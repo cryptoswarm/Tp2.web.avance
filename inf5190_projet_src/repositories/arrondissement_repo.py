@@ -4,8 +4,7 @@ from inf5190_projet_src.models.arrondissement import Arrondissement
 from sqlalchemy import or_, and_, func, desc
 
 
-def save_arrondissement(arr_name, arr_cle):
-    arrondissement = Arrondissement(arr_name, arr_cle)
+def save_arrondissement(arrondissement):
     db.session.add(arrondissement)
     db.session.commit()
     print('arrondissement saved : ',arrondissement.asDictionary())

@@ -1,13 +1,7 @@
-import logging
-import xml.etree.ElementTree as ET
-from threading import Condition
 from datetime import datetime
-from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.repositories.glissade_repo import *
-from inf5190_projet_src.repositories.patinoire_repo import find_patinoire_by_name, save_patinoire
-from inf5190_projet_src.repositories.pat_condition_repo import *
-from inf5190_projet_src.models.patinoir_condition import PatinoirCondition
-from inf5190_projet_src.models.patinoire import Patinoire
+
+
 
 
 def write_response_to_file(response, file_name):
@@ -15,29 +9,12 @@ def write_response_to_file(response, file_name):
         for line in response:
             file.write(line)
 
-
-def split_and_join(sentence):
-    if ' - ' or ' – ' in sentence:
-        new_sentence = str(sentence).replace(" - ","–")
-    return new_sentence
-
-
 def get_arrondissement_detail(arr_details):
     nom_arr = arr_details['nom_arr']
     cle = arr_details['cle']
     date_maj = datetime.strptime(arr_details['date_maj'], "%Y-%m-%d %H:%M:%S")
     return {'nom_arr':nom_arr, 'cle':cle, 'date_maj': date_maj}
 
-# def get_glissade_details(element, kwargs):
-#     glissade_name = element[kwargs[0][0]]
-#     print('type of element[kwargs[0][2]] :', type(element[kwargs[0][2]]))
-#     ouvert = False if element[kwargs[0][2]] == '0' else True
-#     deblaye = False if element[kwargs[0][3]] == '0' else True
-#     condition = element[kwargs[0][4]]
-#     return {'name':glissade_name, 'ouvert':ouvert, 'deblaye':deblaye, 'condition':condition}
-
-
-#'MAIN', 'arrondissement', ['nom_arr', 'patinoire']
 def get_patinoire_details(details):
     pat_conditions = {}
     cond_list = []
@@ -59,67 +36,8 @@ def get_patinoire_details(details):
     return pat_conditions
 
 
-def save_pat_and_conditions(request_response):
-    content = []
-    logging.info('Received request from liste des patinoires endpoint')
-    try:
-        root = ET.fromstring(request_response.text)
-        for child in root: #child.tag #<---- list of all arrondissements
-            nom_arr = child.find('nom_arr').text.strip()
-            new_arr_name = split_and_join(nom_arr)
-            arrondissement= find_by_arr_name(new_arr_name)
-            if arrondissement is None:
-                arrondissement = save_arrondissement(new_arr_name, None)
-                logging.debug('Creation of new arr {}'.format(arrondissement))
-                content.append(arrondissement.asDictionary())
-            patinoire_elem = child.find('patinoire')
-            for children in patinoire_elem:
-                if children.tag == 'nom_pat':
-                    nom_pat = children.text.strip()
-                    patinoire = find_patinoire_by_name(nom_pat)
-                    if patinoire is None:
-                        new_pat = save_patinoire(nom_pat, arrondissement.id)
-                        logging.debug('Creation of pat {}'.format(new_pat))
-                        content.append(new_pat.asDictionary())
-                if children.tag == 'condition':
-                    pat_cond = get_patinoire_condition(children)
-                    pat_id =  find_patinoire_by_name(nom_pat).id
-                    pat_cond.patinoire_id = pat_id
-                    saved_condition = save_pat_condition(pat_cond)
-                    logging.debug('Creation of pat cond {}'.format(saved_condition))
-                    content.append(saved_condition.asDictionary())
-        return content
-    except ET.ParseError as err:
-        logging.ERROR('Error while parsing list of patinoires : {}'.format(err.msg))
-        pass
 
-def save_all_glissade(request_response):
-    content = []
-    root = ET.fromstring(request_response.text)
-    for glissade_elm in root:
-        arr_name, cle = get_arrondissement(glissade_elm)
-        checked_arr = find_by_arr_name(arr_name)
-        if checked_arr is None:
-            checked_arr = save_arrondissement(arr_name, cle)
-            logging.info('Creation of new arr: {}'.format(checked_arr))
-        glissade = get_glissade(glissade_elm, checked_arr.id)
-        checked_glissade = find_glissade_by_name(glissade.name)
-        if checked_glissade is None:
-            glissade = save_glissade(glissade)
-            logging.info('Creation of new glissade: {}'.format(glissade))
-    return content
-
-def get_arrondissement(glissade_elem):
-    arr_elem = glissade_elem.find('arrondissement')
-    name = arr_elem.find('nom_arr').text
-    new_arr_name = split_and_join(name)
-    logging.info('Tweak arr name {} to {}'.format(name, new_arr_name))
-    cle = arr_elem.find('cle').text
-    # return Arrondissement(new_arr_name, cle)
-    return new_arr_name, cle
-
-
-def get_glissade(glissade_elem, arr_id):
+def create_temp_glissade(glissade_elem, arr_id):
     date_text = glissade_elem.find('arrondissement').find('date_maj').text
     date_maj = datetime.strptime(date_text, "%Y-%m-%d %H:%M:%S")
     name = glissade_elem.find('nom').text
@@ -128,14 +46,6 @@ def get_glissade(glissade_elem, arr_id):
     condition = glissade_elem.find('condition').text
     glissade =  Glissade(name, date_maj, ouvert, deblaye, condition, arr_id)
     return glissade
-
-def get_patinoire_condition(pat_content):
-    date_heure = datetime.strptime(pat_content.find('date_heure').text.strip(), "%Y-%m-%d %H:%M:%S")
-    ouvert = True if pat_content.find('ouvert').text.strip() == '1' else False 
-    deblaye = True if pat_content.find('deblaye').text.strip() == '1' else False #children.find('deblaye')
-    arrose = True if pat_content.find('arrose').text.strip() == '1' else False #children.find('arrose')
-    resurface = True if pat_content.find('resurface').text.strip() == '1' else False #children.find('resurface')
-    return PatinoirCondition(date_heure, ouvert, deblaye, arrose, resurface, None)
 
 
 def get_glissades_per_arr_id(arr_id):
@@ -176,6 +86,16 @@ def get_glissade_details(arr_id, glissade_name):
     if glissade is None:
         return None, 404
     return glissade, 200
+
+def get_glissade_by_name(glissade_name):
+    glissade = find_glissade_by_name(glissade_name)
+    if glissade is None:
+        return None
+    return glissade
+
+def add_glissade(glissade):
+    saved_glissade = save_glissade(glissade)
+    return save_glissade
         
 
 

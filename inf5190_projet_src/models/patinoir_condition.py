@@ -1,3 +1,4 @@
+import hashlib
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
@@ -18,6 +19,7 @@ class PatinoirCondition(Base):
     arrose = db.Column(db.Boolean, nullable=False, default=False)
     resurface = db.Column(db.Boolean, nullable=False, default=False)
     patinoire_id = db.Column(db.Integer, ForeignKey('patinoire.id'))
+    pat_hash = db.Column(db.String(255), unique=True, nullable=False)
 
 
     def __init__(self, date_heure, ouvert, deblaye, arrose, resurface, patinoire_id):
@@ -27,6 +29,17 @@ class PatinoirCondition(Base):
         self.arrose = arrose
         self.resurface = resurface
         self.patinoire_id = patinoire_id
+        self.pat_hash = self.calculate_hash()
+
+    def calculate_hash(self):
+        hash = hashlib.md5((self.date_heure.strftime('%Y-%m-%d %H:%M:%S') + 
+                               str(self.ouvert + 
+                               self.deblaye + self.arrose +
+                               self.resurface +
+                               self.patinoire_id))
+                        .encode('utf-8')) \
+                        .hexdigest()
+        return hash
 
         
     def __repr__(self):

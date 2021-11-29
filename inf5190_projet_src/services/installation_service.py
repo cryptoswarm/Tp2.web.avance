@@ -1,7 +1,7 @@
-from inf5190_projet_src.services.aquatique_inst_services import get_all_aqua_installation_by_arr_id, get_aqua_inst_names_arr_id
+from inf5190_projet_src.services.aquatique_inst_services import get_aqua_inst_names_arr_id
 from inf5190_projet_src.services.arron_service import get_arr_by_name
-from inf5190_projet_src.services.glissade_services import *
-from inf5190_projet_src.services.patinoire_service import *
+from inf5190_projet_src.services.glissade_services import get_glissades_names_arr_id
+from inf5190_projet_src.services.patinoire_service import get_patinoire_names_arr_id
 
 
 

@@ -1,10 +1,6 @@
-
-
-
 import re
 from inf5190_projet_src.models.patinoire import PatAndCondition
 from inf5190_projet_src.repositories.patinoire_repo import *
-from inf5190_projet_src.services.glissade_services import get_patinoire_condition
 from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id
 
 
@@ -44,7 +40,19 @@ def get_patinoire_by_id(patinoire_id):
         return None, 404
     return patinoire, 200
 
+def get_patinoire_by_name(patinoire_name):
+    patinoire = find_patinoire_by_name(patinoire_name)
+    if patinoire is None:
+        return None, 404
+    return patinoire, 200
+
+
 def update_patinoire(pat, posted_pat):
     updated_pat = do_update_patinoire(pat, posted_pat)
     return updated_pat
+
+def add_patinoire(nom_pat, arr_id):
+    new_patinoire = Patinoire(nom_pat, arr_id)
+    new_patinoire = save_patinoire(new_patinoire)
+    return new_patinoire
 

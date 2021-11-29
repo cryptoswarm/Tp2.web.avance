@@ -1,8 +1,9 @@
+from datetime import datetime
+from xml.etree.ElementTree import Element
 from inf5190_projet_src.repositories.pat_condition_repo import *
 
 
 def get_pat_conditions_by_pat_id(pat_id):
-    all_conditions = []
     conditions = find_pat_conditions_by_pat_id(pat_id)
     if conditions is None:
         return None
@@ -21,4 +22,22 @@ def update_pat_condition(existed_cond, new_data):
 def delete_pat_condition(condition_id):
     deleted_cond = delete_condition(condition_id)
     return deleted_cond
+
+def add_pat_condition(data:Element, pat_id:int):
+    date_heure = datetime.strptime(data.find('date_heure').text.strip(), "%Y-%m-%d %H:%M:%S")
+    ouvert = True if data.find('ouvert').text.strip() == '1' else False 
+    deblaye = True if data.find('deblaye').text.strip() == '1' else False
+    arrose = True if data.find('arrose').text.strip() == '1' else False
+    resurface = True if data.find('resurface').text.strip() == '1' else False
+    pat_cond = PatinoirCondition(date_heure, ouvert, deblaye, arrose, resurface, pat_id)
+    existed_cond = find_pat_cond_by_hash(pat_cond.pat_hash)
+    if existed_cond is None:
+        existed_cond = save_pat_condition(pat_cond)
+    return existed_cond
+
+def get_pat_cond_by_hash(hash):
+    pat_cond = find_pat_cond_by_hash(hash)
+    if pat_cond is None:
+        return None
+    return pat_cond
 

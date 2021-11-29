@@ -32,3 +32,6 @@ def delete_condition(condition_id):
     db.session.delete(condition)
     db.session.commit()
     return condition
+
+def find_pat_cond_by_hash(hash):
+    return PatinoirCondition.query.filter_by(pat_hash = hash).first()

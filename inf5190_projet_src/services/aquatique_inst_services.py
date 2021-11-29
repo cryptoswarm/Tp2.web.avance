@@ -1,43 +1,14 @@
 import csv
 import logging
 from requests.models import Response
-from inf5190_projet_src.repositories.arrondissement_repo import *
 from inf5190_projet_src.models.inst_aquatique import InstAquatiquePosition, InstallationAquatique
 from inf5190_projet_src.repositories.aquatique_repo import *
-from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.services.coordinate_service import *
+from inf5190_projet_src.services.coordinate_service import get_position_by_id
 
 
-def split_and_join(sentence:str):
-    if ' - ' or ' – ' in sentence:
-        new_sentence = str(sentence).replace(" - ","–")
-    return new_sentence
 
-def create_aqua_installations(request_response:Response):
-    decoded_content = request_response.content.decode('utf-8')
-    reader = csv.reader(decoded_content.splitlines(), delimiter=',')
-    headers = next(reader, None) # skip the headers
-    try:
-        for row in reader:
-            arron_name = row[3]
-            new_arr_name = split_and_join(arron_name)
-            arrondissement = find_by_arr_name(new_arr_name)
-            if  arrondissement is None:
-                arrondissement = save_arrondissement(new_arr_name, None)
-            position = construct_aqua_position(row)
-            existed_pos =  get_position_by_hash(position.position_hash)
-            if existed_pos is None:
-                created_pos = add_installation_pos(position)
-                existed_pos = created_pos
-            new_aqua = construct_new_inst_aquatique(row)
-            existed_aqua = get_aqua_inst_by_hash(new_aqua.aqua_hash)
-            if existed_aqua is None:
-                new_aqua.arron_id = arrondissement.id
-                new_aqua.position_id = existed_pos.id
-                created_aqua_int = save_installation_aquatique(new_aqua)
-    except csv.Error as e:
-        logging.ERROR('Parsing inst aqua response : line {} error {}'.format(reader.line_num, e))
-        pass
+
+
 
 
 def construct_new_inst_aquatique(data)->InstallationAquatique:
@@ -79,9 +50,7 @@ def get_aqua_inst_by_id(id):
         return None, 404
     return installation, 200
 
-# def update_aqua_inst(installation, data):
-#     updated_aqua = update_aqua(installation, data)
-#     return updated_aqua, 200
+
 def update_aqua_inst(id, data):
     updated_aqua = update_aqua(id, data)
     return updated_aqua, 200
@@ -116,3 +85,7 @@ def get_aqua_installations(arrond_id, aqua_name):
             aqua.position_id, position)
             response.append(aqua_inst_and_pos)
     return response
+
+def add_installation_aquatique(aqua_inst: InstallationAquatique):
+    new_aqua = save_installation_aquatique(aqua_inst)
+    return new_aqua
