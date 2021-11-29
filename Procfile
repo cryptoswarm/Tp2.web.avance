@@ -1,2 +1,2 @@
 web: flask db upgrade; gunicorn app:application
-worker: python worker.py
+worker: python3 worker.py

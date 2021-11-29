@@ -40,9 +40,9 @@ def setting_job_4():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(setting_job_1, 'interval', minutes=45, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(setting_job_2, 'interval', hours=1, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(setting_job_3, 'interval', hours=1, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_1, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_2, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_3, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(setting_job_4, 'interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.start()
 
