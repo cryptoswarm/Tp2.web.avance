@@ -25,6 +25,7 @@ def create_profile():
 
     try:
         data = profile_create_sch.load(request.get_json())
+        print('Profile data :',data)
     except ValidationError as err:
         return jsonify(err.messages), 400
     response = create_profile_followed_arr(data)
