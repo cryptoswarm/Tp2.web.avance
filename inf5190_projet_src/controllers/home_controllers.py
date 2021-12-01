@@ -6,20 +6,17 @@ from inf5190_projet_src.services.profile_service import *
 mod_home = Blueprint('home', __name__, url_prefix='')
 
 
-@mod_home.route('/privacy', methods=['GET','POST'])
+@mod_home.route('api/privacy', methods=['GET'])
 def privacy():
-    data = request.get_json()
     print('request to privacy and condition received')
-    if data and len(data) != 0:
-        print('request to get privacy received')
     return render_template('index.html'), 200
 
-@mod_home.route('/unsubscribe/<email>', methods=['GET'])
+@mod_home.route('api/unsubscribe/<email>', methods=['DELETE', 'POST'])
 def unsubscribe(email):
     profile, check = get_profile_by_email(email)
     if profile is None:
         return jsonify(message="Profile does not exist"), 400
-    remove_profile(profile)
+    deleted = remove_profile(profile)
     return jsonify(message="Profile deleted"), 200
 
 @mod_home.route('/')

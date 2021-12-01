@@ -4,8 +4,9 @@ from werkzeug.wrappers import response
 from inf5190_projet_src.repositories.profile_repo import *
 
 def remove_profile(profile):
-    delete_profile(profile.email)
-    delete_followed_arr_by_profile_id(profile.id)
+    deleted_profile = delete_profile(profile.email, profile.id)
+    # delete_followed_arr_by_profile_id(profile.id)
+    return deleted_profile
 
 def add_profile(data):
     profile = Profile(data['complete_name'], data['email'])

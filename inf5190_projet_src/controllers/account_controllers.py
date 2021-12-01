@@ -28,12 +28,12 @@ def create_profile():
     try:
         data = profile_create_sch.load(request.get_json())
     except ValidationError as err:
-        return jsonify(message=err.messages), 400
+        return jsonify(message_email=err.messages), 400
     validator = validate_email_costum(data['email'])
     if isinstance(validator, bool):
         exit_profil, status = get_profile_by_email(data['email'])
         if exit_profil is not None:
-            return jsonify(message="Email is Already Registered"), 400
+            return jsonify(message_email="Email is Already Registered"), 400
         response = create_profile_followed_arr(data)
         send_email(response['email'], 'Profile created',
                     'profile', email=response['email'],
@@ -41,7 +41,7 @@ def create_profile():
                     followed_arr=response['followed_arr'])
         profile = profile_create_sch.dump(response)
         return jsonify(profile), 201
-    return jsonify(message=validator), 400
+    return jsonify(message_email=validator), 400
 
 @mod_user.route('/api/authenticate', methods=['POST'])
 def authenticate():

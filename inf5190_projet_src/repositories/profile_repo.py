@@ -3,16 +3,18 @@ from inf5190_projet_src import db
 from inf5190_projet_src.models.profile import Profile
 from inf5190_projet_src.models.followed_arr import InspectedArr
 
-def delete_profile(email):
-    profile = find_profile_by_email(email)
-    db.session.delete(profile)
-    db.session.commit
+def delete_profile(email, profile_id):
+    followed_arr = InspectedArr \
+                    .query \
+                    .filter_by(profile_id=profile_id) \
+                    .delete()
+    profile = Profile \
+                .query \
+                .filter_by(email=email) \
+                .delete()
+    db.session.commit()
+    return profile, followed_arr
 
-def delete_followed_arr_by_profile_id(profile_id):
-    arrs = find_followed_by_profile_id(profile_id)
-    for arr in arrs:
-        db.session.delete(arr)
-        db.session.commit()
 
 def find_profile_by_email(email:str)->Profile or None:
     profile = Profile.query.filter_by(email=email) \
