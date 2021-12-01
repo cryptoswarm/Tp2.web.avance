@@ -63,22 +63,6 @@ def authenticate():
 
 
 
-# @mod_user.route("/register", methods=["GET", "POST"])
-# def register():
-#     """Register a new user.
-#     Validates that the username is not already taken. Hashes the
-#     password for security.
-#     """
-#     if request.method == "POST":
-#         data = request.form.to_dict() or request.get_json()
-#         print('data creation new user :', data)
-#         new_user_rv = register_new_user(data)
-#         print('id of new user created user controller:', new_user_rv.content)
-#         if new_user_rv.flag:
-#             return redirect(url_for("user.login"))
-#         flash(new_user_rv.err_msg, 'warning')
-#     return render_template("auth/register.html")
-
 # @mod_user.route("/login", methods=["GET", "POST"])
 # def login():
 #     """Log in a registered user by adding the user id to the session."""
