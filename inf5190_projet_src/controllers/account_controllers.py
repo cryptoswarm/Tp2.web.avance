@@ -1,13 +1,16 @@
 from functools import wraps
-from flask import g, make_response, jsonify, session
+from flask import g, json, make_response, jsonify, session
 from flask import Blueprint, request, render_template, flash, \
                                     redirect, url_for
 from marshmallow.exceptions import ValidationError
+from config import ADMIN_ID
+from inf5190_projet_src.helpers.email import send_email, validate_email_costum
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
 from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *
+from email_validator import EmailUndeliverableError, validate_email
 
 
 
@@ -22,16 +25,35 @@ mod_user = Blueprint("user", __name__, url_prefix="/")
 
 @mod_user.route('/api/profile', methods=["POST"])
 def create_profile():
-
     try:
         data = profile_create_sch.load(request.get_json())
-        print('Profile data :',data)
     except ValidationError as err:
-        return jsonify(err.messages), 400
-    response = create_profile_followed_arr(data)
-    profile = profile_create_sch.dump(response)
-    return jsonify(profile), 201
+        return jsonify(message=err.messages), 400
+    validator = validate_email_costum(data['email'])
+    if isinstance(validator, bool):
+        exit_profil, status = get_profile_by_email(data['email'])
+        if exit_profil is not None:
+            return jsonify(message="Email is Already Registered"), 400
+        response = create_profile_followed_arr(data)
+        send_email(response['email'], 'Profile created',
+                    'profile', email=response['email'],
+                     user=response['complete_name'],
+                    followed_arr=response['followed_arr'])
+        profile = profile_create_sch.dump(response)
+        return jsonify(profile), 201
+    return jsonify(message=validator), 400
 
+@mod_user.route('/api/authenticate', methods=['POST'])
+def authenticate():
+    authorization_header = request.headers.get('Authorization')
+    if not authorization_header or not check_auth(authorization_header):
+        return define_response()
+    session.clear()
+    # Storing the user_id in a session
+    session["user_id"] = int(ADMIN_ID, base=10)
+    response = make_response()
+    response.set_cookie(key="id", value=ADMIN_ID, max_age=60*60*8, domain=None)
+    return response, 200
 
 
 

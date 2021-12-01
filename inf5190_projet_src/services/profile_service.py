@@ -3,6 +3,10 @@ import re
 from werkzeug.wrappers import response
 from inf5190_projet_src.repositories.profile_repo import *
 
+def remove_profile(profile):
+    delete_profile(profile.email)
+    delete_followed_arr_by_profile_id(profile.id)
+
 def add_profile(data):
     profile = Profile(data['complete_name'], data['email'])
     profile = save_profile(profile)

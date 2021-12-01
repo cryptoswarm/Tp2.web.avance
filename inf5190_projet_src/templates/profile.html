@@ -1,0 +1,16 @@
+
+<p>Dear {{ user }},</p>
+<p>You are following the below arrondissement.</p>
+<ul>
+    {% for arrondissement in followed_arr%}
+    <li>{{arrondissement['name']}}</li>
+    {% endfor %}
+</ul>
+<p>Regards,</p>
+<p>The <code>data swarm</code> admin</p>
+
+<p>
+    <a class="type m-0"
+        href="{{ url_for('home.unsubscribe', email=email, _external=True)}}">Click on the following link to unsbscribe
+    </a>
+</p>

@@ -5,6 +5,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+from flask_mail import Message
+from inf5190_projet_src import mail
 
 
 # One of dev, prod or test

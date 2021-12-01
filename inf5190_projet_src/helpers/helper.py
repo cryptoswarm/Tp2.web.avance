@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from flask import g, request, session
+from flask import g, json, request, session
 from flask import redirect, url_for, jsonify
 from config import USERNAME, PASSWORD, ADMIN_ID
 
@@ -43,4 +43,12 @@ def split_and_join(sentence):
     if ' - ' or ' – ' in sentence:
         new_sentence = str(sentence).replace(" - ","–")
     return new_sentence
+
+def convert_to_json(followed_arr):
+    follows = []
+    for arr in followed_arr:
+        replace = arr.replace("'", "\"")
+        followed_arr = json.loads(replace)
+        follows.append(followed_arr)
+    return follows
     

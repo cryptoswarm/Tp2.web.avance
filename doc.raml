@@ -5,6 +5,41 @@ baseUri: https://flask-data-swarm.herokuapp.com/
 version: v1
 mediaType: application/json
 types:
+  CreatedFollowedArrondissement:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      profile_id:
+        type: number
+  PostedProfile:
+    type: object
+    properties: 
+      complete_name:
+        type: string
+        required: true
+      email:
+        type: string
+        required: true
+      followed_arr:
+        type: string[]
+        required: true
+  CreatedProfile:
+    type: object
+    properties: 
+      complete_name:
+        type: string
+        required: true
+      email:
+        type: string
+        required: true
+      followed_arr:
+        type: CreatedFollowedArrondissement[]
+        required: true
+      id:
+        type: number
   Arrondissement:
     type: object
     properties:
@@ -24,255 +59,153 @@ types:
         type: string
         required: true
       date_maj:
-        type: datetime
-        required: false
-      ouvert:
-        type: string
-        required: false
-      deblaye:
-        type: string
-        required: false
-      condition:
-        type: string
-        required: false
-  
-    type: object
-    properties:
-      search:
         type: string
         required: true
+      ouvert:
+        type: string
+        required: true
+      deblaye:
+        type: string
+        required: true
+      condition:
+        type: string
+        required: true
+      arrondissement_id:
+        type: number
+        required: true
+  UpdatedGlissade:
+    type: object
+    properties: 
+      name:
+        type: string
+        required: true
+      date_maj:
+        type: string
+        required: true
+      ouvert:
+        type: boolean
+        required: true
+      deblaye:
+        type: boolean
+        required: true
+      condition:
+        type: string
+        required: true
+      arrondissement_id:
+        type: number
+        required: true
   Error:
-    type: string
-/arrondissements:
-    get:
-        description: Get all arrondissement.
-        responses:
-          200:
-            body:
-              application/json:
-                type: Arrondissement[]
-                example: |
-                  [
-                    {
-                        "id": 1,
-                        "name": "verdun",
-                        "cle": "ver"
-                    },
-                    {
-                        "id": 2,
-                        "name": "sRivière-des-Prairies–Pointe-aux-Trembles",
-                        "cle": "Mrdp"
-                    },
-                  ]
-# /article:
-#   /{identifiant}:
-#     get:
-#         description: Extract the data of one article, specified by it's identifiant.
-#         responses:
-#           200:
-#             body:
-#               application/json:
-#               type: Article
-#           404:
-#             description: No article found
-#             body:
-#               application/json:
-#               type: Error
-#               example: |
-#                 [
-#                   {"message": "Aucun article n'est introuvable par lidentifiant ".}
-#                 ]
-# /admin-nouveau:
-#   post:
-#     description: Create an article.
-#     body:
-#       application/json:
-#         type: Article
-#         example: |
-#           {
-#             auteur: "date checker",
-#             date_publication: "Sat, 16 Oct 2021 17:51:00 GMT",
-#             identifiant: "check_date",
-#             paragraphe: "Date should be ...",
-#             titre: "Checking the format of the date"
-#           }
-#     responses:
-#       201:
-#         description: The article was successfully created.
-#         body:
-#           application/json:
-#             type: Article
-#             example: |
-#               {
-#                 "auteur": "date checker",
-#                 "date_publication": "Sat, 16 Oct 2021 17:51:00 GMT",
-#                 "identifiant": "check_date",
-#                 "paragraphe": "Date should be ...",
-#                 "titre": "Checking the format of the date"
-#               }
-#       409:
-#         description: The article has not been created because identifiant is already exist.
-#         body:
-#           application/json:
-#             type: Error
-#             example: |
-#               {"message": "L'identifiant check_date est utilisé par un autre article"}
-#       404:
-#         description: The article has not been created because on of the properties does not respect the spec .
-#         body:
-#           application/json:
-#             type: Error
-#             example: |
-#               {
-#                 "message": "Examples des formats de dates accéptés sont: Sat, 16 Oct 2021 18:28:00 GM\n2021-10-16 18:28:00\n2021-10-16T18:28\n2021-10-16T18:28:00\n"
-#               }
-# /admin:
-#   get:
-#     description: Get all articles.
-#     responses:
-#       200:
-#         body:
-#           application/json:
-#           type: ArticlePaginating
-#           example: |
-#               [
-#                 "content":
-#                   [
-#                     "auteur": "date checker",
-#                     "date_publication": "Sat, 16 Oct 2021 17:51:00 GMT",
-#                     "identifiant": "check_date",
-#                     "paragraphe": "Date should be ...",
-#                           "titre": "Checking the format of the date"
-#                       },
-#                       {
-#                           "auteur": "safir mokhtar",
-#                           "date_publication": "Mon, 18 Oct 2021 12:54:00 GMT",
-#                           "identifiant": "Inteligence_ai_xYz",
-#                           "paragraphe": "something ....",
-#                           "titre": "Inteligence artificielle"
-#                       },
-#                       {},
-#                       {},
-#                       {}
-#                   ],
-#                   "next_page": 2,
-#                   "next_result": "/admin?page=2"
+    type: object
+    properties: 
+       message:
+        type: string   
 
-#               ]
-# /edit:
-#   /{identifiant}:
-#     put:
-#       description: Modify the data of one article, specified by it's identifiant. It is not possible to change the identifiant, date and title.
-#       body:
-#         application/json:
-#           type: UpdatedArticle
-#           example: |
-#               {
-#                 "paragraphe": "checking date for second time",
-#                 "titre": "checking_date"
-#               }
-#       responses:
-#             200:
-#               body:
-#                 application/json:
-#                   type: Article
-#                   example: |
-#                     {
-#                       "auteur": "checking_date",
-#                       "date_publication": "Sat, 16 Oct 2021 18:24:00 GMT",
-#                       "identifiant": "checking_date",
-#                       "paragraphe": "checking date for second time",
-#                       "titre": "checking_date"
-#                     }
-#             404:
-#               description: The specified identifiant does not exist.
-#               body:
-#                 application/json:
-#                   type: Error
-#                   example: 
-#                     { "message": "Larticle que vous voulez modifier nexist plus" }
-                
-# /search:
-  post:
-    description: Search for articles using a search keyword
-    body:
-      application/json:
-        type: SearchForm
-        example: |
-            {
-              "search": "article"
-            }
-    responses: 
-          200:
-            body:
-              application/json:
-              type: ArticlePaginating
-              example: |
-                [
-                  "content":
+/api:
+  /installations:
+      get:
+          description: Get all arrondissement.
+          responses:
+            200:
+              body:
+                application/json:
+                  type: Arrondissement[]
+                  example: |
                     [
                       {
-                          "auteur": "date checker",
-                          "date_publication": "Sat, 16 Oct 2021 17:51:00 GMT",
-                          "identifiant": "check_date",
-                          "paragraphe": "Date should be ...",
-                          "titre": "Checking the format of the date"
+                          "id": 1,
+                          "name": "verdun",
+                          "cle": "ver"
                       },
                       {
-                          "auteur": "safir mokhtar",
-                          "date_publication": "Mon, 18 Oct 2021 12:54:00 GMT",
-                          "identifiant": "Inteligence_ai_xYz",
-                          "paragraphe": "something ....",
-                          "titre": "Inteligence artificielle"
+                          "id": 2,
+                          "name": "sRivière-des-Prairies–Pointe-aux-Trembles",
+                          "cle": "Mrdp"
                       },
-                      {},
-                      {},
-                      {}
-                    ],
-                  "next_page": 2,
-                  "next_result": "/search?keyword=article&page=2"
-                ]
+                    ]
+  /profile:
+    post:
+      description: create a profile
+      headers: 
+      body: 
+        application/json:
+          type: PostedProfile
+          example: 
+            {
+	            "complete_name": "mokhtar safir",
+	            "email": "safir-mokhtar-2@hotmail.fr",
+	            "followed_arr": ["arrondissement1", "arrondissement2", "arrondissement3"]
+            }
+      responses:
+        201:
+          body:
+            application/json:
+              type: CreatedProfile
               example: |
-              {
-                "message": "Aucun article ne correspond au text recherché"
-              }
-  get:
-    description: Search for articles using a search keyword and a page number
-    queryParameters: 
-        keyword: string
-        page: number
-    responses: 
-          200:
-            body:
-              application/json:
-              type: ArticlePaginating
-              examples:
-                ex1:
-                  [
-                    "content":
-                      [
+                {
+                  "complete_name": "mokhtar safir",
+                  "email": "safir-mokhtar-2@hotmail.fr",
+                  "followed_arr": [
+                      "{'id': 18, 'name': 'arrondissement1', 'profile_id': 6}",
+                      "{'id': 19, 'name': 'arrondissement2', 'profile_id': 6}",
+                      "{'id': 20, 'name': 'arrondissement3', 'profile_id': 6}",
+                      "{'id': 21, 'name': 'arrondissement4', 'profile_id': 6}"
+                    ],
+                  "id": 6.0
+                }
+        400:
+          body:
+            application/json:
+              type: Error
+              example: 
+                {"Message": "The provided email is already in use"}
+  /glissade:
+    /{id}:
+        uriParameters:
+          id:
+            type: number
+            description: Glissade identifier
+        put:
+          description: edit the state of a glissade
+          headers: 
+          body: 
+            application/json:
+              type: Glissade
+              example: 
+                {
+                    "name": "Aire de glissade,Saint-Joseph",
+                    "date_maj": "2014-08-17T14:58:57.600623+00:00",
+                    "ouvert": "0",
+                    "deblaye": "0",
+                    "condition": "N/A",
+                    "arrondissement_id": 13
+                }
+          responses:
+            200:
+                body:
+                    application/json:
+                    type: UpdatedGlissade
+                    example: |
                         {
-                            "auteur": "date checker",
-                            "date_publication": "Sat, 16 Oct 2021 17:51:00 GMT",
-                            "identifiant": "check_date",
-                            "paragraphe": "Date should be ...",
-                            "titre": "Checking the format of the date"
-                        },
-                        {
-                            "auteur": "safir mokhtar",
-                            "date_publication": "Mon, 18 Oct 2021 12:54:00 GMT",
-                            "identifiant": "Inteligence_ai_xYz",
-                            "paragraphe": "something ....",
-                            "titre": "Inteligence artificielle"
-                        },
-                        {},
-                        {},
-                        {}
-                      ],
-                    "next_page": null,
-                    "next_result": null
-                  ]
-                ex2:
-                  {
-                    "message": "Aucun article ne correspond au text recherché"
-                  }
+                            "arrondissement_id": 13.0,
+                            "condition": "N/A",
+                            "date_maj": "2014-08-17T14:58:57.600623",
+                            "deblaye": false,
+                            "id": 1.0,
+                            "name": "Aire de glissade ,Don-Bosco",
+                            "ouvert": false
+                        }
+            400:
+                body:
+                  application/json:
+                    type: Error
+                    example:  
+                        {"Message": "arrondissement does not exist" } |
+                        {"Message": "Glissade does not exist!" }
+  /login:
+    # get:
+    #   headers:
+    #     Authorization:
+    #       type: string
+    #       description: Basic authentication header
+    #       example: |
+    #         Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==

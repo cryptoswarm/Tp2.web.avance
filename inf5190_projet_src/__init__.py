@@ -11,11 +11,13 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from flask_json_schema import JsonSchema, JsonValidationError
 from config import config_by_name
 from flask_migrate import Migrate
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
 schema = JsonSchema()
 migrate = Migrate()
+mail = Mail()
 
 
 def create_app(config_name):
@@ -44,6 +46,7 @@ def create_app(config_name):
         
         # db object which is imported by modules and controllers
         db.init_app(app)
+        mail.init_app(app)
         schema.init_app(app)
         migrate.init_app(app, db)
 

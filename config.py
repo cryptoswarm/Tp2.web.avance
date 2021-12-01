@@ -48,6 +48,14 @@ class Config:
     ADMIN_USERNAME= os.environ.get('APP_ADMIN_USERNAME')
     ADMIN_PASS = os.environ.get('APP_ADMIN_PASS')
     ADMIN_ID = os.environ.get('APP_ADMIN_ID')
+    MAIL_SERVER =  'smtp.gmail.com'
+    MAIL_PORT =  465
+    # MAIL_USE_TLS = False,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = os.environ.get('EMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+    DATA_SWARM_MAIL_SUBJECT_PREFIX = ''
+    DATA_SWARM_MAIL_SENDER = ''
 
 
 class DevelopmentConfig(Config):

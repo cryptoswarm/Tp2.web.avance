@@ -1,0 +1,14 @@
+Dear {{ user }},
+
+You are following the below arrondissement. 
+{% for arrondissement in followed_arr%}
+{{arrondissement[name]}}
+{% endfor %}
+
+Regards,
+
+The data swarm admin
+
+Click on the following link to unsbscribe :
+
+{{ url_for('home.unsubscribe', email=email, _external=True) }}
