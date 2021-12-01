@@ -28,7 +28,7 @@ def create_app(config_name):
                                         [
                                             "http://127.0.0.1:5000", 
                                             "http://localhost:4200",
-                                            "https://angular-data-swarm.herokuapp.com"
+                                            "https://data-swarm.herokuapp.com"
                                         ]
                                 }
                         }
