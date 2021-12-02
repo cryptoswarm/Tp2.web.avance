@@ -35,7 +35,7 @@ def setting_job_3():
 
 def setting_job_4():
     # with app.app_context():
-    print('Print fct: This job is run every 1 min. no time zone specified')
+    print('Print fct: This job is run every 5 min. no time zone specified')
 
 
 
@@ -43,11 +43,11 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(setting_job_1, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(setting_job_2, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(setting_job_3, 'cron', hour=0, timezone=pytz.timezone('CANADA/EASTERN'))
-scheduler.add_job(setting_job_4, 'interval', minutes=1, timezone=pytz.timezone('CANADA/EASTERN'))
+scheduler.add_job(setting_job_4, 'interval', minutes=5, timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.start()
 
 if __name__ == "__main__":
     while True:
-        print('next wake up time in 15 sec')
+        print('next wake up time in 5 minutes')
         scheduler.print_jobs()
-        time.sleep(15)
+        time.sleep(280)
