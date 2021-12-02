@@ -21,7 +21,7 @@ def send_email(to, subject, template, **kwargs):
     thr.start()
     return thr
 
-def validate_email_costum(email):
+def validate_email_domain(email):
     try:
         validate_email(email, check_deliverability=True)
         return True

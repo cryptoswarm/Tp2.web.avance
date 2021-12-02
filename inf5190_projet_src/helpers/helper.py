@@ -52,3 +52,11 @@ def convert_to_json(followed_arr):
         follows.append(followed_arr)
     return follows
     
+def get_errors(err):
+    email_err = err.messages.get('email', None)
+    if email_err is not None:
+        email_err = email_err[0]
+    complete_name_err = err.messages.get('complete_name', None)
+    if complete_name_err is not None:
+        complete_name_err =  complete_name_err[0]
+    return email_err, complete_name_err

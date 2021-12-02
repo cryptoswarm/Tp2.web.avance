@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template, flash, \
                                     redirect, url_for
 from marshmallow.exceptions import ValidationError
 from config import ADMIN_ID
-from inf5190_projet_src.helpers.email import send_email, validate_email_costum
+from inf5190_projet_src.helpers.email import send_email, validate_email_domain
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
 from inf5190_projet_src.models.profile import ProfileCreateSchema
@@ -28,8 +28,10 @@ def create_profile():
     try:
         data = profile_create_sch.load(request.get_json())
     except ValidationError as err:
-        return jsonify(message_email=err.messages), 400
-    validator = validate_email_costum(data['email'])
+        email_err, complete_name_err = get_errors(err)
+        return jsonify(message_email=email_err,
+                        complete_name_err =complete_name_err), 400
+    validator = validate_email_domain(data['email'])
     if isinstance(validator, bool):
         exit_profil, status = get_profile_by_email(data['email'])
         if exit_profil is not None:

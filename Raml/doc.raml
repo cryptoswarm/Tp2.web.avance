@@ -73,6 +73,33 @@ types:
       arrondissement_id:
         type: number
         required: true
+  AQUAINSTFORUPDATE:
+    type: object
+    properties: 
+        arron_id:
+          type: number
+          required: true
+        adress: 
+          type: string
+          required: true
+        equipement_inst:
+          type: string
+          required: true
+        gestion_inst:
+          type: string
+          required: true
+        nom_installation:
+          type: string
+          required: true
+        position_id:
+          type: number
+          required: true
+        propriete_installation:
+          type: string
+          required: true
+        type_installation:
+          type: string
+          required: true
   UpdatedGlissade:
     type: object
     properties: 
@@ -365,6 +392,82 @@ types:
                         type: Error
                         example: |
                             {"message": "Glissade does not exist"}
+  /installation_aquatique:
+    /{id}:
+        uriParameters:
+          id:
+            type: number
+            description: Aqua installation identifier
+        put:
+          description: edit the state of am aqua installation
+          headers: 
+          body: 
+            application/json:
+              type: AQUAINSTFORUPDATE
+              example: |
+                {
+                    "adress": "Undefined Undefined",
+                    "arron_id": 22,
+                    "equipement_inst": "N/A",
+                    "gestion_inst": "Undefined Undefined",
+                    "nom_installation": "Piscine Jonh F. Kennedy",
+                    "position_id": 255,
+                    "propriete_installation": "Undefined Undefined Undefined",
+                    "type_installation": "Piscine intérieure"  
+                }
+          responses:
+              200:
+                  body:
+                      application/json:
+                          type: AQUAINSTFORUPDATE
+                          example: |
+                              {
+                                  "adress": "Undefined Undefined",
+                                  "arron_id": 22.0,
+                                  "equipement_inst": "N/A",
+                                  "gestion_inst": "Undefined Undefined",
+                                  "id": 310.0,
+                                  "nom_installation": "Piscine Jonh F. Kennedy",
+                                  "position_id": 255.0,
+                                  "propriete_installation": "Undefined Undefined Undefined",
+                                  "type_installation": "Piscine intérieure"
+                              }
+              400:
+                  body:
+                    application/json:
+                      type: Error
+                      examples: !include examples/aquaInstexample.raml
+                          
+        delete:
+          description: Remove a glissade
+          headers:
+              Authorization:
+                  type: string
+                  description: Basic authentication header
+                  example: |
+                      Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+          responses:
+            200:
+                body:
+                  application/json:
+                      type: UpdatedGlissade
+                      example: |
+                          {
+                              "arrondissement_id": 13.0,
+                              "condition": "N/A",
+                              "date_maj": "2014-08-17T14:58:57.600623",
+                              "deblaye": false,
+                              "id": 1.0,
+                              "name": "Aire de glissade ,Don-Bosco",
+                              "ouvert": false
+                          }
+            404:
+                body:
+                  application/json:
+                      type: Error
+                      example: |
+                          { "status":"fail", "message":"glissade does not exist"}
+        get:
 
 
 

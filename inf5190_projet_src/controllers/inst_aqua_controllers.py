@@ -35,7 +35,6 @@ def edit_installation_aquatique(id):
     insta_aqua_data = request.get_json()
     try:
         posted_inst_aqua = aquatique_Schema.load(insta_aqua_data) 
-        print('type(posted_inst_aqua) :',type(posted_inst_aqua))
     except ValidationError as err:
         return jsonify(err.messages), 400
     arrondissement, status = get_arr_by_id(posted_inst_aqua['arron_id'])
