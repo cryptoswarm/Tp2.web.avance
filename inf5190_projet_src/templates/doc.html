@@ -170,18 +170,41 @@ pre code {
 .required {
   color: #f00;
 }
-    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Data API for homework2 of INF5190 <small>version v1</small></h1><p>https://flask-data-swarm.herokuapp.com/</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="api" class="panel-title">/api</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_api_installations"><span class="parent">/api</span>/installations</a> <span class="methods"><a href="#api_installations_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_api_installations" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#api_installations_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get all arrondissement.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="api_installations_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/api</span>/installations</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get all arrondissement.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#api_installations_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="api_installations_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: array of object</p><p><strong>Items</strong>: Arrondissement</p><div class="items"><ul><li><strong>id</strong>: <em>(integer)</em></li><li><strong>name</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>cle</strong>: <em>(string)</em></li></ul></div><p><strong>Example</strong>:</p><div class="examples"><pre><code>[
-  {
-      "id": 1,
-      "name": "verdun",
-      "cle": "ver"
-  },
-  {
-      "id": 2,
-      "name": "sRivière-des-Prairies–Pointe-aux-Trembles",
-      "cle": "Mrdp"
-  },
-]
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Data API for homework2 of INF5190 <small>version v1</small></h1><p>https://flask-data-swarm.herokuapp.com/</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="api" class="panel-title">/api</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_api_installations"><span class="parent">/api</span>/installations</a> <span class="methods"><a href="#api_installations_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_api_installations" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#api_installations_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get all installations by arrondissement name.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="api_installations_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/api</span>/installations</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get all installations by arrondissement name.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#api_installations_get_request" data-toggle="tab">Request</a></li><li><a href="#api_installations_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="api_installations_get_request"><h3>Query Parameters</h3><ul><li><strong>arrondissement</strong>: <em><span class="required">required</span>(string)</em><p>Arrondissement name</p></li></ul></div><div class="tab-pane" id="api_installations_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>id</strong>: <em><span class="required">required</span>(number)</em></li><li><strong>arr_name</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>arr_cle</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>aqua_inst</strong>: <em><span class="required">required</span>(array of AQUAINST)</em><p><strong>Items</strong>: AQUAINST</p><div class="items"><ul><li><strong>id</strong>: <em><span class="required">required</span>(number)</em></li><li><strong>nom_installation</strong>: <em><span class="required">required</span>(string)</em></li></ul></div></li><li><strong>glissades</strong>: <em><span class="required">required</span>(array of GLISSADES)</em><p><strong>Items</strong>: GLISSADES</p><div class="items"><ul><li><strong>id</strong>: <em><span class="required">required</span>(number)</em></li><li><strong>name</strong>: <em><span class="required">required</span>(string)</em></li></ul></div></li><li><strong>patinoires</strong>: <em><span class="required">required</span>(array of PATINOIRES)</em><p><strong>Items</strong>: PATINOIRES</p><div class="items"><ul><li><strong>id</strong>: <em><span class="required">required</span>(number)</em></li><li><strong>nom_pat</strong>: <em><span class="required">required</span>(string)</em></li></ul></div></li></ul><p><strong>Example</strong>:</p><div class="examples"><pre><code>{
+    "id": 13,
+    "aqua_inst": [
+          {
+              "id": 2,
+              "nom_installation": "Saint-Jean-Baptiste"
+          },
+          {
+              "id": 52,
+              "nom_installation": "Piscine intérieure Roussin"
+          }
+        ],
+    "arr_cle": null,
+    "arr_name": "Rivière-des-Prairies–Pointe-aux-Trembles",
+    "glissades": [
+          {
+              "id": 1,
+              "name": "Aire de glissade ,Don-Bosco"
+          },
+          {
+              "id": 2,
+              "name": "Aire de glissade,François-Vaillancourt"
+          }
+        ],
+    "patinoires": [
+          {
+              "id": 156,
+              "nom_pat": "Aire de glissade ,Don-Bosco ()"
+          },
+          {
+              "id": 157,
+              "nom_pat": "Aire de glissade,François-Vaillancourt ()"
+          }
+        ]
+}    
 </code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_api_installations_arrondissement__arrondissementname__glissade__glissadename_"><span class="parent">/api/installations/arrondissement/{arrondissementName}/glissade</span>/{glissadeName}</a> <span class="methods"><a href="#api_installations_arrondissement__arrondissementname__glissade__glissadename__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_api_installations_arrondissement__arrondissementname__glissade__glissadename_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#api_installations_arrondissement__arrondissementname__glissade__glissadename__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a glissade by name and arrondissement name</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="api_installations_arrondissement__arrondissementname__glissade__glissadename__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/api/installations/arrondissement/{arrondissementName}/glissade</span>/{glissadeName}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a glissade by name and arrondissement name</p></div><ul class="nav nav-tabs"><li class="active"><a href="#api_installations_arrondissement__arrondissementname__glissade__glissadename__get_request" data-toggle="tab">Request</a></li><li><a href="#api_installations_arrondissement__arrondissementname__glissade__glissadename__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="api_installations_arrondissement__arrondissementname__glissade__glissadename__get_request"><h3>URI Parameters</h3><ul><li><strong>arrondissementName</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>glissadeName</strong>: <em><span class="required">required</span>(string)</em></li></ul></div><div class="tab-pane" id="api_installations_arrondissement__arrondissementname__glissade__glissadename__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>name</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>date_maj</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>ouvert</strong>: <em><span class="required">required</span>(boolean)</em></li><li><strong>deblaye</strong>: <em><span class="required">required</span>(boolean)</em></li><li><strong>condition</strong>: <em><span class="required">required</span>(string)</em></li><li><strong>arrondissement_id</strong>: <em><span class="required">required</span>(number)</em></li></ul><p><strong>Example</strong>:</p><div class="examples"><pre><code>{
     "arrondissement_id": 13.0,
     "condition": "N/A",

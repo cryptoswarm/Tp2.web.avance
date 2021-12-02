@@ -94,6 +94,54 @@ types:
       arrondissement_id:
         type: number
         required: true
+  AQUAINST:
+    type: object
+    properties: 
+      id:
+        type: number
+        required: true
+      nom_installation:
+        type: string
+        required: true
+  GLISSADES:
+    type: object
+    properties: 
+      id:
+        type: number
+        required: true
+      name:
+        type: string
+        required: true
+  PATINOIRES:
+    type: object
+    properties: 
+      id:
+        type: number
+        required: true
+      nom_pat:
+        type: string
+        required: true
+  INSTALLATIONS:
+    type: object
+    properties: 
+      id:
+        type: number
+        required: true
+      arr_name:
+        type: string
+        required: true
+      arr_cle:
+        type: string
+        required: true
+      aqua_inst:
+        type: AQUAINST[]
+        required: true
+      glissades:
+        type: GLISSADES[]
+        required: true
+      patinoires:
+        type: PATINOIRES[]
+        required: true
   Error:
     type: object
     properties: 
@@ -103,26 +151,54 @@ types:
 /api:
   /installations:
       get:
+          queryParameters: 
+              arrondissement:
+                description: Arrondissement name
+                type: string
+                required: true 
           description: Get all installations by arrondissement name.
-          
           responses:
-            200:
-              body:
-                application/json:
-                  type: Arrondissement[]
-                  example: |
-                    [
+              200:
+                body:
+                  application/json:
+                    type: INSTALLATIONS
+                    example: |
                       {
-                          "id": 1,
-                          "name": "verdun",
-                          "cle": "ver"
-                      },
-                      {
-                          "id": 2,
-                          "name": "sRivière-des-Prairies–Pointe-aux-Trembles",
-                          "cle": "Mrdp"
-                      },
-                    ]
+                          "id": 13,
+                          "aqua_inst": [
+                                {
+                                    "id": 2,
+                                    "nom_installation": "Saint-Jean-Baptiste"
+                                },
+                                {
+                                    "id": 52,
+                                    "nom_installation": "Piscine intérieure Roussin"
+                                }
+                              ],
+                          "arr_cle": null,
+                          "arr_name": "Rivière-des-Prairies–Pointe-aux-Trembles",
+                          "glissades": [
+                                {
+                                    "id": 1,
+                                    "name": "Aire de glissade ,Don-Bosco"
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "Aire de glissade,François-Vaillancourt"
+                                }
+                              ],
+                          "patinoires": [
+                                {
+                                    "id": 156,
+                                    "nom_pat": "Aire de glissade ,Don-Bosco ()"
+                                },
+                                {
+                                    "id": 157,
+                                    "nom_pat": "Aire de glissade,François-Vaillancourt ()"
+                                }
+                              ]
+                      }    
+
       /arrondissement:
           /{arrondissementName}:
             uriParameters:
