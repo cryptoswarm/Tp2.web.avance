@@ -103,7 +103,8 @@ types:
 /api:
   /installations:
       get:
-          description: Get all arrondissement.
+          description: Get all installations by arrondissement name.
+          
           responses:
             200:
               body:
@@ -122,6 +123,41 @@ types:
                           "cle": "Mrdp"
                       },
                     ]
+      /arrondissement:
+          /{arrondissementName}:
+            uriParameters:
+              arrondissementName:
+                type: string
+            /glissade:
+                /{glissadeName}:  
+                    uriParameters:
+                        glissadeName:
+                            type: string
+                    get:
+                        description: Get a glissade by name and arrondissement name
+                        responses:
+                            200:
+                                body:
+                                    application/json:
+                                        type: UpdatedGlissade
+                                        example: |
+                                            {
+                                                "arrondissement_id": 13.0,
+                                                "condition": "N/A",
+                                                "date_maj": "2014-08-17T14:58:57.600623",
+                                                "deblaye": false,
+                                                "id": 1.0,
+                                                "name": "Aire de glissade ,Don-Bosco",
+                                                "ouvert": false
+                                            }
+                            400:
+                                body:
+                                  application/json:
+                                    type: Error
+                                    example:  
+                                        {"Message": "arrondissement does not exist" } |
+                                        {"Message": "Glissade does not exist!" }
+
   /profile:
     post:
       description: create a profile
@@ -201,6 +237,66 @@ types:
                     example:  
                         {"Message": "arrondissement does not exist" } |
                         {"Message": "Glissade does not exist!" }
+        delete:
+          description: Remove a glissade
+          headers:
+              Authorization:
+                  type: string
+                  description: Basic authentication header
+                  example: |
+                      Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+          responses:
+            200:
+                body:
+                  application/json:
+                      type: UpdatedGlissade
+                      example: |
+                          {
+                              "arrondissement_id": 13.0,
+                              "condition": "N/A",
+                              "date_maj": "2014-08-17T14:58:57.600623",
+                              "deblaye": false,
+                              "id": 1.0,
+                              "name": "Aire de glissade ,Don-Bosco",
+                              "ouvert": false
+                          }
+            404:
+                body:
+                  application/json:
+                      type: Error
+                      example: |
+                          { "status":"fail", "message":"glissade does not exist"}
+        get:
+            description: Get a glissade
+            responses:
+                200:
+                  body:
+                    application/json:
+                      type: Glissade
+                      example: |
+                          {
+                              "arrondissement_id": 13.0,
+                              "condition": "N/A",
+                              "date_maj": "2021-10-18T13:45:13",
+                              "deblaye": false,
+                              "id": 5.0,
+                              "name": "Aire de glissade,Saint-Joseph",
+                              "ouvert": false
+                          }
+                404:
+                    body:
+                      application/json:
+                        type: Error
+                        example: |
+                            {"message": "Glissade does not exist"}
+
+
+
+
+          
+
+
+
   /login:
     # get:
     #   headers:
@@ -209,3 +305,4 @@ types:
     #       description: Basic authentication header
     #       example: |
     #         Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+  
