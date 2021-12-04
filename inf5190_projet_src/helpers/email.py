@@ -26,7 +26,6 @@ def send_email(to, subject, template, **kwargs):
 
 def validate_email_domain(email):
     try:
-        print('email :',email)
         validate_email(email, check_deliverability=True)
         return True
     except EmailUndeliverableError as err:

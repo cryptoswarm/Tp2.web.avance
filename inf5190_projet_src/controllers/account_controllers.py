@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import g, json, make_response, jsonify, session
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
 from marshmallow.exceptions import ValidationError
 from config import ADMIN_ID, Config
 from inf5190_projet_src.helpers.email import send_email, validate_email_domain
@@ -10,7 +10,7 @@ from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *
 from email_validator import EmailUndeliverableError, validate_email
-from config import UNSUBSCRIBE
+
 
 
 
@@ -43,7 +43,8 @@ def create_profile():
         # return jsonify(profile), 201
         # unsubscribe_link = request.url#request.scheme+'://' + request.host
         # print('request.scheme + request.host :',unsubscribe_link)
-        url = UNSUBSCRIBE #+ response['email']
+        app = current_app._get_current_object() #+ response['email']
+        url = app.config['UNSUBSCRIBE_LINK']
         print('url: ', url)
         send_email(response['email'], 'Profile created',
                     'profile', email=response['email'],

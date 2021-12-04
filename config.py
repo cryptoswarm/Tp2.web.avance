@@ -56,6 +56,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
     DATA_SWARM_MAIL_SUBJECT_PREFIX = ''
     DATA_SWARM_MAIL_SENDER = ''
+    UNSUBSCRIBE_LINK = ''
     
 
 class DevelopmentConfig(Config):
