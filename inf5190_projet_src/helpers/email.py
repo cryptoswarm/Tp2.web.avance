@@ -1,9 +1,12 @@
 from threading import Thread
+from dns import resolver
+import dns
 from email_validator import EmailUndeliverableError, validate_email
 from flask import current_app, render_template
 from flask import jsonify
 from flask_mail import Message
 from inf5190_projet_src import mail
+
 
 
 def send_async_email(app, msg):
@@ -23,6 +26,7 @@ def send_email(to, subject, template, **kwargs):
 
 def validate_email_domain(email):
     try:
+        print('email :',email)
         validate_email(email, check_deliverability=True)
         return True
     except EmailUndeliverableError as err:

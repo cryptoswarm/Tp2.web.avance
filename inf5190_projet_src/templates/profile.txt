@@ -8,3 +8,6 @@ You are following the below arrondissement.
 Regards,
 
 The data swarm admin
+
+
+<a href="{{url}}">unsubscribe</a>

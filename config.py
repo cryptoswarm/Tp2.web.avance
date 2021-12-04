@@ -56,7 +56,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
     DATA_SWARM_MAIL_SUBJECT_PREFIX = ''
     DATA_SWARM_MAIL_SENDER = ''
-
+    
 
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
@@ -76,6 +76,7 @@ class DevelopmentConfig(Config):
         'coalesce': True,
         'max_instances': 3
     }
+    UNSUBSCRIBE_LINK = 'http://localhost:4200/unsubscribe/'
 
 
 class TestingConfig(Config):
@@ -116,6 +117,7 @@ class ProductionConfig(Config):
         'coalesce': True,
         'max_instances': 3
     }
+    UNSUBSCRIBE_LINK = 'https://data-swarm.herokuapp.com/unsubscribe/'
     
 
 
@@ -130,3 +132,4 @@ JWT = Config.JWT_SECRET_KEY
 USERNAME = Config.ADMIN_USERNAME
 PASSWORD = Config.ADMIN_PASS
 ADMIN_ID = Config.ADMIN_ID
+UNSUBSCRIBE = Config.UNSUBSCRIBE_LINK

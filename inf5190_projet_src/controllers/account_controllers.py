@@ -1,9 +1,8 @@
 from functools import wraps
 from flask import g, json, make_response, jsonify, session
-from flask import Blueprint, request, render_template, flash, \
-                                    redirect, url_for
+from flask import Blueprint, request
 from marshmallow.exceptions import ValidationError
-from config import ADMIN_ID
+from config import ADMIN_ID, Config
 from inf5190_projet_src.helpers.email import send_email, validate_email_domain
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
@@ -11,7 +10,7 @@ from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *
 from email_validator import EmailUndeliverableError, validate_email
-
+from config import UNSUBSCRIBE
 
 
 
@@ -27,23 +26,45 @@ mod_user = Blueprint("user", __name__, url_prefix="/")
 def create_profile():
     try:
         data = profile_create_sch.load(request.get_json())
+        print('data for profile creation: ', data)
     except ValidationError as err:
         email_err, complete_name_err = get_errors(err)
         return jsonify(message_email=email_err,
                         complete_name_err =complete_name_err), 400
+    print('data[email]: ',data['email'])
     validator = validate_email_domain(data['email'])
+    print('validator ---> :',validator)
     if isinstance(validator, bool):
         exit_profil, status = get_profile_by_email(data['email'])
         if exit_profil is not None:
             return jsonify(message_email="Email is Already Registered"), 400
         response = create_profile_followed_arr(data)
+        profile = profile_create_sch.dump(response)
+        # return jsonify(profile), 201
+        # unsubscribe_link = request.url#request.scheme+'://' + request.host
+        # print('request.scheme + request.host :',unsubscribe_link)
+        url = UNSUBSCRIBE #+ response['email']
+        print('url: ', url)
         send_email(response['email'], 'Profile created',
                     'profile', email=response['email'],
                      user=response['complete_name'],
-                    followed_arr=response['followed_arr'])
+                    followed_arr=response['followed_arr'],
+                    url = url)
         profile = profile_create_sch.dump(response)
         return jsonify(profile), 201
     return jsonify(message_email=validator), 400
+
+
+# @mod_user.route('/api/send-email', methods=['POST'])
+# def send():
+#     data = request.get_json()
+#     send_email(response['email'], subject=data['subject'],
+#                     template=data['template'], email=response['email'],
+#                      user=response['complete_name'],
+#                     followed_arr=response['followed_arr'], url=data['url'])
+#     profile = profile_create_sch.dump(response)
+#     return jsonify(profile), 201
+
 
 @mod_user.route('/api/authenticate', methods=['POST'])
 def authenticate():

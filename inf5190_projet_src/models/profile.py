@@ -40,6 +40,7 @@ class ProfileCreateSchema(ma.Schema):
         required=True, validate=validate.Email(error="Not a valid email address")
     )
     followed_arr = fields.List(fields.String(), required=True)
+    unsubscribe_url = fields.String(required=False)
 
 class ProfileResponseSchema(ma.Schema):
     id = fields.Number()
