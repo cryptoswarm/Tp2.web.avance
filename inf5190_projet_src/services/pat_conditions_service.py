@@ -23,6 +23,7 @@ def delete_pat_condition(condition_id):
     deleted_cond = delete_condition(condition_id)
     return deleted_cond
 
+
 def add_pat_condition(data:Element, pat_id:int):
     date_heure = datetime.strptime(data.find('date_heure').text.strip(), "%Y-%m-%d %H:%M:%S")
     ouvert = True if data.find('ouvert').text.strip() == '1' else False 

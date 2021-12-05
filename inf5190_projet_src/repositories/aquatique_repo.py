@@ -46,14 +46,12 @@ def find_aqua_inst_names_arr_id(arr_id):
            .filter_by(arron_id=arr_id).all()
 
 def find_aqua_installations(arr_id, aqua_name):
-    print('Aqua Repo --> Arrndissement id :{} and aqua_name : {}'.format(arr_id, aqua_name))
     response =  InstallationAquatique \
            .query \
            .filter(and_(
                (InstallationAquatique.arron_id==arr_id), 
                (InstallationAquatique.nom_installation==aqua_name)
                )).all()
-    print('Aqua inst found :', response)
     return response
 
 def delete_aqua_by_id(id):

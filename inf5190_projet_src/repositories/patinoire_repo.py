@@ -40,3 +40,9 @@ def do_update_patinoire(existed_pat, posted_pat):
     existed_pat.nom_pat = posted_pat['nom_pat']
     db.session.commit()
     return existed_pat
+
+def delete_patinoire(id):
+    patinoire = find_patinoire_by_id(id)
+    db.session.delete(patinoire)
+    db.session.commit()
+    return patinoire

@@ -56,3 +56,7 @@ def add_patinoire(nom_pat, arr_id):
     new_patinoire = save_patinoire(new_patinoire)
     return new_patinoire
 
+def delete_patinoire_by_id(pat_id):
+    deleted_pat = delete_patinoire(pat_id)
+    return deleted_pat
+

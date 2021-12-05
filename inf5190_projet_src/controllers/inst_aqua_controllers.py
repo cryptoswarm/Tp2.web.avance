@@ -55,13 +55,19 @@ def edit_installation_aquatique(id):
 @insta_aqua.route('/api/installation-aquatique/<id>', methods=['DELETE'])
 @requires_auth
 def delete_aqua_inst(id):
-    print('Rceived id: ',id)
     aqua_inst, status = get_aqua_inst_by_id(id)
-    print('glissade :', aqua_inst)
     if aqua_inst is None:
         return jsonify({"status": "fail", "message":"Aqua inst does not exist"}), 404
     deleted = delete_aqua_inst_by_id(id)
     inst = aquatique_Schema.dump(deleted)
+    return jsonify(inst), 200
+
+@insta_aqua.route('/api/installation-aquatique/<id>', methods=['GET'])
+def get_aqua_inst_id(id):
+    aqua_inst, status = get_aqua_inst_by_id(id)
+    if aqua_inst is None:
+        return jsonify({"status": "fail", "message":"Aqua inst does not exist"}), 404
+    inst = aquatique_Schema.dump(aqua_inst)
     return jsonify(inst), 200
 
 
@@ -72,10 +78,10 @@ def get_aqua_inst(arrondissement, name):
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
-            return {}, 404
+            return jsonify({"message":"arrondissement does not exist!"}), 404
         aqua_insts = get_aqua_installations(arr.id, name)
         if aqua_insts is None:
-            return {}, 404
+            return jsonify({"status": "fail", "message":"Aqua inst does not exist"}), 404
         aqua_inst = aqua_sch_pos.dump(aqua_insts)
         return jsonify(aqua_inst), 200
     return {}, 400

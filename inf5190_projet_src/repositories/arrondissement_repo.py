@@ -7,17 +7,11 @@ from sqlalchemy import or_, and_, func, desc
 def save_arrondissement(arrondissement):
     db.session.add(arrondissement)
     db.session.commit()
-    print('arrondissement saved : ',arrondissement.asDictionary())
     return arrondissement
 
 def find_by_arr_name(arr_name):
-    print('cheking existence of arrondissement: {}'.format(arr_name))
     response =  Arrondissement.query.filter_by(name=arr_name) \
                         .first()
-    if response is None:
-        print('Arrondissement {} does not exist'.format(arr_name))
-    else:
-        print('Arrondissement {} exist!'.format(arr_name))
     return response
 
 def find_arr_by_id(arr_id):

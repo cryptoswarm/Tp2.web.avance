@@ -34,6 +34,42 @@ def load_logged_in_user():
     #     g.user = find_existing_user_by_id(user_id).id
     #     print('user should be found: ',g.user)
 
+@patinoire.route('/api/patinoire/<int:id>', methods=['PUT'])
+def edit_patinoire(id):
+    posted_patinoire= request.get_json()
+    try:
+        posted_patinoire = edit_pat_schema.load(posted_patinoire) 
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    patinoire, status = get_patinoire_by_id(id)
+    if patinoire is None:
+        return jsonify({"message":"Patinoire does not exist!"}), status
+    existed_pat = get_patinoire_by_name(posted_patinoire['nom_pat'])
+    if existed_pat:
+        return jsonify({"message":"Given patinoire name already exist"}),400
+    updated_pat = update_patinoire(patinoire, posted_patinoire)
+    serialized_pat = edit_pat_schema.dump(updated_pat)
+    return jsonify(serialized_pat), 200
+
+@patinoire.route('/api/patinoire/<int:id>', methods=['GET'])
+def edit_patinoire_id(id):
+    patinoire, status = get_patinoire_by_id(id)
+    if patinoire is None:
+        return jsonify({"message":"Patinoire does not exist!"}), status
+    serialized_pat = edit_pat_schema.dump(patinoire)
+    return jsonify(serialized_pat), 200
+
+@patinoire.route('/api/patinoire/<int:id>', methods=['DELETE'])
+@requires_auth
+def delete_patinoire(id):
+    patinoire, status = get_patinoire_by_id(id)
+    if patinoire is None:
+        return jsonify({"message":"Patinoire does not exist!"}), status
+    deleted_pat = delete_patinoire_by_id(id)
+    serialized_pat = edit_pat_schema.dump(deleted_pat)
+    return jsonify(serialized_pat), 200
+
+
 @patinoire.route('/api/patinoire-condition/<id>', methods=['PUT'])
 def edit_patinoire_condition(id):
     pat_condition= request.get_json()
@@ -59,19 +95,6 @@ def delete_patinoire_condition(id):
     serialized_cond = edit_pat_cond_sch.dump(deleted_condition)
     return jsonify(serialized_cond), 200
 
-@patinoire.route('/api/patinoire/<int:id>', methods=['PUT'])
-def edit_patinoire(id):
-    posted_patinoire= request.get_json()
-    try:
-        posted_patinoire = edit_pat_schema.load(posted_patinoire) 
-    except ValidationError as err:
-        return jsonify(err.messages), 400
-    patinoire, status = get_patinoire_by_id(id)
-    if patinoire is None:
-        return jsonify({"message":"Patinoire does not exist!"}), status
-    updated_pat = update_patinoire(patinoire, posted_patinoire)
-    serialized_pat = edit_pat_schema.dump(updated_pat)
-    return jsonify(serialized_pat), 200
 
 @patinoire.route('/api/installations/arrondissement/<arrondissement>/patinoire/<name>', methods=['GET'])
 def get_patinoire(arrondissement, name):

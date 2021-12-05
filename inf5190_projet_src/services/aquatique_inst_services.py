@@ -72,10 +72,10 @@ def get_aqua_inst_names_arr_id(arr_id):
 
 def get_aqua_installations(arrond_id, aqua_name):
     response = []
-    aqua_intas = find_aqua_installations(arrond_id, aqua_name)
-    if aqua_intas is None:
+    aqua_inst = find_aqua_installations(arrond_id, aqua_name)
+    if len(aqua_inst) == 0:
         return None
-    for aqua in aqua_intas:
+    for aqua in aqua_inst:
         position = get_position_by_id(aqua.position_id)
         if position is not None:
             aqua_inst_and_pos = InstAquatiquePosition(aqua.id, aqua.nom_installation,

@@ -148,6 +148,45 @@ types:
       nom_pat:
         type: string
         required: true
+  PATINOIRE:
+    type: object
+    properties:
+      id:
+        type: number
+        required: true
+      arron_id:
+        type: number
+        required: true
+      nom_pat:
+        type: string
+        required: true
+      conditions:
+        type: CONDITION[]
+        required: true
+  CONDITION:
+    type: object
+    properties: 
+      id:
+        type: number
+        required: true
+      arrose: 
+        type: boolean
+        required: true
+      date_heure:
+        type: datetime
+        required: true
+      deblaye:
+        type: boolean
+        required: true
+      ouvert:
+        type: boolean
+        required: true
+      resurface:
+        type: boolean
+        required: true
+      patinoire_id:
+        type: number
+        required: true
   INSTALLATIONS:
     type: object
     properties: 
@@ -260,6 +299,49 @@ types:
                                     example:  
                                         {"Message": "arrondissement does not exist" } |
                                         {"Message": "Glissade does not exist!" }
+            /aquatique:  
+                /{aquatiqueName}:
+                    uriParameters:
+                        aquaName:
+                            type: string
+                    get:
+                        description: Get a aqua installation by name and arrondissement name
+                        responses:
+                            200:
+                                body:
+                                  application/json:
+                                    type: Object
+                                    examples: !include examples/2aquaInst.raml
+                            404:
+                                body:
+                                  application/json:
+                                    type: Error
+                                    example:  
+                                          {
+                                              "message": "Aqua inst does not exist",
+                                              "status": "fail"
+                                          }
+            /patinoire:  
+                /{patinoireName}:
+                    uriParameters:
+                        patinoireName:
+                            type: string
+                    get:
+                        description: Get a patinoire details by name and arrondissement name
+                        responses:
+                            200:
+                                body:
+                                  application/json:
+                                    type: PATINOIRE
+                                    examples: !include examples/patconditions.raml
+                            404:
+                                body:
+                                  application/json:
+                                    type: Error
+                                    example:  
+                                          {
+                                              "Message": "Patinoire does not exist"
+                                          }
 
   /profile:
     post:
@@ -432,14 +514,22 @@ types:
                                   "propriete_installation": "Undefined Undefined Undefined",
                                   "type_installation": "Piscine intérieure"
                               }
-              # 400:
-              #     body:
-              #       application/json:
-              #         type: Error
-              #         examples: !include examples/aquaInstexample.raml
+              400:
+                  body:
+                    application/json:
+                      type: Error
+                      examples: !include examples/aquaInstexample.raml
+              404:
+                  body:
+                    application/json:
+                      type: Error
+                      example:
+                        {"message": "Aqua installation does not exist!"}
+                                          
+                                    
                           
         delete:
-          description: Remove a glissade
+          description: Remove an aqua installation
           headers:
               Authorization:
                   type: string
@@ -450,24 +540,220 @@ types:
             200:
                 body:
                   application/json:
-                      type: UpdatedGlissade
+                      type: object
                       example: |
                           {
-                              "arrondissement_id": 13.0,
-                              "condition": "N/A",
-                              "date_maj": "2014-08-17T14:58:57.600623",
-                              "deblaye": false,
-                              "id": 1.0,
-                              "name": "Aire de glissade ,Don-Bosco",
-                              "ouvert": false
+                              "adress": "12 125, Rue Notre-Dame Est",
+                              "arron_id": 13.0,
+                              "equipement_inst": "Piscine récréative",
+                              "gestion_inst": "Municipale",
+                              "id": 52.0,
+                              "nom_installation": "Piscine intérieure Roussin",
+                              "position_id": 46.0,
+                              "propriete_installation": "Municipale",
+                              "type_installation": "Piscine intérieure"
                           }
             404:
                 body:
                   application/json:
                       type: Error
                       example: |
-                          { "status":"fail", "message":"glissade does not exist"}
+                         {"message": "Aqua inst does not exist","status": "fail"}
+            401:
+                body:
+                  application/json:
+                      type: Error
+                      example: |
+                          {
+                              "message": "Please authenticate."
+                          }
+                                      
         get:
+          description: Get details of a specific aqua installation by id
+          responses: 
+              200:
+                  body:
+                      application/json:
+                          type: object
+                          example: |
+                              [
+                                  {
+                                      "adress": "12 125, Rue Notre-Dame Est",
+                                      "arron_id": 13.0,
+                                      "equipement_inst": "Piscine récréative",
+                                      "gestion_inst": "Municipale",
+                                      "id": 52.0,
+                                      "nom_installation": "Piscine intérieure Roussin",
+                                      "position": {
+                                          "id": 46.0,
+                                          "latitude": "45.640791",
+                                          "longitude": "-73.491213",
+                                          "point_x": "305485,4766",
+                                          "point_y": "5055655173"
+                                      },
+                                      "propriete_installation": "Municipale",
+                                      "type_installation": "Piscine intérieure"
+                                  }
+                              ]
+              404:
+                  body:
+                    application/json:
+                        type: Error
+                        example:
+                              {
+                                  "message": "Aqua inst does not exist",
+                                  "status": "fail"
+                              }
+  /patinoire:
+    /{id}:
+        uriParameters:
+          id:
+            type: number
+            description: Patinoire identifier
+        put:
+          description: edit the state of a patinoire
+          headers: 
+          body: 
+            application/json:
+              type: Object
+              example: 
+                  {
+                      "nom_pat": "Anneau à patiner ,  parc Hayward (PPL)"
+                  }
+          responses:
+              200:
+                  body:
+                      application/json:
+                          type: Object
+                          example: 
+                              {
+                                  "nom_pat": "Anneau à patiner ,  parc Hayward (PPL)"
+                              }
+              400:
+                  body:
+                    application/json:
+                      type: Error
+                      examples: !include examples/patinoirexample.raml
+              404:
+                  body:
+                    application/json:
+                      type: Error
+                      example:
+                        {"message": "Patinoire does not exist!"}
+                                          
+                                    
+                          
+        delete:
+          description: Remove a patinoire by id
+          headers:
+              Authorization:
+                  type: string
+                  description: Basic authentication header
+                  example: |
+                      Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+          responses:
+            200:
+                body:
+                  application/json:
+                      type: object
+                      example: |
+                          {
+                              "nom_pat": "Aire de glissade ,Don-Bosco ()"
+                          }
+            404:
+                body:
+                  application/json:
+                      type: Error
+                      example: |
+                         {
+                              "message": "Patinoire does not exist!"
+                         }
+            401:
+                body:
+                  application/json:
+                      type: Error
+                      example: |
+                          {
+                              "message": "Please authenticate."
+                          }
+                                      
+        get:
+          description: Get patinoire detail by is
+          responses: 
+              200:
+                  body:
+                      application/json:
+                          type: object
+                          example: 
+                              {
+                                  "nom_pat": "Aire de glissade ,Don-Bosco ()"
+                              }
+              404:
+                  body:
+                      application/json:
+                          type: Error
+                          example:
+                            {
+                                "message": "Patinoire does not exist!"
+                            }
+  /patinoire-condition:
+      /{id}:
+          uriParameters:
+            id:
+              type: number
+              description: Patinoire condition identifier
+          put:
+            description: edit a paticular condition of a specific patinoire
+            headers: 
+            body: 
+              application/json:
+                type: Object
+                example: 
+                    {
+                         "arrose": false,
+                         "date_heure": "2015-12-13T16:51:19",
+                         "deblaye": true,
+                         "ouvert": true,
+                         "resurface": true
+                    }
+            responses:
+                200:
+                    body:
+                        application/json:
+                            type: Object
+                            example: 
+                                {
+                                    "arrose": false,
+                                    "date_heure": "2015-12-13T16:51:19",
+                                    "deblaye": true,
+                                    "ouvert": true,
+                                    "resurface": true
+                                }
+                400:
+                    body:
+                      application/json:
+                        type: Error
+                        examples: !include examples/editpatconditionerrors.raml
+                404:
+                    body:
+                      application/json:
+                        type: Error
+                        example:
+                          {
+                              "message": "Condition does not exist!"
+                          }
+                                          
+                                    
+                     
+          
+
+                                              
+
+
+
+
+
+                                              
 
 
 
