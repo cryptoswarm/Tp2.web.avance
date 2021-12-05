@@ -1,5 +1,9 @@
-from flask import request, jsonify
+from flask import request, jsonify, current_app
 from functools import wraps
+from jsonschema import validate
+from jsonschema import exceptions
+from jsonschema.exceptions import ErrorTree, ValidationError
+from jsonschema.validators import Draft3Validator, Draft4Validator, Draft7Validator
 
 
 edit_glissade = {
@@ -40,28 +44,35 @@ edit_glissade = {
 
 }
 
+create_profile = {
+  "type": "object",
+  "properties": {
+    "complete_name": {"type": "string", "minLength": 4},
+    "email": {"type": "string"},
+    "followed_arr": {
+      "type": "array",
+      "items": {
+                  "type": "string",
+                  "minLength": 3
+              },
+      "minItems": 1
+      }
+  },
+  "required": ["complete_name", "email", "followed_arr"],
+  "additionalproperties": False
+}
 
-# def required_params(required):
-#     def decorator(fn):
-#         @wraps(fn)
-#         def wrapper(*args, **kwargs):
-#             _json = request.get_json()
-#             missing = [r for r in required.keys() if r not in _json]
-#             if missing:
-#                 response = {
-#                 "status": "error",
-#                 "message": "Request JSON is missing some required params",
-#                 "missing": missing
-#                                   }
-#                 return jsonify(response), 400
-#             wrong_types = [r for r in required.keys() if not isinstance(_json[r], required[r])]
-#             if wrong_types:
-#                 response = {
-#                 "status": "error",
-#                 "message": "Data types in the request JSON doesn't match the required format",
-#                 "param_types": {k: str(v) for k, v in required.items()}
-#                 }
-#                 return jsonify(response), 400
-#             return fn(*args, **kwargs)
-#         return wrapper
-#     return decorator
+
+def validate_schema(request, schema):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kw):
+            response = []
+            try:
+                with current_app.app_context():
+                  validate(request.get_json(), schema) 
+            except ValidationError as err:
+              raise err
+            return f(*args, **kw)
+        return wrapper
+    return decorator

@@ -1,7 +1,7 @@
 import base64
 from functools import wraps
 from flask import g, json, request, session
-from flask import redirect, url_for, jsonify
+from flask import jsonify, current_app
 from config import USERNAME, PASSWORD, ADMIN_ID
 
 
@@ -24,7 +24,10 @@ def requires_auth(f):
         print('checking if user is authorize')
         authorization_header = request.headers.get('Authorization')
         if not authorization_header or not check_auth(authorization_header):
-            return define_response()
+            resp = jsonify({"message": "Please authenticate."})
+            resp.status_code = 401
+            resp.headers["WWW-Authenticate"] = 'Basic'
+            return resp
         # store the user id in a new session
         session.clear()
         # Storing the user_id in a session
@@ -32,11 +35,8 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
-def define_response():
-    resp = jsonify({"message": "Please authenticate."})
-    resp.status_code = 401
-    resp.headers["WWW-Authenticate"] = 'Basic'
-    return resp
+
+
 
 
 def split_and_join(sentence):
@@ -53,10 +53,20 @@ def convert_to_json(followed_arr):
     return follows
     
 def get_errors(err):
+    errors = {}
     email_err = err.messages.get('email', None)
     if email_err is not None:
-        email_err = email_err[0]
+        errors['email_err'] = email_err[0]
     complete_name_err = err.messages.get('complete_name', None)
     if complete_name_err is not None:
-        complete_name_err =  complete_name_err[0]
-    return email_err, complete_name_err
+        errors['complete_name_err'] = complete_name_err[0]
+    followed_arr_err = err.messages.get('followed_arr', None)
+    if  followed_arr_err is not None:
+        errors['followed_arr_err'] = followed_arr_err[0]
+    return errors
+
+def create_redirect_url(response):
+    app = current_app._get_current_object()
+    unsub_link = app.config['UNSUBSCRIBE_LINK']
+    url = unsub_link +'?email='+ response['email']
+    return url

@@ -57,6 +57,9 @@ class Config:
     DATA_SWARM_MAIL_SUBJECT_PREFIX = ''
     DATA_SWARM_MAIL_SENDER = ''
     UNSUBSCRIBE_LINK = ''
+    SESSION_COOKIE_HTTPONLY=True,
+    REMEMBER_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax"
     
 
 class DevelopmentConfig(Config):

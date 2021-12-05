@@ -1,22 +1,24 @@
+# from inf5190_projet_src.schemas.schema import *
 from functools import wraps
-from flask import g, json, make_response, jsonify, session
-from flask import Blueprint, request, current_app
+from logging import error
+from flask import make_response, jsonify, session
+from flask import Blueprint, request
 from marshmallow.exceptions import ValidationError
-from config import ADMIN_ID, Config
+from config import ADMIN_ID
 from inf5190_projet_src.helpers.email import send_email, validate_email_domain
 from inf5190_projet_src.services.account_services import *
 from inf5190_projet_src.services.bl_services import *
 from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *
-from email_validator import EmailUndeliverableError, validate_email
+# from inf5190_projet_src import schema
+# from inf5190_projet_src.schemas.schema import create_profile, validate_schema
 
 
 
 
 profile_create_sch = ProfileCreateSchema()
-# profile_res_sch = ProfileResponseSchema()
-# followed_arr = FollowedArrSchema(many=True)
+
 
 mod_user = Blueprint("user", __name__, url_prefix="/")
 
@@ -26,26 +28,17 @@ mod_user = Blueprint("user", __name__, url_prefix="/")
 def create_profile():
     try:
         data = profile_create_sch.load(request.get_json())
-        print('data for profile creation: ', data)
     except ValidationError as err:
-        email_err, complete_name_err = get_errors(err)
-        return jsonify(message_email=email_err,
-                        complete_name_err =complete_name_err), 400
-    print('data[email]: ',data['email'])
+        errors = get_errors(err)
+        return errors, 400
     validator = validate_email_domain(data['email'])
-    print('validator ---> :',validator)
     if isinstance(validator, bool):
         exit_profil, status = get_profile_by_email(data['email'])
         if exit_profil is not None:
             return jsonify(message_email="Email is Already Registered"), 400
         response = create_profile_followed_arr(data)
         profile = profile_create_sch.dump(response)
-        # return jsonify(profile), 201
-        # unsubscribe_link = request.url#request.scheme+'://' + request.host
-        # print('request.scheme + request.host :',unsubscribe_link)
-        app = current_app._get_current_object() #+ response['email']
-        url = app.config['UNSUBSCRIBE_LINK']
-        print('url: ', url)
+        url = create_redirect_url(response)
         send_email(response['email'], 'Profile created',
                     'profile', email=response['email'],
                      user=response['complete_name'],
@@ -56,27 +49,20 @@ def create_profile():
     return jsonify(message_email=validator), 400
 
 
-# @mod_user.route('/api/send-email', methods=['POST'])
-# def send():
-#     data = request.get_json()
-#     send_email(response['email'], subject=data['subject'],
-#                     template=data['template'], email=response['email'],
-#                      user=response['complete_name'],
-#                     followed_arr=response['followed_arr'], url=data['url'])
-#     profile = profile_create_sch.dump(response)
-#     return jsonify(profile), 201
-
-
 @mod_user.route('/api/authenticate', methods=['POST'])
 def authenticate():
     authorization_header = request.headers.get('Authorization')
     if not authorization_header or not check_auth(authorization_header):
-        return define_response()
+        resp = jsonify({"message": "Please authenticate."})
+        resp.status_code = 401
+        resp.headers["WWW-Authenticate"] = 'Basic'
+        return resp
     session.clear()
     # Storing the user_id in a session
     session["user_id"] = int(ADMIN_ID, base=10)
     response = make_response()
     response.set_cookie(key="id", value=ADMIN_ID, max_age=60*60*8, domain=None)
+    response.headers.set("USER_ID", int(ADMIN_ID, base=10))
     return response, 200
 
 

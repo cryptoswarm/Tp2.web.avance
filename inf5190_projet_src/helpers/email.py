@@ -5,6 +5,8 @@ from email_validator import EmailUndeliverableError, validate_email
 from flask import current_app, render_template
 from flask import jsonify
 from flask_mail import Message
+from jsonschema.exceptions import ValidationError
+import marshmallow
 from inf5190_projet_src import mail
 
 
