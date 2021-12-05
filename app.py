@@ -10,7 +10,7 @@ from inf5190_projet_src import mail
 
 
 # One of dev, prod or test
-application = create_app('dev')
+application = create_app('prod')
 
 if __name__ == "__main__":
     application.run()
