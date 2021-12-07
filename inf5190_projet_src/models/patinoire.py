@@ -3,7 +3,7 @@ from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
-from marshmallow import schema, fields, pre_load, validate
+from marshmallow import schema, fields, pre_load, validate, post_dump
 from flask_marshmallow import Marshmallow
 
 from inf5190_projet_src.models.patinoir_condition import EditPatConditionSchema, PatConditionSchema
@@ -54,4 +54,8 @@ class PatAndConditionSchema(ma.Schema):
     nom_pat = fields.String(required=True, validate=validate.Length(1))
     arron_id = fields.Number(required=True)
     conditions = fields.Nested(PatConditionSchema, many=True)
+
+    # @post_load
+    # def make_user(self, data, **kwargs):
+    #     return User(**data)
 

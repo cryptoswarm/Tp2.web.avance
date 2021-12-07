@@ -1,4 +1,6 @@
 import gzip
+from dicttoxml import dicttoxml
+from json import loads
 from flask import Blueprint, json, Request
 from flask import request, g, session
 from flask import redirect, url_for, jsonify
@@ -30,22 +32,47 @@ def get_installation_arr_name():
         return jsonify(inst_names), 200
     return {}, 400
 
+# @mod_arron.route('/api/installations/<int:year>', methods=['GET'])
+# def get_installation_by_year(year):
+#     glissades, patinoires = get_inst_by_year(year)
+#     # if glissades is not None:
+#     serialized_glis = glissade_schema.dump(glissades)
+#         # return jsonify(serialized_glis), 200
+#     # if patinoires is not None:
+#     #     serialized_pat = pat_cond_schema.dump(patinoires)
+#     #     xml_content = dicttoxml(serialized_pat, attr_type=False) # serialized object
+#     content = gzip.compress(json.dumps(serialized_glis).encode('utf-8'))
+#     #     content = gzip.compress(xml_content)
+#     response = make_response(content)
+#     #     response.headers['Content-type'] = 'application/xml'
+#     response.headers['Content-type'] = 'application/json'
+#     response.headers['Content-length'] = len(content)
+#     response.headers['Content-Encoding'] = 'gzip'
+#     return response, 200
+#     #     # return jsonify(serialized_pat), 200
+#     return jsonify({"Message":"No glissade found for this year"}), 404
+
 @mod_arron.route('/api/installations/<int:year>', methods=['GET'])
 def get_installation_by_year(year):
     glissades, patinoires = get_inst_by_year(year)
-    if glissades is not None:
-        serialized_glis = glissade_schema.dump(glissades)
-        # return jsonify(serialized_glis), 200
-    if patinoires is not None:
-        serialized_pat = pat_cond_schema.dump(patinoires)
-        content = gzip.compress(json.dumps(serialized_pat).encode('utf-8'))
-        response = make_response(content)
-        response.headers['Content-type'] = 'application/xml'
-        response.headers['Content-length'] = len(content)
-        response.headers['Content-Encoding'] = 'gzip'
-        return response, 200
-        # return jsonify(serialized_pat), 200
-    return jsonify({"Message":"No glissade found by this year"}), 404
+    serialized_glis = glissade_schema.dump(glissades)
+    serialized_pat = pat_cond_schema.dump(patinoires)
+    if len(serialized_glis) != 0 and len(serialized_pat) != 0:
+        #     # return jsonify(serialized_glis), 200
+        # # if patinoires is not None:
+        # #     
+        # #     xml_content = dicttoxml(serialized_pat, attr_type=False) # serialized object
+        # content = gzip.compress(json.dumps(serialized_glis).encode('utf-8'))
+        # #     content = gzip.compress(xml_content)
+        # response = make_response(content)
+        # #     response.headers['Content-type'] = 'application/xml'
+        # response.headers['Content-type'] = 'application/json'
+        # response.headers['Content-length'] = len(content)
+        # response.headers['Content-Encoding'] = 'gzip'
+        # return response, 200
+        return {}, 200
+        # #     # return jsonify(serialized_pat), 200
+    return jsonify({"Message":"No glissade found for this year"}), 404
 
 
 
