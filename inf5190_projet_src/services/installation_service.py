@@ -26,4 +26,5 @@ def get_inst_names_by_arr_name(arr_name):
 
 def get_inst_by_year(year):
     glissades = get_glissades_by_year(year)
+    patinoires = get_patinoires_by_year(year)
     return glissades

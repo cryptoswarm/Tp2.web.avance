@@ -103,5 +103,3 @@ def create_app(config_name):
         app.logger.info('data swarm start')
 
     return app
-
-# application = create_app()

@@ -1,5 +1,6 @@
 
 from flask_sqlalchemy import Pagination
+from sqlalchemy.sql.expression import extract
 from inf5190_projet_src import db
 from inf5190_projet_src.models.patinoir_condition import PatinoirCondition
 from sqlalchemy import or_, and_, func, desc
@@ -35,3 +36,7 @@ def delete_condition(condition_id):
 
 def find_pat_cond_by_hash(hash):
     return PatinoirCondition.query.filter_by(pat_hash = hash).first()
+
+def find_pat_conditions_by_year(year):
+    conditions = db.session.query(PatinoirCondition).filter(extract('year', PatinoirCondition.date_heure)==year).all()
+    return conditions

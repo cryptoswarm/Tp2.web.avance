@@ -42,3 +42,10 @@ def get_pat_cond_by_hash(hash):
         return None
     return pat_cond
 
+
+
+def get_pat_conditions_by_year(year):
+    pat_conditions = find_pat_conditions_by_year(year)
+    if len(pat_conditions) == 0:
+        return None
+    return pat_conditions

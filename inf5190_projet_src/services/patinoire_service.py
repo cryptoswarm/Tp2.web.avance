@@ -1,7 +1,7 @@
 import re
 from inf5190_projet_src.models.patinoire import PatAndCondition
 from inf5190_projet_src.repositories.patinoire_repo import *
-from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id
+from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id, get_pat_conditions_by_year
 
 
 def get_all_patinoires_by_arr_id(arr_id):
@@ -30,6 +30,18 @@ def find_pat_conditions(pat_id, nom_pat, arron_id):
     conditions = get_pat_conditions_by_pat_id(pat_id)
     pat_conditions = PatAndCondition(pat_id, nom_pat, arron_id, conditions)
     return pat_conditions
+
+def get_patinoires_by_year(year):
+    pat_codntions = get_pat_conditions_by_year(year)
+    
+    return glissades
+
+    # def find_patinoires_by_year(year):
+    # patinoires = db.session.query(Patinoire).filter(extract('year', Patinoire.)==year).all()
+    # for glis in glissades:
+    #     logging.info('glissade: ', glis.asDictionary())
+    #     print('glissade: ', glis.asDictionary())
+    # return glissades
 
 
 

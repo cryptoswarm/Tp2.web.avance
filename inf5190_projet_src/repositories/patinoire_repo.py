@@ -1,4 +1,5 @@
 from flask_sqlalchemy import Pagination
+from sqlalchemy.sql.expression import extract
 from inf5190_projet_src import db
 from inf5190_projet_src.models.patinoire import Patinoire
 from sqlalchemy import or_, and_, func, desc
@@ -23,7 +24,6 @@ def find_patinoire_names_arr_id(arr_id):
     return Patinoire.query.with_entities(Patinoire.nom_pat, Patinoire.id) \
                     .filter_by(arron_id=arr_id) \
                     .all()
-
 
 def find_patinoires_details(arr_id, pat_name):
     return Patinoire \
