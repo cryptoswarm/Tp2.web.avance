@@ -7,25 +7,13 @@ from inf5190_projet_src.services.aquatique_inst_services import *
 
 from inf5190_projet_src.services.arron_service import *
 from inf5190_projet_src.services.installation_service import *
+from inf5190_projet_src.models.glissade import GlissadeSchema
 
-
+glissade_schema = GlissadeSchema(many=True)
 
 mod_arron = Blueprint('arrondissement', __name__, url_prefix='')
 
-# @mod_arron.before_app_request
-# def load_logged_in_user():
-#     """If a user id is stored in the session,
-#     load the user object from the db into ``g.user``.
-#     """
-#     user_id = session.get("user_id")
-#     print('user_id: ', user_id)
 
-#     if user_id is None:
-#         g.user = None
-#     # else:
-#     #     # g.user = find_existing_user_by_id(user_id)
-#     #     g.user = find_existing_user_by_id(user_id).id
-#     #     print('user should be found: ',g.user)
 
 @mod_arron.route('/api/installations', methods=['GET'])
 def get_installation_arr_name():
@@ -35,9 +23,18 @@ def get_installation_arr_name():
         inst_names = get_inst_names_by_arr_name(arr_name)
         # print(inst_names)
         if inst_names is None:
-            return {}, 404
+            return jsonify({"message":"No installations has been found, check the name of the arrondissement"}), 404
         return jsonify(inst_names), 200
     return {}, 400
+
+@mod_arron.route('/api/installations/<int:year>', methods=['GET'])
+def get_installation_by_year(year):
+    installations = get_inst_by_year(year)
+    if installations is not None:
+        serialized = glissade_schema.dump(installations)
+        return jsonify(serialized), 200
+    return jsonify({"Message":"No glissade found by this year"}), 404
+
 
 
 

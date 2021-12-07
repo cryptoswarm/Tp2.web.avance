@@ -1,4 +1,6 @@
 import logging
+
+from sqlalchemy.sql.expression import extract
 from inf5190_projet_src import db
 from inf5190_projet_src.models.glissade import Glissade
 from sqlalchemy import or_, and_, func, desc
@@ -22,6 +24,14 @@ def find_glissades_names_arr_id(arr_id):
     return Glissade.query.with_entities(Glissade.name, Glissade.id) \
                    .filter_by(arrondissement_id=arr_id) \
                    .all()
+
+def find_glissades_by_year(year):
+    # return Glissade.query.filter_by(date_maj=year).all()
+    glissades = db.session.query(Glissade).filter(extract('year', Glissade.date_maj)==year).all()
+    for glis in glissades:
+        logging.info('glissade: ', glis.asDictionary())
+        print('glissade: ', glis.asDictionary())
+    return glissades
 
 def find_glissade_by_id(glissade_id):
     return Glissade.query.filter_by(id=glissade_id).first()

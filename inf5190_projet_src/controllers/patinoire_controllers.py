@@ -52,12 +52,15 @@ def edit_patinoire(id):
     return jsonify(serialized_pat), 200
 
 @patinoire.route('/api/patinoire/<int:id>', methods=['GET'])
-def edit_patinoire_id(id):
+def get_patinoire_id(id):
     patinoire, status = get_patinoire_by_id(id)
     if patinoire is None:
         return jsonify({"message":"Patinoire does not exist!"}), status
-    serialized_pat = edit_pat_schema.dump(patinoire)
-    return jsonify(serialized_pat), 200
+    # serialized_pat = edit_pat_schema.dump(patinoire)
+    # return jsonify(serialized_pat), 200
+    pat_and_conditions = get_patinoire_details_by_id(patinoire.id, patinoire.nom_pat, patinoire.arron_id)
+    sirialized_pat = pat_cond_schema.dump(pat_and_conditions)
+    return jsonify(sirialized_pat), 200
 
 @patinoire.route('/api/patinoire/<int:id>', methods=['DELETE'])
 @requires_auth
@@ -68,6 +71,14 @@ def delete_patinoire(id):
     deleted_pat = delete_patinoire_by_id(id)
     serialized_pat = edit_pat_schema.dump(deleted_pat)
     return jsonify(serialized_pat), 200
+
+@patinoire.route('/api/patinoire-condition/<id>', methods=['GET'])
+def get_patinoire_condition(id):
+    pat_condition, status = get_pat_condition_cond_id(id)
+    if pat_condition is None:
+        return jsonify({"message":"Condition does not exist!"}), status
+    serialized_cond = edit_pat_cond_sch.dump(pat_condition)
+    return jsonify(serialized_cond), 200
 
 
 @patinoire.route('/api/patinoire-condition/<id>', methods=['PUT'])
@@ -103,7 +114,7 @@ def get_patinoire(arrondissement, name):
         arr = get_arr_by_name(arrondissement)
         if arr is None:
             return {"message":"Arrondissement does not exist"}, 404
-        patinoires, status = get_patinoire_details(arr.id, name)
+        patinoires, status = get_patinoire_details_by_name(arr.id, name)
         if patinoires is None:
             return {"Message":"Patinoire does not exist"}, 404
         sirialized_pat = pat_cond_schema.dump(patinoires)

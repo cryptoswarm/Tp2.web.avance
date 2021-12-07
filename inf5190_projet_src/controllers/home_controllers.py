@@ -19,7 +19,16 @@ def unsubscribe(email):
     deleted = remove_profile(profile)
     return jsonify(message="Profile deleted"), 200
 
-@mod_home.route('/')
+# @mod_home.route('/')
+# def doc():
+#     """Utilisé en production"""
+#     return render_template('doc.html')
+
+@mod_home.route('/doc')
 def doc():
-    """Server in prod is poiting to /doc"""
     return render_template('doc.html')
+
+@mod_home.route('/')
+def home():
+    """Server in prod is poiting to /doc"""
+    return render_template('index.html')

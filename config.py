@@ -12,17 +12,6 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-
-
-
-# Generate an access token :
-# curl -X GET "https://graph.facebook.com/oauth/access_token
-#   ?client_id={your-app-id}
-#   &client_secret={your-app-secret}
-#   &grant_type=client_credentials"
-
-#curl -X GET "https://graph.facebook.com/oauth/access_token?client_id=300878321886706&client_secret=3522525c38f6ece07ae317197da2fc24&grant_type=client_credentials"
-
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     # Logging to stdout, useful when running heroku logs

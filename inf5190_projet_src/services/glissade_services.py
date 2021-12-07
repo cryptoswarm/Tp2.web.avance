@@ -66,6 +66,12 @@ def get_glissades_names_arr_id(arr_id):
         response.append({'id':glissade[1], 'name':glissade[0]})
     return response
 
+def get_glissades_by_year(year):
+    glissades = find_glissades_by_year(year)
+    if len(glissades) == 0:
+        return None
+    return glissades
+
 def get_glissade_by_id(glissade_id):
     response = find_glissade_by_id(glissade_id)
     if response is None:

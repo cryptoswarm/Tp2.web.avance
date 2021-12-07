@@ -742,27 +742,68 @@ types:
                           {
                               "message": "Condition does not exist!"
                           }
-                                          
-                                    
-                     
-          
+          delete:
+              description: Remove a condition by its id from a patinoire
+              headers:
+                  Authorization:
+                      type: string
+                      description: Basic authentication header
+                      example: |
+                          Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+              responses:
+                200:
+                    body:
+                      application/json:
+                          type: object
+                          example: |
+                              {
+                                  "arrose": true,
+                                  "date_heure": "2018-01-07T03:29:27",
+                                  "deblaye": true,
+                                  "ouvert": true,
+                                  "resurface": true
+                              }
+                404:
+                    body:
+                      application/json:
+                          type: Error
+                          example: 
+                            {
+                                "message": "Condition does not exist!"
+                            }
+                401:
+                    body:
+                      application/json:
+                          type: Error
+                          example: |
+                              {
+                                  "message": "Please authenticate."
+                              }
+          get:
+              description: Get a paticular condition of a specific patinoire
+              responses: 
+                  200:
+                      body:
+                          application/json:
+                              type: object
+                              example: 
+                                  {
+                                      "arrose": false,
+                                      "date_heure": "2002-01-08T12:50:34",
+                                      "deblaye": false,
+                                      "ouvert": false,
+                                      "resurface": false
+                                  }
+                  404:
+                      body:
+                          application/json:
+                              type: Error
+                              example:
+                                {
+                                    "message": "Condition does not exist!"
+                                }
 
-                                              
-
-
-
-
-
-                                              
-
-
-
-
-          
-
-
-
-  /login:
+  /authenticate:
     # get:
     #   headers:
     #     Authorization:
@@ -770,4 +811,25 @@ types:
     #       description: Basic authentication header
     #       example: |
     #         Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+    post:
+      description: authenticate
+      headers: 
+        Authorization:
+          type: string
+          description: Basic authentication header
+          example: |
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+      responses:
+        200:
+          headers:
+            Set-Cookie:
+              type: string
+              example:
+                id=78; Expires=Tue, 07 Dec 2021 04:49:04 GMT; Max-Age=28800; Path=/
+        401:
+          body:
+            application/json:
+              type: Error
+              example: 
+                {"message": "Please authenticate." }
   

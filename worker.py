@@ -34,10 +34,11 @@ def setting_job_3():
 
 
 def setting_job_4():
-    # with app.app_context():
     print('Print fct: This job is run every 5 min. no time zone specified')
 
-
+# job_store = app.config['JOB_STORES']
+# executors = app.config['EXECUTORS']
+# job_defaults = app.config['JOB_DEFAULTS']
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(setting_job_1, 'interval', hours=23, timezone=pytz.timezone('CANADA/EASTERN'))

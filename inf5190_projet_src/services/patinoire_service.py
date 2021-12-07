@@ -26,13 +26,12 @@ def get_patinoire_names_arr_id(arr_id):
         response.append({'id':pat[1], 'nom_pat':pat[0]})
     return response
 
-def get_patinoire_details(arr_id, pat_name):
-    patinoire = find_patinoires_details(arr_id, pat_name)
-    if patinoire is None:
-        return None, 404
-    conditions = get_pat_conditions_by_pat_id(patinoire.id)
-    pat_conditions = PatAndCondition(patinoire.id, patinoire.nom_pat, patinoire.arron_id, conditions)
-    return pat_conditions, 200
+def find_pat_conditions(pat_id, nom_pat, arron_id):
+    conditions = get_pat_conditions_by_pat_id(pat_id)
+    pat_conditions = PatAndCondition(pat_id, nom_pat, arron_id, conditions)
+    return pat_conditions
+
+
 
 def get_patinoire_by_id(patinoire_id):
     patinoire = find_patinoire_by_id(patinoire_id)
@@ -60,3 +59,12 @@ def delete_patinoire_by_id(pat_id):
     deleted_pat = delete_patinoire(pat_id)
     return deleted_pat
 
+def get_patinoire_details_by_id(pat_id:int, nom_pat:str, arron_id:int):
+    return find_pat_conditions(pat_id, nom_pat, arron_id)
+
+def get_patinoire_details_by_name(arr_id:int, pat_name:str):
+    patinoire = find_patinoires_details(arr_id, pat_name)
+    if patinoire is None:
+        return None, 404
+    pat_and_conditions = find_pat_conditions(patinoire.id, patinoire.nom_pat, patinoire.arron_id)
+    return pat_and_conditions, 200

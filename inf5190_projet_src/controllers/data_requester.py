@@ -32,7 +32,7 @@ def persist_patinoir_data():
     if response.status_code == 200:
         create_pat_and_conditions(response)
         return jsonify({}), 201
-    return {}, 400
+    return {}, 404
 
 @mod_scheduler.route("/scheduler-aqua", methods=['GET'])
 def persist_aqua_data():
@@ -40,7 +40,7 @@ def persist_aqua_data():
     if response.status_code == 200:
         create_aqua_installations(response)
         return jsonify({}), 201
-    return {}, 400
+    return {}, 404
 
 
 @mod_scheduler.route('/scheduler-glissade', methods=['GET'])
@@ -49,9 +49,7 @@ def persist_glissade_data():
     if response.status_code == 200:
         create_all_glissade(response)
         return json.jsonify({}), 201
-    return {}, 400
-
-
+    return {}, 404
 
 
 

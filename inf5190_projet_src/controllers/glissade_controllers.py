@@ -46,7 +46,6 @@ def load_logged_in_user():
 # @jsonschema.validate(edit_glissade, format_checker=FormatChecker())
 def edit_glissade(id):
     glissade_data = request.get_json()
-    print('Received data for update : ',glissade_data)
     try:
         posted_glissade = GlissadeSchema().load(glissade_data) 
     except ValidationError as err:
