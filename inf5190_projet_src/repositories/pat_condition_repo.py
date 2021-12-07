@@ -40,3 +40,11 @@ def find_pat_cond_by_hash(hash):
 def find_pat_conditions_by_year(year):
     conditions = db.session.query(PatinoirCondition).filter(extract('year', PatinoirCondition.date_heure)==year).all()
     return conditions
+
+def find_pat_ids_from_conditions_by_year(year):
+    ids = PatinoirCondition \
+            .query.with_entities(PatinoirCondition.patinoire_id) \
+            .filter(extract('year', PatinoirCondition.date_heure)==year) \
+            .distinct().all()
+    print('ids = ', ids)
+    return ids

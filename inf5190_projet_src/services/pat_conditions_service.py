@@ -49,3 +49,7 @@ def get_pat_conditions_by_year(year):
     if len(pat_conditions) == 0:
         return None
     return pat_conditions
+
+def get_pat_ids_from_conditions_by_year(year):
+    pat_conditions_ids = find_pat_ids_from_conditions_by_year(year)
+    return pat_conditions_ids

@@ -1,7 +1,7 @@
 import re
 from inf5190_projet_src.models.patinoire import PatAndCondition
 from inf5190_projet_src.repositories.patinoire_repo import *
-from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id, get_pat_conditions_by_year
+from inf5190_projet_src.services.pat_conditions_service import get_pat_conditions_by_pat_id, get_pat_ids_from_conditions_by_year
 
 
 def get_all_patinoires_by_arr_id(arr_id):
@@ -32,31 +32,16 @@ def find_pat_conditions(pat_id, nom_pat, arron_id):
     return pat_conditions
 
 def get_patinoires_by_year(year):
-    conditions = []
-    pats = []
-    response = {}
-    patinoires = get_all_patinoires()
-    pat_codntions = get_pat_conditions_by_year(year)
-    for patinoire in patinoires:
-        for condition in pat_codntions:
-            if patinoire.id == condition.patinoire_id:
-                conditions.append(condition)
-        pat = PatAndCondition(patinoire.id, patinoire.nom_pat, patinoire.arron_id, conditions)
-        pats.append(pat)
-    # response['patinoires'] = pats
-    # return response
-    return pats
-    
-    
-    # return glissades
-
-    # def find_patinoires_by_year(year):
-    # patinoires = db.session.query(Patinoire).filter(extract('year', Patinoire.)==year).all()
-    # for glis in glissades:
-    #     logging.info('glissade: ', glis.asDictionary())
-    #     print('glissade: ', glis.asDictionary())
-    # return glissades
-
+    response = []
+    pat_ids = get_pat_ids_from_conditions_by_year(year)
+    for id in pat_ids:
+        print('id[0]  = ',id[0])
+        if id[0] is not None: 
+            conditions = get_pat_conditions_by_pat_id(id[0])
+            pat_details, status = get_patinoire_by_id(id[0])
+            pat = PatAndCondition(pat_details.id, pat_details.nom_pat, pat_details.arron_id, conditions)
+            response.append(pat)
+    return response
 
 
 def get_patinoire_by_id(patinoire_id):
