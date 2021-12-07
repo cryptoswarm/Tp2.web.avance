@@ -2,6 +2,7 @@ from flask import Blueprint, json, Request
 from flask import request, g, session
 from flask import redirect, url_for, jsonify
 from flask.helpers import make_response
+from inf5190_projet_src.models.patinoire import PatAndConditionSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 # from inf5190_projet_src.helpers.helper import *
 
@@ -10,6 +11,7 @@ from inf5190_projet_src.services.installation_service import *
 from inf5190_projet_src.models.glissade import GlissadeSchema
 
 glissade_schema = GlissadeSchema(many=True)
+pat_cond_schema = PatAndConditionSchema(many=True)
 
 mod_arron = Blueprint('arrondissement', __name__, url_prefix='')
 
@@ -29,10 +31,12 @@ def get_installation_arr_name():
 
 @mod_arron.route('/api/installations/<int:year>', methods=['GET'])
 def get_installation_by_year(year):
-    installations = get_inst_by_year(year)
-    if installations is not None:
-        serialized = glissade_schema.dump(installations)
-        return jsonify(serialized), 200
+    glissades, patinoires = get_inst_by_year(year)
+    # if glissades is not None:
+    #     serialized_glis = glissade_schema.dump(glissades)
+    if patinoires is not None:
+        serialized_pat = pat_cond_schema.dump(patinoires)
+        return jsonify(serialized_pat), 200
     return jsonify({"Message":"No glissade found by this year"}), 404
 
 

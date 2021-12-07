@@ -46,3 +46,9 @@ def delete_patinoire(id):
     db.session.delete(patinoire)
     db.session.commit()
     return patinoire
+
+def get_all_patinoires():
+    patinoires = Patinoire.query.all()
+    for pat in patinoires:
+        print(pat.asDictionary())
+    return patinoires

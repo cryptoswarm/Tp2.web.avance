@@ -32,9 +32,23 @@ def find_pat_conditions(pat_id, nom_pat, arron_id):
     return pat_conditions
 
 def get_patinoires_by_year(year):
+    conditions = []
+    pats = []
+    response = {}
+    patinoires = get_all_patinoires()
     pat_codntions = get_pat_conditions_by_year(year)
+    for patinoire in patinoires:
+        for condition in pat_codntions:
+            if patinoire.id == condition.patinoire_id:
+                conditions.append(condition)
+        pat = PatAndCondition(patinoire.id, patinoire.nom_pat, patinoire.arron_id, conditions)
+        pats.append(pat)
+    # response['patinoires'] = pats
+    # return response
+    return pats
     
-    return glissades
+    
+    # return glissades
 
     # def find_patinoires_by_year(year):
     # patinoires = db.session.query(Patinoire).filter(extract('year', Patinoire.)==year).all()
