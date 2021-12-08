@@ -5,10 +5,11 @@ from sqlalchemy.orm import relationship
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
-ma = Marshmallow()
-class Coordiante(Base):
 
-    __tablename__ = 'coordiantes'
+ma = Marshmallow()
+class Coordinate(Base):
+
+    __tablename__ = 'coordinates'
     
     point_x = db.Column(db.String(255),  nullable=False)
     point_y = db.Column(db.String(255),  nullable=False)

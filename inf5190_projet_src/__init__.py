@@ -68,7 +68,7 @@ def create_app(config_name):
 
 
         # Build the database: will create the db file using SQLAlchemy
-        db.create_all()
+        # db.create_all()
 
         # configure logger
         if not app.debug and not app.testing:

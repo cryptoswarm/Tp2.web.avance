@@ -7,6 +7,7 @@ from flask_marshmallow import Marshmallow
 from inf5190_projet_src.models.patinoir_condition import PatConditionSchema
 
 
+
 ma = Marshmallow()
 
 class Patinoire(Base):

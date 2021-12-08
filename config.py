@@ -41,8 +41,10 @@ class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
     # SQLALCHEMY_DATABASE_URI = postgres_local_base
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
-    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs.sqlite')
+    if not os.path.exists('db'):
+        os.mkdir('db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'db/app.db')
+    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db/jobs.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JOB_STORES = {
         'default': SQLAlchemyJobStore(JOB_STORE_URL)
@@ -61,8 +63,10 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app_test.db')
-    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'jobs_test.sqlite')
+    if not os.path.exists('db'):
+        os.mkdir('db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'db/app_test.db')
+    JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db/jobs_test.sqlite')
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JOB_STORES = {

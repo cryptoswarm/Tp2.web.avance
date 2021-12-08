@@ -4,6 +4,7 @@ from sqlalchemy import ForeignKey
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
+
 ma = Marshmallow()
 class InspectedArr(Base):
 

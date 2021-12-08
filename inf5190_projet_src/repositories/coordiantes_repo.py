@@ -1,7 +1,7 @@
 
 from flask_sqlalchemy import Pagination
 from inf5190_projet_src import db
-from inf5190_projet_src.models.coordiante import Coordiante
+from inf5190_projet_src.models.coordiante import Coordinate
 from sqlalchemy import or_, and_, func, desc
 
 
@@ -15,9 +15,9 @@ def create_inst_aquatique_position(coordiante):
 
 def find_by_hash(hash):
     print('Testing existence of position by hash :', hash)
-    return Coordiante.query.filter_by(position_hash=hash).first()
+    return Coordinate.query.filter_by(position_hash=hash).first()
 
 def find_by_id(pos_id):
-    return Coordiante.query.filter_by(id=pos_id).first()
+    return Coordinate.query.filter_by(id=pos_id).first()
 
     

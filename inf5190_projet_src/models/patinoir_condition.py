@@ -6,6 +6,7 @@ from marshmallow import fields
 from flask_marshmallow import Marshmallow
 
 
+
 ma = Marshmallow()
 
 class PatinoirCondition(Base):

@@ -1,3 +1,34 @@
+## Etapes importantes:
+### La migration:
+* Assurez-vous que la `create_app` du fichier `app.py` prend `"dev"` comme parametre 
+* Assurez-vous que la `create_app` du fichier `worker.py` prend `"dev"` comme parametre 
+* Executer les 3 commandes dans l'ordre:
+    * `flask db init`
+        * la commande en haut crée un dossier `migrations`
+    * `flask db migrate -m "test"`
+        * la commande en haut crée un script `versionNbr_test.py` dans le sous dossier `versions`
+    * `flask db upgrade`
+        * la commande en haut applique les configurations de `versionNbr_test.py` 
+### Vérification:
+* En ligne de commande executez:
+    * cd db/
+    * `sqlite3`
+    * `.open app.db`
+    * `.tables`
+    * Vous allez voire que `9 tables` ont été crées. 
+    * alembic_version est la table contenant les numeros de versions
+### Les variables d'environnement:
+* le fichier `.env` doit etre à la racine et doit absolument avoir les valeurs des variables suivantes:
+    * SECRET_KEY
+    * CSRF_SESSION_KEY
+    * APP_ADMIN_USERNAME
+        * example: APP_ADMIN_USERNAME = 'admin'
+    * APP_ADMIN_PASS
+    * APP_ADMIN_ID
+    * EMAIL_USER
+        * example: EMAIL_USER = 'votre Gmail email'
+    * EMAIL_PASSWORD
+        * example: EMAIL_USER = 'votre Gmail account password'
 ## Les points développés
 ### Point A3 5xp
 * En production le serveur est déployé dans un dyno séparé du frontend
@@ -351,7 +382,7 @@
     ```
 ### Point F 20 pts:
 * En raison que le dyno pourrait etre en mode hybernation, allez à l'url du serveur : https://flask-data-swarm.herokuapp.com/
-* Ensuite, l'application qui est deployée à : https://data-swarm.herokuapp.com/
+* Ensuite, l'application qui est deployée sur un autre dyno à l'url : https://data-swarm.herokuapp.com/
 * L'application en production utilise `postgres sql` comme db et `angular` pour le frontend
 
 * Remarques: 

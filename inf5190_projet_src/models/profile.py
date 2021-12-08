@@ -3,8 +3,8 @@ from inf5190_projet_src.models.base import Base
 from inf5190_projet_src import db
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
-
 from inf5190_projet_src.models.followed_arr import FollowedArrSchema
+
 
 ma = Marshmallow()
 

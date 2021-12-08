@@ -21,7 +21,7 @@ class InstallationAquatique(Base):
     equipement_inst = db.Column(db.String(255),  nullable=False, default='UNKNOWN')
     aqua_hash = db.Column(db.String(255), unique=True, nullable=False)
     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
-    position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
+    position_id = db.Column(db.Integer, ForeignKey('coordinates.id'))
 
 
     def __init__(self, nom_installation, type_installation, adress,
