@@ -350,7 +350,8 @@
         }
     ```
 ### Point F 20 pts:
-* L'url de l'application deployée sur Heroku : https://data-swarm.herokuapp.com/
+* En raison que le dyno pourrait etre en mode hybernation, allez à l'url du serveur : https://flask-data-swarm.herokuapp.com/
+* Ensuite, l'application qui est deployée à : https://data-swarm.herokuapp.com/
 * L'application en production utilise `postgres sql` comme db et `angular` pour le frontend
 
 * Remarques: 

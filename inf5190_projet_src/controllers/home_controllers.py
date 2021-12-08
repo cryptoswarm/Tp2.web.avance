@@ -23,11 +23,10 @@ def doc():
     """Utilisé en production"""
     return render_template('doc.html')
 
-@mod_home.route('/doc')
-def doc():
-    return render_template('doc.html')
+# @mod_home.route('/doc')
+# def doc():
+#     return render_template('doc.html')
 
 # @mod_home.route('/')
 # def home():
-#     """Server in prod is poiting to /doc"""
 #     return render_template('index.html')
