@@ -1,10 +1,9 @@
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
-from sqlalchemy.orm import relationship
 from inf5190_projet_src.models.coordiante import CoordinateSchema
 import hashlib
-from marshmallow import schema, fields, pre_load, validate
+from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
 
@@ -23,7 +22,7 @@ class InstallationAquatique(Base):
     aqua_hash = db.Column(db.String(255), unique=True, nullable=False)
     arron_id = db.Column(db.Integer, ForeignKey('arrondissement.id'))
     position_id = db.Column(db.Integer, ForeignKey('coordiantes.id'))
-    # children = relationship("Coordiante")
+
 
     def __init__(self, nom_installation, type_installation, adress,
                  propriete_installation, gestion_inst, equipement_inst,

@@ -1,22 +1,11 @@
-
-import jsonschema
-from copy import error
-from os import stat
 from flask import Blueprint, request, session, g
-from flask import render_template, flash, request
-from flask import redirect, url_for, jsonify
-from flask.helpers import make_response
+from flask import jsonify
 from inf5190_projet_src.services.aquatique_inst_services import *
 from inf5190_projet_src.services.glissade_services import *
-
 from inf5190_projet_src.services.arron_service import *
-# from inf5190_projet_src.services.installation_service import get_installations_by_arr_name
-# from flask_json_schema import JsonSchema, JsonValidationError
 from inf5190_projet_src.schemas.schema import *
-# from inf5190_projet_src import schema
 from inf5190_projet_src.models.glissade import GlissadeSchema
 from marshmallow import ValidationError
-from jsonschema import FormatChecker
 from inf5190_projet_src.helpers.helper import *
 
 
@@ -42,8 +31,6 @@ def load_logged_in_user():
     #     print('user should be found: ',g.user)
 
 @mod_glissade.route('/api/glissade/<id>', methods=['PUT'])
-# @schema.validate(edit_glissade, format_checker=FormatChecker())
-# @jsonschema.validate(edit_glissade, format_checker=FormatChecker())
 def edit_glissade(id):
     glissade_data = request.get_json()
     try:

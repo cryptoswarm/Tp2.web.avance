@@ -18,28 +18,14 @@ class Config:
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     # unique ans secret key for signing the data
     CSRF_SESSION_KEY = os.environ.get('CSRF_SESSION_KEY')
-    # JWT SECRET_KEY : import os then os.urandom(24)
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     # Silence 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # Oauth credentials
-    OAUTH_CREDENTIALS = {
-        'facebook': {
-            'id': os.environ.get('FACEBOOK_CLIENT_ID'),
-            'secret': os.environ.get('FACEBOOK_CLIENT_SECRET')
-        },
-        'twitter': {
-            'id': os.environ.get('TWITTER_CLIENT_ID'),
-            'secret': os.environ.get('TWITTER_CLIENT_SECRET')
-        }
-    }
     DEBUG = False
     ADMIN_USERNAME= os.environ.get('APP_ADMIN_USERNAME')
     ADMIN_PASS = os.environ.get('APP_ADMIN_PASS')
     ADMIN_ID = os.environ.get('APP_ADMIN_ID')
     MAIL_SERVER =  'smtp.gmail.com'
     MAIL_PORT =  465
-    # MAIL_USE_TLS = False,
     MAIL_USE_SSL = True,
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
@@ -121,7 +107,6 @@ config_by_name = dict(
 )
 
 key = Config.SECRET_KEY
-JWT = Config.JWT_SECRET_KEY
 USERNAME = Config.ADMIN_USERNAME
 PASSWORD = Config.ADMIN_PASS
 ADMIN_ID = Config.ADMIN_ID

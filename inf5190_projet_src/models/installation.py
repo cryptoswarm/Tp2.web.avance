@@ -1,5 +1,5 @@
 from flask_marshmallow import Marshmallow
-from marshmallow import schema, fields, pre_load, validate, post_dump
+from marshmallow import fields
 from inf5190_projet_src.models.patinoire import PatAndConditionSchema
 from inf5190_projet_src.models.glissade import GlissadeSchema
 
@@ -12,10 +12,7 @@ class Installation():
         self.glissades = glissades
         self.patinoires = patinoires
 
-# class InstallationsSchema(ma.Schema):
-#     patinoires = fields.List(fields.Nested(PatAndConditionSchema, many=True))
-#     # glissades = fields.List(fields.Nested(GlissadeSchema, many=True))
 class InstallationsSchema(ma.Schema):
-    patinoires = fields.Nested(PatAndConditionSchema, many=True)
-    glissades = fields.Nested(GlissadeSchema, many=True)
+    patinoires = fields.Nested(PatAndConditionSchema, many=True, exclude=("id","arron_id","conditions.id","conditions.patinoire_id"))
+    glissades = fields.Nested(GlissadeSchema, many=True, exclude=("id","arrondissement_id"))
 

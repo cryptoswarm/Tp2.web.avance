@@ -2,8 +2,7 @@ import hashlib
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
-from sqlalchemy.orm import relationship
-from marshmallow import schema, fields, pre_load, validate, post_dump
+from marshmallow import fields
 from flask_marshmallow import Marshmallow
 
 

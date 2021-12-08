@@ -1,8 +1,7 @@
-from flask import Blueprint, json, Request
+from flask import Blueprint
 from flask import request, session, g
-from flask import redirect, url_for, jsonify
-from flask.helpers import make_response
-from inf5190_projet_src.models.inst_aquatique import InstAquatiquePosition, InstAquatiquePositionSchema, InstallationAquatiqueSchema
+from flask import jsonify
+from inf5190_projet_src.models.inst_aquatique import InstAquatiquePositionSchema, InstallationAquatiqueSchema
 from inf5190_projet_src.services.aquatique_inst_services import *
 from inf5190_projet_src.helpers.helper import *
 from inf5190_projet_src.services.arron_service import *
@@ -27,9 +26,6 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
 
-
-# http://localhost:5000/api/installation_aquatique/126
-
 @insta_aqua.route('/api/installation_aquatique/<id>', methods=['PUT'])
 def edit_installation_aquatique(id):
     insta_aqua_data = request.get_json()
@@ -45,7 +41,6 @@ def edit_installation_aquatique(id):
         return jsonify({"message":"Aqua installation does not exist!"}), status
     if arrondissement.id != aqua_inst.arron_id:
         return jsonify({"message":"Given aqua inst does not belong to given arrondissement"}), 400
-    # updated, status = update_aqua_inst(aqua_inst, posted_inst_aqua)
     updated, status = update_aqua_inst(id, posted_inst_aqua)
     print('Aqua Installation received for updated :',posted_inst_aqua)
     print('Aqua Installation updated to :',updated)
@@ -70,8 +65,6 @@ def get_aqua_inst_id(id):
     inst = aquatique_Schema.dump(aqua_inst)
     return jsonify(inst), 200
 
-
-# http://localhost:5000/api/installations/arrondissement/LaSalle/aquatique/Parc Leroux
 
 @insta_aqua.route('/api/installations/arrondissement/<arrondissement>/aquatique/<name>', methods=['GET'])
 def get_aqua_inst(arrondissement, name):

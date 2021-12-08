@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from flask import g, json, request, session
+from flask import json, request, session
 from flask import jsonify, current_app
 from config import USERNAME, PASSWORD, ADMIN_ID
 

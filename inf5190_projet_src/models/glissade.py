@@ -1,7 +1,7 @@
 from inf5190_projet_src import db
 from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey 
-from marshmallow import schema, fields, pre_load, validate
+from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
 

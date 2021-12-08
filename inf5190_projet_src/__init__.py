@@ -4,24 +4,16 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from apscheduler.schedulers.background import BackgroundScheduler
-from jsonschema.exceptions import ErrorTree
-from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-from werkzeug.datastructures import Headers
-# from flask_json_schema import JsonSchema, JsonValidationError
-from werkzeug.wrappers import response
 from config import config_by_name
 from flask_migrate import Migrate
 from flask_mail import Mail
-# from jsonschema import JsonSchema
 from jsonschema import ValidationError
 
 
 
 db = SQLAlchemy()
-# schema = JsonSchema()
 migrate = Migrate()
 mail = Mail()
 
@@ -44,7 +36,6 @@ def create_app(config_name):
         # db object which is imported by modules and controllers
         db.init_app(app)
         mail.init_app(app)
-        # schema.init_app(app)
         migrate.init_app(app, db)
 
         # HTTP error handling
@@ -55,11 +46,9 @@ def create_app(config_name):
         # @app.errorhandler(JsonValidationError)
         @app.errorhandler(ValidationError)
         def validation_error(e):
-            response = []
-            #return jsonify({ 'error': e.message, 'errors': [validation_error.message for validation_error  in e.errors]}), 400
             return jsonify({ 'error': e.message})
-        # Import the only module in the app which is article, 
-        # using its blueprint handler var (mod_article)
+
+        # using all blueprints
         from inf5190_projet_src.controllers.home_controllers import mod_home as home_module
         from inf5190_projet_src.controllers.data_requester import mod_scheduler as scheduler_mod
         from inf5190_projet_src.controllers.installations_controllers import mod_arron as arrondissement_mod

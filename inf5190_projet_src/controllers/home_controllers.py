@@ -1,8 +1,7 @@
-from flask import Blueprint, request, render_template, \
-                                    redirect, url_for, jsonify
-from datetime import datetime
+from flask import Blueprint, render_template, jsonify
 from inf5190_projet_src.services.profile_service import *
-# Define the blueprint : 'article', set its url prefix : app.url/''
+
+
 mod_home = Blueprint('home', __name__, url_prefix='')
 
 
@@ -19,16 +18,16 @@ def unsubscribe(email):
     deleted = remove_profile(profile)
     return jsonify(message="Profile deleted"), 200
 
-# @mod_home.route('/')
-# def doc():
-#     """Utilisé en production"""
-#     return render_template('doc.html')
+@mod_home.route('/')
+def doc():
+    """Utilisé en production"""
+    return render_template('doc.html')
 
 @mod_home.route('/doc')
 def doc():
     return render_template('doc.html')
 
-@mod_home.route('/')
-def home():
-    """Server in prod is poiting to /doc"""
-    return render_template('index.html')
+# @mod_home.route('/')
+# def home():
+#     """Server in prod is poiting to /doc"""
+#     return render_template('index.html')

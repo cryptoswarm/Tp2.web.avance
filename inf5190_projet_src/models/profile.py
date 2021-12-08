@@ -1,7 +1,7 @@
 from sqlalchemy.orm import relationship
 from inf5190_projet_src.models.base import Base
 from inf5190_projet_src import db
-from marshmallow import schema, fields, pre_load, validate
+from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
 from inf5190_projet_src.models.followed_arr import FollowedArrSchema
@@ -35,11 +35,11 @@ class Profile(Base):
 
 class ProfileCreateSchema(ma.Schema):
     id = fields.Number()
-    complete_name = fields.String(required=True, validate=validate.Length(4))
+    complete_name = fields.String(required=True, validate=validate.Length(4, error="Name is too short, 4 chars or longer are requiered"))
     email = fields.Str(
         required=True, validate=validate.Email(error="Not a valid email address")
     )
-    followed_arr = fields.List(fields.String(), required=True, validate=validate.Length(min=1) )
+    followed_arr = fields.List(fields.String(), required=True, validate=validate.Length(min=1, error="One arrondissement or more are requiered") )
 
 
 class ProfileResponseSchema(ma.Schema):

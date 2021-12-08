@@ -1,12 +1,8 @@
-from enum import unique
 import hashlib
-import uuid
-from re import A
 from inf5190_projet_src.models.base import Base
-from sqlalchemy import ForeignKey 
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
-from marshmallow import schema, fields, pre_load, validate
+from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
 ma = Marshmallow()

@@ -29,10 +29,6 @@ def load_logged_in_user():
 
     if user_id is None:
         g.user = None
-    # else:
-    #     # g.user = find_existing_user_by_id(user_id)
-    #     g.user = find_existing_user_by_id(user_id).id
-    #     print('user should be found: ',g.user)
 
 @patinoire.route('/api/patinoire/<int:id>', methods=['PUT'])
 def edit_patinoire(id):
@@ -56,8 +52,6 @@ def get_patinoire_id(id):
     patinoire, status = get_patinoire_by_id(id)
     if patinoire is None:
         return jsonify({"message":"Patinoire does not exist!"}), status
-    # serialized_pat = edit_pat_schema.dump(patinoire)
-    # return jsonify(serialized_pat), 200
     pat_and_conditions = get_patinoire_details_by_id(patinoire.id, patinoire.nom_pat, patinoire.arron_id)
     sirialized_pat = pat_cond_schema.dump(pat_and_conditions)
     return jsonify(sirialized_pat), 200
