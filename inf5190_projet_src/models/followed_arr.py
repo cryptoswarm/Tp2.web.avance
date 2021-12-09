@@ -6,6 +6,7 @@ from flask_marshmallow import Marshmallow
 
 
 ma = Marshmallow()
+
 class InspectedArr(Base):
 
     __tablename__ = 'profile_arrondissement'
@@ -17,7 +18,6 @@ class InspectedArr(Base):
         self.name= name
         self.profile_id = profile_id
 
-        
     def __repr__(self):
         return "<InspectedArr(id='%d', name='%s', profile_id='%d')>" % (
             self.id, self.name, self.profile_id)
@@ -30,6 +30,7 @@ class InspectedArr(Base):
                } 
 
 class FollowedArrSchema(ma.Schema):
+    
     id = fields.Number()
     name = fields.String(required=True, validate=validate.Length(3))
 
