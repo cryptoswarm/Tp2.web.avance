@@ -1,50 +1,57 @@
-import os
-import unittest
+# import os
+# import unittest
+# from flask import current_app
+# from flask_testing import TestCase
 
-from flask import current_app
-from flask_testing import TestCase
-
-# from manage import app
-from inf5190_projet_src import app
-from config import BASE_DIR
-
-
-
-class TestDevelopmentConfig(TestCase):
-    def create_app(self):
-        app.config.from_object('config.DevelopmentConfig')
-        return app
-
-    def test_app_is_development(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'my_precious')
-        self.assertTrue(app.config['DEBUG'] is True)
-        self.assertFalse(current_app is None)
-        self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
-        )
+# import inf5190_projet_src
+# # from TP2.we inf5190_projet_src import create_app
+# from . import inf5190_projet_src
+# from config import BASE_DIR
 
 
-class TestTestingConfig(TestCase):
-    def create_app(self):
-        app.config.from_object('config.TestingConfig')
-        return app
+# class TestDevelopmentConfig(TestCase):
 
-    def test_app_is_testing(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'my_precious')
-        self.assertTrue(app.config['DEBUG'])
-        self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(BASE_DIR, 'app_test.db')
-        )
+#     # def create_app(self):
+#     #     app.config.from_object('config.DevelopmentConfig')
+#     #     return app
+#     app = inf5190_projet_src.create_app('dev')
 
-
-class TestProductionConfig(TestCase):
-    def create_app(self):
-        app.config.from_object('config.ProductionConfig')
-        return app
-
-    def test_app_is_production(self):
-        self.assertTrue(app.config['DEBUG'] is False)
+#     def test_app_is_development(self):
+#         with self.app.app_context:
+#             self.assertFalse(self.app.config['SECRET_KEY'] is 'my_precious')
+#             self.assertTrue(self.app.config['DEBUG'] is True)
+#             self.assertFalse(current_app is None)
+#             self.assertTrue(
+#                 self.app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+#             )
 
 
-if __name__ == '__main__':
-    unittest.main()
+# class TestTestingConfig(TestCase):
+
+#     app = inf5190_projet_src.create_app('test')
+    
+#     # def create_app(self):
+#     #     self.app.config.from_object('config.TestingConfig')
+#     #     return self.app
+
+#     def test_app_is_testing(self):
+#         self.assertFalse(self.appapp.config['SECRET_KEY'] is 'my_precious')
+#         self.assertTrue(self.appapp.config['DEBUG'])
+#         self.assertTrue(
+#             self.appapp.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(BASE_DIR, 'app_test.db')
+#         )
+
+
+# class TestProductionConfig(TestCase):
+
+#     # def create_app(self):
+#     #     app.config.from_object('config.ProductionConfig')
+#     #     return app
+#     app = inf5190_projet_src.create_app('test')
+    
+#     def test_app_is_production(self):
+#         self.assertTrue(self.app.config['DEBUG'] is False)
+
+
+# if __name__ == '__main__':
+#     unittest.main()

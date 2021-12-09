@@ -6,10 +6,9 @@
 ## Etapes importantes à suivre:
 
 * **Etape1**:  Assurez-vous que la `create_app` du fichier `app.py` prend `"dev"` comme parametre 
-* **Etape2**: Assurez-vous que la `create_app` du fichier `worker.py` prend `"dev"` comme parametre 
-* Si vous ne voulez pas configué la `migrations`, decommentez la ligne 72 `# db.create_all()` du fichier `__init__.py` 
-du dossier `inf5190_projet_src` et sautez à l'etape **Etape5**
-* **Etape3**: 
+* Si vous ne voulez pas configué la `migrations`, decommentez la ligne 81 `# db.create_all()` du fichier `__init__.py` 
+du dossier `inf5190_projet_src` et sautez à l'etape **Etape4**
+* **Etape2**: 
     * Executer les 3 commandes dans l'ordre:
         * `flask db init`
             * la commande en haut crée un dossier `migrations`
@@ -18,7 +17,7 @@ du dossier `inf5190_projet_src` et sautez à l'etape **Etape5**
         * `flask db upgrade`
             * la commande en haut applique les configurations de `versionNbr_test.py` 
 
-* **Etape4**:
+* **Etape3**:
     * En ligne de commande executez:
         * cd db/
         * `sqlite3`
@@ -26,7 +25,7 @@ du dossier `inf5190_projet_src` et sautez à l'etape **Etape5**
         * `.tables`
         * Vous allez voire que `9 tables` ont été crées. 
         * alembic_version est la table contenant les numeros de versions
-* **Etape5**:
+* **Etape4**:
     ### Les variables d'environnement:
 
     * le fichier `.env` doit etre à la racine et doit absolument avoir les valeurs des variables suivantes:
@@ -40,13 +39,9 @@ du dossier `inf5190_projet_src` et sautez à l'etape **Etape5**
             * example: EMAIL_USER = 'votre Gmail email'
         * EMAIL_PASSWORD
             * example: EMAIL_USER = 'votre Gmail account password'
-* **Etape6**:
+* **Etape5**:
     * Lancer l'application : `flask run --host=172.28.128.8 --port=5000`
-* **Etape7**:
-    * Si vous voulez importez les données lancer les 3 requetes suivantes:
-        * http://172.28.128.8:5000/scheduler-patinoire
-        * http://172.28.128.8:5000/scheduler-aqua
-        * http://172.28.128.8:5000/scheduler-glissade
+
 ## Les points développés
 ### Point A3 5xp
 * En production le serveur est déployé dans un dyno séparé du frontend
