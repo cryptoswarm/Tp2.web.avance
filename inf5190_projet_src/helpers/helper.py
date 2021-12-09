@@ -5,14 +5,13 @@ from flask import jsonify, current_app
 from config import USERNAME, PASSWORD, ADMIN_ID
 
 
-
 def check_auth(authorization_header):
     """Check if a username/password combination is valid."""
-    print('Authorization header: ',authorization_header)
+    print('Authorization header: ', authorization_header)
     encoded_uname_pass = authorization_header.split()[-1]
     creadential = USERNAME + ":" + PASSWORD
     decoded = base64.b64decode(encoded_uname_pass).decode("utf-8")
-    print('received after decoding: ',decoded)
+    print('received after decoding: ', decoded)
     if decoded == creadential:
         return True
     return False
@@ -36,13 +35,11 @@ def requires_auth(f):
     return decorated
 
 
-
-
-
 def split_and_join(sentence):
     if ' - ' or ' – ' in sentence:
-        new_sentence = str(sentence).replace(" - ","–")
+        new_sentence = str(sentence).replace(" - ", "–")
     return new_sentence
+
 
 def convert_to_json(followed_arr):
     follows = []
@@ -51,7 +48,8 @@ def convert_to_json(followed_arr):
         followed_arr = json.loads(replace)
         follows.append(followed_arr)
     return follows
-    
+
+
 def get_errors(err):
     errors = {}
     email_err = err.messages.get('email', None)
@@ -61,12 +59,13 @@ def get_errors(err):
     if complete_name_err is not None:
         errors['complete_name_err'] = complete_name_err[0]
     followed_arr_err = err.messages.get('followed_arr', None)
-    if  followed_arr_err is not None:
+    if followed_arr_err is not None:
         errors['followed_arr_err'] = followed_arr_err[0]
     return errors
+
 
 def create_redirect_url(response):
     app = current_app._get_current_object()
     unsub_link = app.config['UNSUBSCRIBE_LINK']
-    url = unsub_link +'?email='+ response['email']
+    url = unsub_link + '?email=' + response['email']
     return url

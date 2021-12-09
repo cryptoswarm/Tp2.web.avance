@@ -6,8 +6,13 @@ from flask_marshmallow import Marshmallow
 from inf5190_projet_src.models.followed_arr import \
     FollowedArrSchema
 
+FOLLOWED_ARR_NBR = "One arrondissement or more are requiered"
+NAME_LEN = "Name is too short < 4"
+EMAIL_ERR = "Not a valid email address"
+
 
 ma = Marshmallow()
+
 
 class Profile(Base):
 
@@ -28,24 +33,24 @@ class Profile(Base):
     def asDictionary(self):
         return {
                 "id": self.id,
-                "complete_name":self.complete_name,
+                "complete_name": self.complete_name,
                 "email": self.email
-                } 
+                }
 
 
 class ProfileCreateSchema(ma.Schema):
 
     id = fields.Number()
     complete_name = fields.String(required=True,
-                                  validate=validate.Length(4,
-                                                           error="Name is too short < 4"))
+                                  validate=validate.Length(4, error=NAME_LEN))
     email = fields.Str(
-        required=True, validate=validate.Email(error="Not a valid email address")
+        required=True, validate=validate.Email(error=EMAIL_ERR)
     )
     followed_arr = fields.List(fields.String(),
                                required=True,
                                validate=validate.Length(min=1,
-                                                        error="One arrondissement or more are requiered") )
+                                                        error=FOLLOWED_ARR_NBR)
+                               )
 
 
 class ProfileResponseSchema(ma.Schema):
@@ -53,6 +58,6 @@ class ProfileResponseSchema(ma.Schema):
     id = fields.Number()
     complete_name = fields.String(required=True, validate=validate.Length(4))
     email = fields.Str(
-        required=True, validate=validate.Email(error="Not a valid email address")
+        required=True, validate=validate.Email(error=EMAIL_ERR)
     ),
     followed_arr = fields.Nested(FollowedArrSchema)

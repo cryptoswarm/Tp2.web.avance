@@ -1,29 +1,29 @@
-import re
-
-from werkzeug.wrappers import response
 from inf5190_projet_src.repositories.profile_repo import *
 
-def remove_profile(profile):
+
+def remove_profile(profile: Profile):
     deleted_profile = delete_profile(profile.email, profile.id)
-    # delete_followed_arr_by_profile_id(profile.id)
     return deleted_profile
+
 
 def add_profile(data):
     profile = Profile(data['complete_name'], data['email'])
     profile = save_profile(profile)
     return profile
 
-def get_profile_by_email(email:str):
+
+def get_profile_by_email(email: str):
     profile = find_profile_by_email(email)
     if profile is None:
         return None, 404
     return profile, 200
 
+
 def create_profile_followed_arr(data):
     content = []
     followed_arron = data['followed_arr']
     email = data['email']
-    profile, status = get_profile_by_email(email)
+    profile, code = get_profile_by_email(email)
     if profile is None:
         profile = add_profile(data)
     for name in followed_arron:
@@ -36,6 +36,3 @@ def create_profile_followed_arr(data):
         content.append(item.asDictionary())
     response['followed_arr'] = content
     return response
-
-
-

@@ -7,7 +7,6 @@ from inf5190_projet_src.repositories.patinoire_repo import *
 from inf5190_projet_src.helpers.helper import split_and_join
 
 
-
 def get_arr_by_name(arr_name):
     arrondissement = find_by_arr_name(arr_name)
     logging.debug('Search arrondissement by name : {}'.format(arr_name))
@@ -15,11 +14,13 @@ def get_arr_by_name(arr_name):
         return None
     return arrondissement
 
+
 def get_arr_by_id(arr_id):
     arrondissement = find_arr_by_id(arr_id)
     if arrondissement is None:
         return None, 404
     return arrondissement, 200
+
 
 def add_arrondissement(arr_name, arr_cle):
     arrondissement = Arrondissement(arr_name, arr_cle)
