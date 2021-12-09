@@ -2,8 +2,8 @@ from flask import make_response, jsonify, session
 from flask import Blueprint, request
 from marshmallow.exceptions import ValidationError
 from config import ADMIN_ID
-from inf5190_projet_src.helpers.email import send_email, validate_email_domain
-from inf5190_projet_src.services.account_services import *
+from inf5190_projet_src.helpers.email import \
+    send_email, validate_email_domain
 from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *

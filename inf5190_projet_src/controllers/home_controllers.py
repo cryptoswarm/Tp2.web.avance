@@ -13,7 +13,7 @@ def privacy():
 
 @mod_home.route('api/unsubscribe/<email>', methods=['DELETE', 'POST'])
 def unsubscribe(email):
-    profile, check = get_profile_by_email(email)
+    profile, code = get_profile_by_email(email)
     if profile is None:
         return jsonify(message="Profile does not exist"), 400
     deleted = remove_profile(profile)
