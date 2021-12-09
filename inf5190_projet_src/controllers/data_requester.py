@@ -1,10 +1,8 @@
 import requests
 from flask import Blueprint, json, jsonify
-from inf5190_projet_src.services.data_requester_services import create_all_glissade, create_aqua_installations, create_pat_and_conditions
+from inf5190_projet_src.services.data_requester_services import \
+    create_all_glissade, create_aqua_installations, create_pat_and_conditions
 from inf5190_projet_src.writer.write_file import *
-
-
-
 
 
 url_glissade = "http://www2.ville.montreal.qc.ca/services_citoyens/pdf_transfert/L29_GLISSADE.xml"
@@ -16,7 +14,7 @@ mod_scheduler = Blueprint('scheduler', __name__, url_prefix='')
 
 
 def get_from_external_api(url, mime_type):
-    payload={}
+    payload = {}
     headers = {
         'Content-Type': mime_type
     }
@@ -26,13 +24,15 @@ def get_from_external_api(url, mime_type):
         return response
     return response
 
+
 @mod_scheduler.route('/scheduler-patinoire', methods=['GET'])
 def persist_patinoir_data():
-    response =  get_from_external_api(url_patinoire, 'application/xml')
+    response = get_from_external_api(url_patinoire, 'application/xml')
     if response.status_code == 200:
         create_pat_and_conditions(response)
         return jsonify({}), 201
     return {}, 404
+
 
 @mod_scheduler.route("/scheduler-aqua", methods=['GET'])
 def persist_aqua_data():
@@ -50,8 +50,3 @@ def persist_glissade_data():
         create_all_glissade(response)
         return json.jsonify({}), 201
     return {}, 404
-
-
-
-
-

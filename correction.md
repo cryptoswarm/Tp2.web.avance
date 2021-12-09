@@ -1,42 +1,60 @@
-## Etapes importantes:
-### La migration:
-* Assurez-vous que la `create_app` du fichier `app.py` prend `"dev"` comme parametre 
-* Assurez-vous que la `create_app` du fichier `worker.py` prend `"dev"` comme parametre 
-* Executer les 3 commandes dans l'ordre:
-    * `flask db init`
-        * la commande en haut crée un dossier `migrations`
-    * `flask db migrate -m "test"`
-        * la commande en haut crée un script `versionNbr_test.py` dans le sous dossier `versions`
-    * `flask db upgrade`
-        * la commande en haut applique les configurations de `versionNbr_test.py` 
-### Vérification:
-* En ligne de commande executez:
-    * cd db/
-    * `sqlite3`
-    * `.open app.db`
-    * `.tables`
-    * Vous allez voire que `9 tables` ont été crées. 
-    * alembic_version est la table contenant les numeros de versions
-### Les variables d'environnement:
-* le fichier `.env` doit etre à la racine et doit absolument avoir les valeurs des variables suivantes:
-    * SECRET_KEY
-    * CSRF_SESSION_KEY
-    * APP_ADMIN_USERNAME
-        * example: APP_ADMIN_USERNAME = 'admin'
-    * APP_ADMIN_PASS
-    * APP_ADMIN_ID
-    * EMAIL_USER
-        * example: EMAIL_USER = 'votre Gmail email'
-    * EMAIL_PASSWORD
-        * example: EMAIL_USER = 'votre Gmail account password'
+## **Important**:
+* Le frontend est fait en utilisant Angular
+* Le build est fait en pointant tous les services vers l'adresse de l'api qui est : `http://172.28.128.8:5000`
+* Sous `Vagrant`, assurez-vous de lancer le serveur dans l'environnement virtuel avec:
+    *  `flask run --host=172.28.128.8 --port=5000`
+## Etapes importantes à suivre:
+
+* **Etape1**:  Assurez-vous que la `create_app` du fichier `app.py` prend `"dev"` comme parametre 
+* **Etape2**: Assurez-vous que la `create_app` du fichier `worker.py` prend `"dev"` comme parametre 
+* Si vous ne voulez pas configué la `migrations`, decommentez la ligne 72 `# db.create_all()` du fichier `__init__.py` 
+du dossier `inf5190_projet_src` et sautez à l'etape **Etape5**
+* **Etape3**: 
+    * Executer les 3 commandes dans l'ordre:
+        * `flask db init`
+            * la commande en haut crée un dossier `migrations`
+        * `flask db migrate -m "test"`
+            * la commande en haut crée un script `versionNbr_test.py` dans le sous dossier `versions`
+        * `flask db upgrade`
+            * la commande en haut applique les configurations de `versionNbr_test.py` 
+
+* **Etape4**:
+    * En ligne de commande executez:
+        * cd db/
+        * `sqlite3`
+        * `.open app.db`
+        * `.tables`
+        * Vous allez voire que `9 tables` ont été crées. 
+        * alembic_version est la table contenant les numeros de versions
+* **Etape5**:
+    ### Les variables d'environnement:
+
+    * le fichier `.env` doit etre à la racine et doit absolument avoir les valeurs des variables suivantes:
+        * SECRET_KEY
+        * CSRF_SESSION_KEY
+        * APP_ADMIN_USERNAME
+            * example: APP_ADMIN_USERNAME = 'admin'
+        * APP_ADMIN_PASS
+        * APP_ADMIN_ID
+        * EMAIL_USER
+            * example: EMAIL_USER = 'votre Gmail email'
+        * EMAIL_PASSWORD
+            * example: EMAIL_USER = 'votre Gmail account password'
+* **Etape6**:
+    * Lancer l'application : `flask run --host=172.28.128.8 --port=5000`
+* **Etape7**:
+    * Si vous voulez importez les données lancer les 3 requetes suivantes:
+        * http://172.28.128.8:5000/scheduler-patinoire
+        * http://172.28.128.8:5000/scheduler-aqua
+        * http://172.28.128.8:5000/scheduler-glissade
 ## Les points développés
 ### Point A3 5xp
 * En production le serveur est déployé dans un dyno séparé du frontend
 * Allez à l'url https://flask-data-swarm.herokuapp.com/ pour voire la liste de tous les services `REST`
-* Allez à l'url http://127.0.0.1:5000/doc
+* Allez à l'url http://172.28.128.8:5000/doc
 ### Point A4 10xp
 * En utilisant `Postman`:
-    * Envoyer une requete `Get` à l'url :  `http://localhost:5000/api/installations?arrondissement=Rivière-des-Prairies–Pointe-aux-Trembles`
+    * Envoyer une requete `Get` à l'url :  `http://172.28.128.8:5000/api/installations?arrondissement=Rivière-des-Prairies–Pointe-aux-Trembles`
     * Réponses:
         * Status code `200`
         * Body:
@@ -105,7 +123,7 @@
 ### Point C1 10xp
 * En utilisant `Postman`:
 * Envoyer une request `GET` à l'url:
-    * http://localhost:5000/api/installations/2021
+    * http://172.28.128.8:5000/api/installations/2021
     * Vous pouvez choisir la date que vous souhaitez
     * Si vous voulez obtenir un Json, assurez-vous de choisir `application/json` comme `Content-Type` dans les `Headers`
     * Le contenu est compressé en raison que la réponse est volumineuse. au lieu de 56MB la taille final est de l'ordre de 1.70MB
@@ -113,7 +131,7 @@
 ### Point C2 10xp
 * En utilisant `Postman`:
 * Envoyer une request `GET` à l'url:
-    * http://localhost:5000/api/installations/2021
+    * http://172.28.128.8:5000/api/installations/2021
     * Vous pouvez choisir la date que vous souhaitez
     * Si vous voulez recevoir un xml, assurez-vous de choisir `application/xml` comme `Content-Type` dans les `Headers`
     * La réponse prend au moins 2 minutes
@@ -122,10 +140,10 @@
 * En utilisant `Postman`:
     * Avant tous, vous devez obtenir le id de la glissade de votre choix
     * Soit vous envoyer une request `GET` à l'url: 
-        * `http://localhost:5000/api/installations?arrondissement=Rivière-des-Prairies–Pointe-aux-Trembles`
+        * `http://172.28.128.8:5000/api/installations?arrondissement=Rivière-des-Prairies–Pointe-aux-Trembles`
     * Dans le array `"glissades"` vous trouverez les `id` et le `nom` du glissade 
     * Sinon envoyer une request `GET` à l'url :
-        * `http://localhost:5000/api/installations/arrondissement/<name>/glissade/<name>` 
+        * `http://172.28.128.8:5000/api/installations/arrondissement/<name>/glissade/<name>` 
     * Si les nom d'arrondissement et de la glissade sont corrects vous allez obtenir:
         ```
         {
@@ -138,7 +156,7 @@
             "ouvert": false
         }
         ```
-    * Envoyer une requete `PUT` à l'url :  `http://localhost:5000/api/glissade/1`
+    * Envoyer une requete `PUT` à l'url :  `http://172.28.128.8:5000/api/glissade/1`
     * Example d'une good request
         * Le payload requis est :
         ```
@@ -239,7 +257,7 @@
         ```
 ### Point D2 5xp
 * En utilisant `Postman`:
-    * Envoyer une requete `Delete` à l'url :  `http://localhost:5000/api/glissade/<id>` 
+    * Envoyer une requete `Delete` à l'url :  `http://172.28.128.8:5000/api/glissade/<id>` 
     * Vous devez envoyé le `Authorization` header:
         * Dans l'onglet `Authorization` séléctionner `Basic auth` de la liste déroulante `type`
         * Dans le champ `Username`:  Entrer `admin`
@@ -280,7 +298,7 @@
     * `APP_ADMIN_PASS="supersecret"`
     * `APP_ADMIN_ID= "7"`
 1. En utilisant `Postman`:
-    * Envoyer une requete `Post` à l'url :  `http://localhost:5000/api/authenticate`
+    * Envoyer une requete `Post` à l'url :  `http://172.28.128.8:5000/api/authenticate`
     * Dans l'onglet `Authorization` séléctionner `Basic auth` de la liste déroulante `type`
     * Good request:
         * Dans le champ `Username`:  Entrer `admin`
@@ -308,7 +326,7 @@
 
 ### Point E1 10 pts
 * En utilisant `Postman`:
-    * Envoyer une requete `Post` à l'url :  `http://localhost:5000/api/profile` 
+    * Envoyer une requete `Post` à l'url :  `http://172.28.128.8:5000/api/profile` 
     * Dans la requete, on s'attend à avoir un payload tel qu'il montré par l'example suivant:
     ```
     {
@@ -359,7 +377,7 @@
     * Envoyer:
     ```
         curl --request POST \
-        --url "http://localhost:5000/api/profile" \
+        --url "http://172.28.128.8:5000/api/profile" \
         --data '{"complete_name": "mokhtar safir"}' \
         --header 'Content-type:application/json' \
         --include

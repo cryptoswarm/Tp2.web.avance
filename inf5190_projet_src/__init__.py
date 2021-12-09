@@ -4,8 +4,6 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from config import config_by_name
 from flask_migrate import Migrate
 from flask_mail import Mail
@@ -24,6 +22,8 @@ def create_app(config_name):
 
     CORS(app, resources={r"/*": {"origins":["http://127.0.0.1:5000", 
                                             "http://localhost:4200",
+                                            "http://10.0.2.15:5000/",
+                                            "http://172.28.128.8:5000/",
                                             "https://data-swarm.herokuapp.com"
                                         ]}}
                 ,expose_headers=["Content-Type", "X-CSRFToken", "Access-Control-Expose-Headers", "USER_ID"],
@@ -68,6 +68,7 @@ def create_app(config_name):
 
 
         # Build the database: will create the db file using SQLAlchemy
+        # Can be used if we do not want to set migrations
         # db.create_all()
 
         # configure logger

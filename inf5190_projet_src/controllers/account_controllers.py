@@ -8,15 +8,10 @@ from inf5190_projet_src.models.profile import ProfileCreateSchema
 from inf5190_projet_src.services.profile_service import *
 from inf5190_projet_src.helpers.helper import *
 
-
-
-
-
 profile_create_sch = ProfileCreateSchema()
 
 
 mod_user = Blueprint("user", __name__, url_prefix="/")
-
 
 
 @mod_user.route('/api/profile', methods=["POST"])
@@ -35,10 +30,10 @@ def create_profile():
         profile = profile_create_sch.dump(response)
         url = create_redirect_url(response)
         send_email(response['email'], 'Profile created',
-                    'profile', email=response['email'],
-                     user=response['complete_name'],
-                    followed_arr=response['followed_arr'],
-                    url = url)
+                   'profile', email=response['email'],
+                   user=response['complete_name'],
+                   followed_arr=response['followed_arr'],
+                   url=url)
         profile = profile_create_sch.dump(response)
         return jsonify(profile), 201
     return jsonify(email_err=validator), 400

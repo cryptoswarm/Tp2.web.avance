@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pytz import utc
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-import pytz
+
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'inf5190_projet_src/static/files')
@@ -46,18 +46,9 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'db/app.db')
     JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db/jobs.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JOB_STORES = {
-        'default': SQLAlchemyJobStore(JOB_STORE_URL)
-    }
-    EXECUTORS= {
-        'default': ThreadPoolExecutor(20),
-        'processpool': ProcessPoolExecutor(5)
-    }
-    JOB_DEFAULTS= {
-        'coalesce': True,
-        'max_instances': 3
-    }
-    UNSUBSCRIBE_LINK = 'http://localhost:4200/unsubscribe/'
+    #  'http://localhost:4200/unsubscribe/'
+    # Pour pouvoire tester en utilisant vagrant
+    UNSUBSCRIBE_LINK = 'http://172.28.128.8:5000/unsubscribe/'
 
 
 class TestingConfig(Config):
@@ -69,17 +60,7 @@ class TestingConfig(Config):
     JOB_STORE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db/jobs_test.sqlite')
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JOB_STORES = {
-        'default': SQLAlchemyJobStore(JOB_STORE_URL)
-    }
-    EXECUTORS= {
-        'default': ThreadPoolExecutor(20),
-        'processpool': ProcessPoolExecutor(5)
-    }
-    JOB_DEFAULTS= {
-        'coalesce': True,
-        'max_instances': 3
-    }
+
 
 
 class ProductionConfig(Config):
@@ -89,17 +70,6 @@ class ProductionConfig(Config):
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
-    JOB_STORES = {
-        'default': SQLAlchemyJobStore(DATABASE_URL)
-    }
-    EXECUTORS= {
-        'default': ThreadPoolExecutor(20),
-        'processpool': ProcessPoolExecutor(5)
-    }
-    JOB_DEFAULTS= {
-        'coalesce': True,
-        'max_instances': 3
-    }
     UNSUBSCRIBE_LINK = 'https://data-swarm.herokuapp.com/unsubscribe/'
     
 

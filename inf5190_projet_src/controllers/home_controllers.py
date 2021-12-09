@@ -10,6 +10,7 @@ def privacy():
     print('request to privacy and condition received')
     return render_template('index.html'), 200
 
+
 @mod_home.route('api/unsubscribe/<email>', methods=['DELETE', 'POST'])
 def unsubscribe(email):
     profile, check = get_profile_by_email(email)
@@ -20,12 +21,14 @@ def unsubscribe(email):
 
 @mod_home.route('/')
 def doc():
-    """Utilisé en production"""
-    return render_template('doc.html')
+   """Utilisé en production"""
+   return render_template('doc.html')
+
 
 # @mod_home.route('/doc')
 # def doc():
 #     return render_template('doc.html')
+
 
 # @mod_home.route('/')
 # def home():
