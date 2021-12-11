@@ -1,5 +1,5 @@
 from inf5190_projet_src import db
-from inf5190_projet_src.models.base import Base
+from inf5190_projet_src.models.base import Base, Dec_Base
 from sqlalchemy import ForeignKey 
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
@@ -7,7 +7,7 @@ from flask_marshmallow import Marshmallow
 
 ma = Marshmallow()
 
-class InspectedArr(Base):
+class InspectedArr(Base, Dec_Base):
 
     __tablename__ = 'profile_arrondissement'
 

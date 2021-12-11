@@ -1,21 +1,22 @@
 ## **Important**:
 * Le frontend est fait en utilisant Angular
 * Le build est fait en pointant tous les services vers l'adresse de l'api qui est : `http://172.28.128.8:5000`
+* S.V.P, utilisez mon `Vagrantfile`, j'ai configuré l'adress ip du `vagrant box`
 * Sous `Vagrant`, assurez-vous de lancer le serveur dans l'environnement virtuel avec:
     *  `flask run --host=172.28.128.8 --port=5000`
 ## Etapes importantes à suivre:
 
 * **Etape1**:  Assurez-vous que la `create_app` du fichier `app.py` prend `"dev"` comme parametre 
-* Si vous ne voulez pas configué la `migrations`, decommentez la ligne 81 `# db.create_all()` du fichier `__init__.py` 
-du dossier `inf5190_projet_src` et sautez à l'etape **Etape4**
+* Si vous ne voulez pas configué la `migrations`, :
+    * Decommentez la ligne `83` `# db.create_all()` du fichier `__init__.py` du dossier `inf5190_projet_src`
+    * Supprimez le dossier `migrations`
+    * Sautez à l'etape **Etape4**
 * **Etape2**: 
-    * Executer les 3 commandes dans l'ordre:
-        * `flask db init`
-            * la commande en haut crée un dossier `migrations`
-        * `flask db migrate -m "test"`
-            * la commande en haut crée un script `versionNbr_test.py` dans le sous dossier `versions`
-        * `flask db upgrade`
-            * la commande en haut applique les configurations de `versionNbr_test.py` 
+    **Important**
+    * Le projet utilise la librairie`Flask-Migrate` qui est un wrapper autour de l'outil de migration `alembic`
+    * Vous trouverez un dossier `migrations` dans la racine de projet
+    * Executez `flask db upgrade` pour generer les tables
+    * Le script `db.sql` a été generer en executant `flask db upgrade --sql > db/db.sql`
 
 * **Etape3**:
     * En ligne de commande executez:
@@ -29,6 +30,7 @@ du dossier `inf5190_projet_src` et sautez à l'etape **Etape4**
     ### Les variables d'environnement:
 
     * le fichier `.env` doit etre à la racine et doit absolument avoir les valeurs des variables suivantes:
+        * FLASK_APP=app.py
         * SECRET_KEY
         * CSRF_SESSION_KEY
         * APP_ADMIN_USERNAME
@@ -43,6 +45,26 @@ du dossier `inf5190_projet_src` et sautez à l'etape **Etape4**
     * Lancer l'application : `flask run --host=172.28.128.8 --port=5000`
 
 ## Les points développés
+### Point A1 15xp
+* Dans le module `data_requester.py`, vous trouverez les `3` fonctions responsable de l'importation des données.
+* `persist_patinoir_data()` importe, parse, valide et insere les données dans les trois tables suivantes:
+    * Arrondissement
+    * Patinoire 
+    * PatinoirCondition
+    * Elle prend au minimum `36` minutes 
+* `persist_aqua_data()` interroge:
+    * Arrondissement : si l'arrondissement existe ou non
+    * Coordinate: les coordonnées de l'installation aquatique
+    * InstallationAquatique: si l'inst aqua exist ou non
+    * Elle prend presque `2` minutes
+* `persist_glissade_data()` interroge:
+    * Arrondissement
+    * Glissade
+    * Elle prend quelques secondes
+### Point A2 5xp
+* Dans le fichier `app.py`, vous trouverez les `3` fonctions responsable de l'importation des données.
+* Chaque fonction est donnée à `add_job()` du `scheduler` pour s'executer à `minuit`
+* On executes les `3` fonctions decrites dans le point `A1`
 ### Point A3 5xp
 * En production le serveur est déployé dans un dyno séparé du frontend
 * Allez à l'url https://flask-data-swarm.herokuapp.com/ pour voire la liste de tous les services `REST`

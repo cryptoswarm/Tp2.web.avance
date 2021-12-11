@@ -1,9 +1,9 @@
 from inf5190_projet_src import db
-from inf5190_projet_src.models.base import Base
+from inf5190_projet_src.models.base import Base, Dec_Base
 from sqlalchemy.orm import relationship
 
 
-class Arrondissement(Base):
+class Arrondissement(Base, Dec_Base):
     __tablename__ = 'arrondissement'
 
     name = db.Column(db.String(255), unique=True,  nullable=False)

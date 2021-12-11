@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp/bionic64"
   ## config.vm.network "private_network", ip: "192.168.33.10" #type: "dhcp"
-  config.vm.network "private_network", type: "dhcp"
+  config.vm.network "private_network", ip: "172.28.128.8"
   ## config.vm.network "forwarded_port", guest: 5000, host: 8080
   config.vm.provision "shell", inline: <<-SHELL
 

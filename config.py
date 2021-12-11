@@ -49,6 +49,7 @@ class DevelopmentConfig(Config):
     #  'http://localhost:4200/unsubscribe/'
     # Pour pouvoire tester en utilisant vagrant
     UNSUBSCRIBE_LINK = 'http://172.28.128.8:5000/unsubscribe/'
+    
 
 
 class TestingConfig(Config):

@@ -21,8 +21,7 @@ def create_app(config_name):
 
     CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5000",
                                              "http://localhost:4200",
-                                             "http://10.0.2.15:5000/",
-                                             "http://172.28.128.8:5000/",
+                                             "http://172.28.128.8:5000",
                                              "https://data-swarm.herokuapp.com"
                                              ]
                                  }
@@ -44,7 +43,10 @@ def create_app(config_name):
         # HTTP error handling
         @app.errorhandler(404)
         def not_found(error):
-            return render_template('404.html'), 404
+            """Handel angular deep linking
+                Instead of return a 404 we redirect 
+                request to index.html"""
+            return render_template('index.html')
 
         # @app.errorhandler(JsonValidationError)
         @app.errorhandler(ValidationError)

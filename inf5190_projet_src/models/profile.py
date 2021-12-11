@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from inf5190_projet_src.models.base import Base
+from inf5190_projet_src.models.base import Base, Dec_Base
 from inf5190_projet_src import db
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
@@ -14,7 +14,7 @@ EMAIL_ERR = "Not a valid email address"
 ma = Marshmallow()
 
 
-class Profile(Base):
+class Profile(Base, Dec_Base):
 
     __tablename__ = 'profile'
 
