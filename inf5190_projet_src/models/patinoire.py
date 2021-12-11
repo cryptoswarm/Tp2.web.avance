@@ -1,4 +1,4 @@
-from inf5190_projet_src.models.base import Base, Dec_Base
+from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey
 from inf5190_projet_src import db
 from sqlalchemy.orm import relationship
@@ -11,7 +11,7 @@ from inf5190_projet_src.models.patinoir_condition import \
 ma = Marshmallow()
 
 
-class Patinoire(Base, Dec_Base):
+class Patinoire(Base):
 
     __tablename__ = 'patinoire'
 

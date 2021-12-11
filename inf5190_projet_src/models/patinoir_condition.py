@@ -1,5 +1,5 @@
 import hashlib
-from inf5190_projet_src.models.base import Base, Dec_Base
+from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey
 from inf5190_projet_src import db
 from marshmallow import fields
@@ -9,7 +9,7 @@ from flask_marshmallow import Marshmallow
 ma = Marshmallow()
 
 
-class PatinoirCondition(Base, Dec_Base):
+class PatinoirCondition(Base):
 
     __tablename__ = 'patinoir_condition'
 

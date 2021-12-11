@@ -1,4 +1,4 @@
-from inf5190_projet_src.models.base import Base, Dec_Base
+from inf5190_projet_src.models.base import Base
 from sqlalchemy import ForeignKey
 from inf5190_projet_src import db
 from inf5190_projet_src.models.coordiante import CoordinateSchema
@@ -10,7 +10,7 @@ from flask_marshmallow import Marshmallow
 ma = Marshmallow()
 
 
-class InstallationAquatique(Base, Dec_Base):
+class InstallationAquatique(Base):
 
     __tablename__ = 'installation_aquatique'
 
