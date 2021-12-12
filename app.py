@@ -29,13 +29,13 @@ def setting_job_3():
 scheduler = BackgroundScheduler(daemon=True)
 scheduler.start()
 scheduler.add_job(setting_job_1,
-                  'cron', hour=22, minute=05,
+                  'cron', hour=22, minute=10,
                   timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(setting_job_2,
-                  'cron', hour=22, minute=05,
+                  'cron', hour=22, minute=10,
                   timezone=pytz.timezone('CANADA/EASTERN'))
 scheduler.add_job(setting_job_3,
-                  'cron', hour=22, minute=05,
+                  'cron', hour=22, minute=10,
                   timezone=pytz.timezone('CANADA/EASTERN'))
 
 
