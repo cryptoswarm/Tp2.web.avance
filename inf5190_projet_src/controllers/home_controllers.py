@@ -21,15 +21,15 @@ def unsubscribe(email):
 
 @mod_home.route('/')
 def doc():
-   """Utilisé en production"""
-   return render_template('doc.html')
+    """Utilisé en production"""
+    return render_template('doc.html')
 
 
-# @mod_home.route('/doc')
-# def doc():
-#     return render_template('doc.html')
+#@mod_home.route('/doc')
+#def doc():
+#    return render_template('doc.html')
 
 
-# @mod_home.route('/')
-# def home():
-#     return render_template('index.html')
+#@mod_home.route('/')
+#def home():
+#    return render_template('index.html')
