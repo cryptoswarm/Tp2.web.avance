@@ -19,18 +19,26 @@ def create_app(config_name):
     # Here the WSGI app object is defined
     app = Flask(__name__)
 
-    CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5000",
-                                             "http://localhost:4200",
-                                             "http://172.28.128.8:5000",
-                                             "https://data-swarm.herokuapp.com"
-                                             ]
-                                 }
-                         },
-         expose_headers=["Content-Type", "X-CSRFToken",
-                         "Access-Control-Expose-Headers",
-                         "USER_ID"],
-         supports_credentials=True,
-         )
+    CORS(
+        app,
+        resources={
+            r"/*": {
+                "origins": [
+                    "http://127.0.0.1:5000",
+                    "http://localhost:4200",
+                    "http://172.28.128.8:5000",
+                    "https://data-swarm.herokuapp.com",
+                ]
+            }
+        },
+        expose_headers=[
+            "Content-Type",
+            "X-CSRFToken",
+            "Access-Control-Expose-Headers",
+            "USER_ID",
+        ],
+        supports_credentials=True,
+    )
     with app.app_context():
         """App Configurations"""
         app.config.from_object(config_by_name[config_name])
@@ -44,30 +52,27 @@ def create_app(config_name):
         @app.errorhandler(404)
         def not_found(error):
             """Handel angular deep linking
-                Instead of return a 404 we redirect 
-                request to index.html"""
-            return render_template('index.html')
+            Instead of return a 404 we redirect
+            request to index.html"""
+            return render_template("index.html")
 
         # @app.errorhandler(JsonValidationError)
         @app.errorhandler(ValidationError)
         def validation_error(e):
-            return jsonify({'error': e.message})
+            return jsonify({"error": e.message})
 
         # using all blueprints
-        from inf5190_projet_src.controllers.home_controllers import \
-            mod_home as home_module
-        # from inf5190_projet_src.controllers.data_requester import \
+        from src.controllers.home_controllers import mod_home as home_module
+
+        # from src.controllers.data_requester import \
         #     mod_scheduler as scheduler_mod
-        from inf5190_projet_src.controllers.installations_controllers import \
-            mod_arron as arrondissement_mod
-        from inf5190_projet_src.controllers.glissade_controllers import \
-            mod_glissade as glissade_module
-        from inf5190_projet_src.controllers.inst_aqua_controllers import \
-            insta_aqua as aqua_inst_module
-        from inf5190_projet_src.controllers.patinoire_controllers import \
-            patinoire as pat_module
-        from inf5190_projet_src.controllers.account_controllers import \
-            mod_user as user_module
+        from src.controllers.installations_controllers import (
+            mod_arron as arrondissement_mod,
+        )
+        from src.controllers.glissade_controllers import mod_glissade as glissade_module
+        from src.controllers.inst_aqua_controllers import insta_aqua as aqua_inst_module
+        from src.controllers.patinoire_controllers import patinoire as pat_module
+        from src.controllers.account_controllers import mod_user as user_module
 
         # Register blueprints
         app.register_blueprint(home_module)
@@ -84,22 +89,25 @@ def create_app(config_name):
 
         # configure logger
         if not app.debug and not app.testing:
-            '''LOG_TO_STDOUT=1 as env var for heroku'''
-            if app.config['LOG_TO_STDOUT']:
+            """LOG_TO_STDOUT=1 as env var for heroku"""
+            if app.config["LOG_TO_STDOUT"]:
                 handler = logging.StreamHandler()
                 handler.setLevel(logging.INFO)
                 app.logger.addHandler(handler)
             else:
-                if not os.path.exists('logs'):
-                    os.mkdir('logs')
-                file_handler = RotatingFileHandler('logs/data_swarm.log',
-                                                   maxBytes=10240,
-                                                   backupCount=10)
-                file_handler.setFormatter(logging.Formatter(
-                    '%(asctime)s %(levelname)s: %(message)s '
-                    '[in %(pathname)s:%(lineno)d]'))
+                if not os.path.exists("logs"):
+                    os.mkdir("logs")
+                file_handler = RotatingFileHandler(
+                    "logs/data_swarm.log", maxBytes=10240, backupCount=10
+                )
+                file_handler.setFormatter(
+                    logging.Formatter(
+                        "%(asctime)s %(levelname)s: %(message)s "
+                        "[in %(pathname)s:%(lineno)d]"
+                    )
+                )
                 file_handler.setLevel(logging.INFO)
                 app.logger.addHandler(file_handler)
         app.logger.setLevel(logging.INFO)
-        app.logger.info('data swarm start')
+        app.logger.info("data swarm start")
     return app

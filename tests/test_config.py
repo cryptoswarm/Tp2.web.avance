@@ -2,7 +2,7 @@
 # import unittest
 # from flask import current_app
 # from flask_testing import TestCase
-# from inf5190_projet_src import create_app
+# from src import create_app
 # from config import config_by_name
 # from config import BASE_DIR
 
@@ -26,7 +26,7 @@
 
 # class TestTestingConfig(TestCase):
 
-    
+
 #     def create_app(self):
 #         app = create_app('test')
 #         app.config.from_object(config_by_name['test'])
@@ -46,7 +46,7 @@
 #         app = create_app('prod')
 #         app.config.from_object(config_by_name['prod'])
 #         return app
-    
+
 #     def test_app_is_production(self):
 #         self.assertTrue(self.app.config['DEBUG'] is False)
 

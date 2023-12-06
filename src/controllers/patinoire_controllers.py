@@ -1,18 +1,20 @@
 from flask import Blueprint
 from flask import jsonify, request, session, g
-from inf5190_projet_src.models.patinoir_condition import \
-    EditPatConditionSchema
-from inf5190_projet_src.models.patinoire import \
-    EditPatinoireSchema, PatinoireSchema, PatAndConditionSchema
-from inf5190_projet_src.services.aquatique_inst_services import *
-from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.services.pat_conditions_service import *
-from inf5190_projet_src.services.patinoire_service import *
+from src.models.patinoir_condition import EditPatConditionSchema
+from src.models.patinoire import (
+    EditPatinoireSchema,
+    PatinoireSchema,
+    PatAndConditionSchema,
+)
+from src.services.aquatique_inst_services import *
+from src.services.arron_service import *
+from src.services.pat_conditions_service import *
+from src.services.patinoire_service import *
 from marshmallow import ValidationError
-from inf5190_projet_src.helpers.helper import *
+from src.helpers.helper import *
 
 
-patinoire = Blueprint('insta_patinoire', __name__, url_prefix='')
+patinoire = Blueprint("insta_patinoire", __name__, url_prefix="")
 
 
 pat_schema = PatinoireSchema(many=True)
@@ -27,13 +29,13 @@ def load_logged_in_user():
     load the user object from the db into ``g.user``.
     """
     user_id = session.get("user_id")
-    print('user_id: ', user_id)
+    print("user_id: ", user_id)
 
     if user_id is None:
         g.user = None
 
 
-@patinoire.route('/api/patinoire/<int:id>', methods=['PUT'])
+@patinoire.route("/api/patinoire/<int:id>", methods=["PUT"])
 def edit_patinoire(id):
     posted_patinoire = request.get_json()
     try:
@@ -43,7 +45,7 @@ def edit_patinoire(id):
     patinoire, code = get_patinoire_by_id(id)
     if patinoire is None:
         return jsonify({"message": "Patinoire does not exist!"}), code
-    existed_pat = get_patinoire_by_name(posted_patinoire['nom_pat'])
+    existed_pat = get_patinoire_by_name(posted_patinoire["nom_pat"])
     if existed_pat:
         return jsonify({"message": "Given patinoire name already exist"}), 400
     updated_pat = update_patinoire(patinoire, posted_patinoire)
@@ -51,19 +53,19 @@ def edit_patinoire(id):
     return jsonify(serialized_pat), 200
 
 
-@patinoire.route('/api/patinoire/<int:id>', methods=['GET'])
+@patinoire.route("/api/patinoire/<int:id>", methods=["GET"])
 def get_patinoire_id(id):
     patinoire, code = get_patinoire_by_id(id)
     if patinoire is None:
         return jsonify({"message": "Patinoire does not exist!"}), code
-    pat_and_conditions = get_patinoire_details_by_id(patinoire.id,
-                                                     patinoire.nom_pat,
-                                                     patinoire.arron_id)
+    pat_and_conditions = get_patinoire_details_by_id(
+        patinoire.id, patinoire.nom_pat, patinoire.arron_id
+    )
     sirialized_pat = pat_cond_schema.dump(pat_and_conditions)
     return jsonify(sirialized_pat), 200
 
 
-@patinoire.route('/api/patinoire/<int:id>', methods=['DELETE'])
+@patinoire.route("/api/patinoire/<int:id>", methods=["DELETE"])
 @requires_auth
 def delete_patinoire(id):
     patinoire, code = get_patinoire_by_id(id)
@@ -74,7 +76,7 @@ def delete_patinoire(id):
     return jsonify(serialized_pat), 200
 
 
-@patinoire.route('/api/patinoire-condition/<id>', methods=['GET'])
+@patinoire.route("/api/patinoire-condition/<id>", methods=["GET"])
 def get_patinoire_condition(id):
     pat_condition, code = get_pat_condition_cond_id(id)
     if pat_condition is None:
@@ -83,7 +85,7 @@ def get_patinoire_condition(id):
     return jsonify(serialized_cond), 200
 
 
-@patinoire.route('/api/patinoire-condition/<id>', methods=['PUT'])
+@patinoire.route("/api/patinoire-condition/<id>", methods=["PUT"])
 def edit_patinoire_condition(id):
     pat_condition = request.get_json()
     try:
@@ -98,7 +100,7 @@ def edit_patinoire_condition(id):
     return jsonify(serialized_cond), 200
 
 
-@patinoire.route('/api/patinoire-condition/<int:id>', methods=['DELETE'])
+@patinoire.route("/api/patinoire-condition/<int:id>", methods=["DELETE"])
 @requires_auth
 def delete_patinoire_condition(id):
     pat_condition, code = get_pat_condition_cond_id(id)
@@ -109,7 +111,10 @@ def delete_patinoire_condition(id):
     return jsonify(serialized_cond), 200
 
 
-@patinoire.route('/api/installations/arrondissement/<arrondissement>/patinoire/<name>', methods=['GET'])
+@patinoire.route(
+    "/api/installations/arrondissement/<arrondissement>/patinoire/<name>",
+    methods=["GET"],
+)
 def get_patinoire(arrondissement, name):
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)

@@ -1,5 +1,5 @@
-from inf5190_projet_src import db
-from inf5190_projet_src.models.coordiante import Coordinate
+from src import db
+from src.models.coordiante import Coordinate
 
 
 def create_inst_aquatique_position(coordiante):
