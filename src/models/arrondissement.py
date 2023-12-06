@@ -1,13 +1,13 @@
-from inf5190_projet_src import db
-from inf5190_projet_src.models.base import Base
+from src import db
+from src.models.base import Base
 from sqlalchemy.orm import relationship
 
 
 class Arrondissement(Base):
-    __tablename__ = 'arrondissement'
+    __tablename__ = "arrondissement"
 
-    name = db.Column(db.String(255), unique=True,  nullable=False)
-    cle = db.Column(db.String(50), unique=True,  nullable=True)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    cle = db.Column(db.String(50), unique=True, nullable=True)
     glissade = relationship("Glissade")
     patinoire = relationship("Patinoire")
 
@@ -16,13 +16,12 @@ class Arrondissement(Base):
         self.cle = cle
 
     def __repr__(self):
-        return "<Arrondissement(arrondissement_id='%d', \
+        return (
+            "<Arrondissement(arrondissement_id='%d', \
                                 name='%s', \
-                                cle='%s')>" % (
-            self.id, self.name, self.cle)
+                                cle='%s')>"
+            % (self.id, self.name, self.cle)
+        )
 
     def asDictionary(self):
-        return {"arrondissement_id": self.id,
-                "name": self.name,
-                "cle": self.cle
-                }
+        return {"arrondissement_id": self.id, "name": self.name, "cle": self.cle}

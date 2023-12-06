@@ -1,18 +1,18 @@
 from flask import Blueprint, request, session, g
 from flask import jsonify
-from inf5190_projet_src.services.aquatique_inst_services import *
-from inf5190_projet_src.services.glissade_services import *
-from inf5190_projet_src.services.arron_service import *
-from inf5190_projet_src.schemas.schema import *
-from inf5190_projet_src.models.glissade import GlissadeSchema
+from src.services.aquatique_inst_services import *
+from src.services.glissade_services import *
+from src.services.arron_service import *
+from src.schemas.schema import *
+from src.models.glissade import GlissadeSchema
 from marshmallow import ValidationError
-from inf5190_projet_src.helpers.helper import *
+from src.helpers.helper import *
 
 
 glissade_schema = GlissadeSchema()
 
 
-mod_glissade = Blueprint('glissade', __name__, url_prefix='')
+mod_glissade = Blueprint("glissade", __name__, url_prefix="")
 
 
 @mod_glissade.before_app_request
@@ -21,7 +21,7 @@ def load_logged_in_user():
     load the user object from the db into ``g.user``.
     """
     user_id = session.get("user_id")
-    print('user_id: ', user_id)
+    print("user_id: ", user_id)
 
     if user_id is None:
         g.user = None
@@ -31,41 +31,49 @@ def load_logged_in_user():
     #     print('user should be found: ',g.user)
 
 
-@mod_glissade.route('/api/glissade/<id>', methods=['PUT'])
+@mod_glissade.route("/api/glissade/<id>", methods=["PUT"])
 def edit_glissade(id):
     glissade_data = request.get_json()
     try:
         posted_glissade = GlissadeSchema().load(glissade_data)
     except ValidationError as err:
         return jsonify(err.messages), 400
-    arrondissement, code = get_arr_by_id(posted_glissade['arrondissement_id'])
+    arrondissement, code = get_arr_by_id(posted_glissade["arrondissement_id"])
     if arrondissement is None:
         return jsonify({"message": "arrondissement does not exist!"}), code
     glissade, code = get_glissade_by_id(id)
     if glissade is None:
         return jsonify({"message": "Glissade does not exist!"}), code
     if arrondissement.id != glissade.arrondissement_id:
-        return jsonify({"message":
-                        "Given glissade does not belong \
-                        to given arrondissement"}), 400
+        return (
+            jsonify(
+                {
+                    "message": "Given glissade does not belong \
+                        to given arrondissement"
+                }
+            ),
+            400,
+        )
     updated, code = update_glissade(glissade, posted_glissade)
     result = GlissadeSchema().dump(updated)
     return jsonify(result), code
 
 
-@mod_glissade.route('/api/glissade/<id>', methods=['DELETE'])
+@mod_glissade.route("/api/glissade/<id>", methods=["DELETE"])
 @requires_auth
 def delete_glissade(id):
     glissade, code = get_glissade_by_id(id)
     if glissade is None:
-        return jsonify({"status": "fail",
-                        "message": "glissade does not exist"}), 404
+        return jsonify({"status": "fail", "message": "glissade does not exist"}), 404
     deleted = delete_glissade_by_id(id)
     gliss = glissade_schema.dump(deleted)
     return jsonify(gliss), 200
 
 
-@mod_glissade.route('/api/installations/arrondissement/<arrondissement>/glissade/<name>', methods=['GET'])
+@mod_glissade.route(
+    "/api/installations/arrondissement/<arrondissement>/glissade/<name>",
+    methods=["GET"],
+)
 def get_glissade_name(arrondissement, name):
     if all([arrondissement, name]):
         arr = get_arr_by_name(arrondissement)
@@ -79,7 +87,7 @@ def get_glissade_name(arrondissement, name):
     return {}, 400
 
 
-@mod_glissade.route('/api/glissade/<int:id>', methods=['GET'])
+@mod_glissade.route("/api/glissade/<int:id>", methods=["GET"])
 def get_glissade_id(id):
     if id:
         glissade, status = get_glissade_by_id(id)

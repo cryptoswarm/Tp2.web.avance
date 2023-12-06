@@ -1,4 +1,4 @@
-from inf5190_projet_src.repositories.profile_repo import *
+from src.repositories.profile_repo import *
 
 
 def remove_profile(profile: Profile):
@@ -7,7 +7,7 @@ def remove_profile(profile: Profile):
 
 
 def add_profile(data):
-    profile = Profile(data['complete_name'], data['email'])
+    profile = Profile(data["complete_name"], data["email"])
     profile = save_profile(profile)
     return profile
 
@@ -21,8 +21,8 @@ def get_profile_by_email(email: str):
 
 def create_profile_followed_arr(data):
     content = []
-    followed_arron = data['followed_arr']
-    email = data['email']
+    followed_arron = data["followed_arr"]
+    email = data["email"]
     profile, code = get_profile_by_email(email)
     if profile is None:
         profile = add_profile(data)
@@ -34,5 +34,5 @@ def create_profile_followed_arr(data):
     items = find_followed_by_profile_id(profile.id)
     for item in items:
         content.append(item.asDictionary())
-    response['followed_arr'] = content
+    response["followed_arr"] = content
     return response

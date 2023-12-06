@@ -1,5 +1,5 @@
-from inf5190_projet_src import db
-from inf5190_projet_src.models.arrondissement import Arrondissement
+from src import db
+from src.models.arrondissement import Arrondissement
 
 
 def save_arrondissement(arrondissement):
@@ -9,14 +9,10 @@ def save_arrondissement(arrondissement):
 
 
 def find_by_arr_name(arr_name):
-    response = Arrondissement.query \
-                .filter_by(name=arr_name) \
-                .first()
+    response = Arrondissement.query.filter_by(name=arr_name).first()
     return response
 
 
 def find_arr_by_id(arr_id):
-    response = Arrondissement.query \
-                .filter_by(id=arr_id) \
-                .first()
+    response = Arrondissement.query.filter_by(id=arr_id).first()
     return response

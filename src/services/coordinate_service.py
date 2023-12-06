@@ -1,4 +1,4 @@
-from inf5190_projet_src.repositories.coordiantes_repo import *
+from src.repositories.coordiantes_repo import *
 
 
 def get_position_by_hash(hash):
