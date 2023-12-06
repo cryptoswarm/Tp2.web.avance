@@ -13,7 +13,7 @@ bcrypt==3.2.0
 blinker==1.4
 boto3==1.19.12
 botocore==1.22.12
-certifi==2021.10.8
+certifi==2023.7.22
 cffi==1.15.0
 charset-normalizer==2.0.7
 click==8.0.3
